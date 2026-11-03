@@ -1,6 +1,14 @@
 """Renders a unit file as a readable Markdown list of tasks with solutions – for the parent to review."""
 
+import re
+
 from .validate import item_label
+
+
+def _sounds(text: str) -> str:
+    """[a] = the letter sound – shown as /a/."""
+    return re.sub(r"\[([a-z])\]", r"/\1/", text)
+
 
 LEVEL_NAMES = {
     1: "Level 1 – The Castle Garden (Letters a, b, c, d)",
@@ -20,6 +28,8 @@ TYPE_NAMES = {
 def _item_md(item) -> str:
     if isinstance(item, str):
         return item
+    if item.get("sound"):
+        return f"🔊 [{item['sound']}]"
     shown = " ".join(filter(None, [item.get("pic"), item.get("color"), item.get("draw"), item.get("text")]))
     return f"{shown} („{item['say']}”)" if item.get("say") and item.get("say") != item.get("text") else shown
 
@@ -49,11 +59,11 @@ def _task_md(t: dict) -> list[str]:
         out.append(f"\nPodpowiedź: {t['hint']}")
     if t.get("explanation"):
         out.append(f"Wyjaśnienie: {t['explanation']}")
-    return out + [""]
+    return [_sounds(line) for line in out] + [""]
 
 
 def render_review(data: dict) -> str:
-    lines = [f"# Unit {data.get('unit', '?')} – {data.get('title', '')}", "", "Zadania do przejrzenia przed udostępnieniem gry. 🔊 = to, co mówi głos.", ""]
+    lines = [f"# Unit {data.get('unit', '?')} – {data.get('title', '')}", "", "Zadania do przejrzenia przed udostępnieniem gry. 🔊 = to, co mówi głos, /a/ = głoska (plik web/audio/a.m4a).", ""]
     for level, name in LEVEL_NAMES.items():
         tasks = [t for t in data["tasks"] if t.get("level") == level]
         lines += [f"## {name} ({len(tasks)} zadań)", ""]

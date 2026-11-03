@@ -7,17 +7,18 @@
       "level": 1,
       "type": "pick",
       "instruction": "Listen and tap the letter.",
-      "say": "B",
+      "say": "[b]",
+      "speak_options": true,
       "options": ["b", "d", "a", "c"],
       "answer": 0,
-      "hint": "B is for ball. The b has its tummy on the right.",
-      "explanation": "B, b, ball!"
+      "hint": "[b], [b], ball. The [b] has its tummy on the right.",
+      "explanation": "[b], [b], ball!"
     },
     {
       "id": "L1-02",
       "level": 1,
       "type": "pick",
-      "instruction": "Which one starts with C?",
+      "instruction": "Which one starts with [c]?",
       "show": "c",
       "speak_options": true,
       "options": [
@@ -26,51 +27,53 @@
         { "pic": "🍎", "say": "apple" }
       ],
       "answer": 0,
-      "hint": "Tap the pictures and listen. C, c, c…",
-      "explanation": "Cat starts with C!"
+      "hint": "Tap the pictures and listen. [c], [c], [c]…",
+      "explanation": "[c], [c], cat!"
     },
     {
       "id": "L1-03",
       "level": 1,
       "type": "match_pairs",
-      "instruction": "Match the letter and the picture.",
+      "instruction": "Listen and match the sound and the picture.",
       "speak_options": true,
       "pairs": [
-        ["a", { "pic": "🍎", "say": "apple" }],
-        ["b", { "pic": "⚽", "say": "ball" }],
-        ["c", { "pic": "🐱", "say": "cat" }],
-        ["d", { "pic": "🐶", "say": "dog" }]
+        [{ "sound": "a" }, { "pic": "🍎", "say": "apple" }],
+        [{ "sound": "b" }, { "pic": "⚽", "say": "ball" }],
+        [{ "sound": "c" }, { "pic": "🐱", "say": "cat" }],
+        [{ "sound": "d" }, { "pic": "🐶", "say": "dog" }]
       ],
-      "hint": "Tap a picture and listen. Apple starts with A.",
-      "explanation": "A, apple. B, ball. C, cat. D, dog."
+      "hint": "Tap a sound and listen. Then find the picture that starts with that sound. [a], [a], apple!",
+      "explanation": "[a], apple. [b], ball. [c], cat. [d], dog."
     },
     {
       "id": "L1-04",
       "level": 1,
       "type": "pick",
-      "instruction": "Dog. What letter does dog start with?",
+      "instruction": "Dog. Which letter does dog start with?",
       "show": { "pic": "🐶" },
+      "speak_options": true,
       "options": ["d", "b", "c"],
       "answer": 0,
-      "hint": "D, d, dog. The d has its tummy on the left.",
-      "explanation": "Dog starts with D!"
+      "hint": "[d], [d], dog. The [d] has its tummy on the left.",
+      "explanation": "[d], [d], dog!"
     },
     {
       "id": "L1-05",
       "level": 1,
       "type": "pick",
       "instruction": "Listen and tap the letter.",
-      "say": "D",
+      "say": "[d]",
+      "speak_options": true,
       "options": ["d", "b", "a"],
       "answer": 0,
-      "hint": "D is for dog. The d has a tall line on the right.",
-      "explanation": "D, d, dog!"
+      "hint": "[d], [d], dog. The [d] has a tall line on the right.",
+      "explanation": "[d], [d], dog!"
     },
     {
       "id": "L1-06",
       "level": 1,
       "type": "pick",
-      "instruction": "Which one starts with A?",
+      "instruction": "Which one starts with [a]?",
       "show": "a",
       "speak_options": true,
       "options": [
@@ -79,14 +82,14 @@
         { "pic": "🐶", "say": "dog" }
       ],
       "answer": 0,
-      "hint": "Tap the pictures and listen. A, a, a…",
-      "explanation": "Apple starts with A!"
+      "hint": "Tap the pictures and listen. [a], [a], [a]…",
+      "explanation": "[a], [a], apple!"
     },
     {
       "id": "L1-07",
       "level": 1,
       "type": "pick",
-      "instruction": "Which one starts with B?",
+      "instruction": "Which one starts with [b]?",
       "show": "b",
       "speak_options": true,
       "options": [
@@ -95,19 +98,20 @@
         { "pic": "🥤", "say": "drink" }
       ],
       "answer": 0,
-      "hint": "Tap the pictures and listen. B, b, b…",
-      "explanation": "Box starts with B!"
+      "hint": "Tap the pictures and listen. [b], [b], [b]…",
+      "explanation": "[b], [b], box!"
     },
     {
       "id": "L1-08",
       "level": 1,
       "type": "pick",
-      "instruction": "Car. What letter does car start with?",
+      "instruction": "Car. Which letter does car start with?",
       "show": { "pic": "🚗" },
+      "speak_options": true,
       "options": ["c", "a", "d"],
       "answer": 0,
-      "hint": "C, c, car. The c is like a cookie with a bite.",
-      "explanation": "Car starts with C!"
+      "hint": "[c], [c], car. The [c] is like a cookie with a bite.",
+      "explanation": "[c], [c], car!"
     },
     {
       "id": "L1-09",
@@ -121,25 +125,26 @@
         ["c", { "pic": "🧢", "say": "cap" }],
         ["d", { "pic": "🥤", "say": "drink" }]
       ],
-      "hint": "Tap a picture and listen. Cap starts with C.",
-      "explanation": "A, ant. B, box. C, cap. D, drink."
+      "hint": "Tap a letter and listen to its sound. Then find the picture that starts with that sound. [c], [c], cap!",
+      "explanation": "[a], ant. [b], box. [c], cap. [d], drink."
     },
     {
       "id": "L1-10",
       "level": 1,
       "type": "pick",
       "instruction": "Listen and tap the letter.",
-      "say": "A",
+      "say": "[a]",
+      "speak_options": true,
       "options": ["a", "d", "c", "b"],
       "answer": 0,
-      "hint": "A is for apple. The a is small and round.",
-      "explanation": "A, a, apple!"
+      "hint": "[a], [a], apple. The [a] is small and round.",
+      "explanation": "[a], [a], apple!"
     },
     {
       "id": "L1-11",
       "level": 1,
       "type": "pick",
-      "instruction": "Which one starts with D?",
+      "instruction": "Which one starts with [d]?",
       "show": "d",
       "speak_options": true,
       "options": [
@@ -148,19 +153,20 @@
         { "pic": "🐱", "say": "cat" }
       ],
       "answer": 0,
-      "hint": "Tap the pictures and listen. D, d, d…",
-      "explanation": "Doll starts with D!"
+      "hint": "Tap the pictures and listen. [d], [d], [d]…",
+      "explanation": "[d], [d], doll!"
     },
     {
       "id": "L1-12",
       "level": 1,
       "type": "pick",
-      "instruction": "Cupcake. What letter does cupcake start with?",
+      "instruction": "Cupcake. Which letter does cupcake start with?",
       "show": { "pic": "🧁" },
+      "speak_options": true,
       "options": ["c", "b", "d"],
       "answer": 0,
-      "hint": "C, c, cupcake. Like cat and car!",
-      "explanation": "Cupcake starts with C!"
+      "hint": "[c], [c], cupcake. Like cat and car!",
+      "explanation": "[c], [c], cupcake!"
     },
 
     {
@@ -171,8 +177,8 @@
       "say": "I",
       "options": ["I", "my", "am"],
       "answer": 0,
-      "hint": "I is just one tall line.",
-      "explanation": "I – one tall line!"
+      "hint": "Look for one tall line.",
+      "explanation": "I – just one tall line!"
     },
     {
       "id": "L2-02",
@@ -182,8 +188,8 @@
       "say": "you",
       "options": ["you", "your", "I'm"],
       "answer": 0,
-      "hint": "You has three letters: y, o, u.",
-      "explanation": "You – y, o, u."
+      "hint": "You is a short word. Your is longer.",
+      "explanation": "You!"
     },
     {
       "id": "L2-03",
@@ -215,22 +221,23 @@
       "say": "my",
       "options": ["my", "am", "I'm"],
       "answer": 0,
-      "hint": "My starts with m and ends with a long y.",
-      "explanation": "My – m, y."
+      "hint": "My is a short word with a long tail at the end.",
+      "explanation": "My!"
     },
     {
       "id": "L2-06",
       "level": 2,
       "type": "match_pairs",
       "instruction": "Find the same word.",
+      "speak_options": true,
       "pairs": [
         ["I", "I"],
         ["I'm", "I'm"],
         ["it's", "it's"],
         ["you're", "you're"]
       ],
-      "hint": "Look at the first letter and the little comma at the top.",
-      "explanation": "I, I'm, it's, you're."
+      "hint": "Tap a word and listen. Then find the same word on the other side. Some words have a little comma at the top.",
+      "explanation": "I. I'm. It's. You're."
     },
     {
       "id": "L2-07",
@@ -240,8 +247,8 @@
       "say": "it's",
       "options": ["it's", "I'm", "you're"],
       "answer": 0,
-      "hint": "It's starts with i and t.",
-      "explanation": "It's – i, t, s."
+      "hint": "It's starts with a tall thin letter.",
+      "explanation": "It's!"
     },
     {
       "id": "L2-08",
@@ -253,7 +260,7 @@
       "text": "___ a boy.",
       "answers": [["I'm"]],
       "bank": ["I'm", "You're", "It's"],
-      "hint": "I'm starts with a big I.",
+      "hint": "Look for the big tall line at the start.",
       "explanation": "I'm a boy!"
     },
     {
@@ -264,8 +271,8 @@
       "say": "your",
       "options": ["your", "you", "you're"],
       "answer": 0,
-      "hint": "Your is you with an r at the end.",
-      "explanation": "Your – y, o, u, r."
+      "hint": "Your looks like you, with one more letter at the end.",
+      "explanation": "Your!"
     },
     {
       "id": "L2-10",
@@ -275,8 +282,8 @@
       "say": "she",
       "options": ["she", "he", "my"],
       "answer": 0,
-      "hint": "She is the long one: s, h, e.",
-      "explanation": "She – s, h, e."
+      "hint": "He and she both end the same. She is the longer word.",
+      "explanation": "She!"
     },
     {
       "id": "L2-11",
@@ -288,7 +295,7 @@
       "text": "___ a girl.",
       "answers": [["You're"]],
       "bank": ["You're", "I'm", "It's"],
-      "hint": "You're starts with Y, like you.",
+      "hint": "You're looks like you, with a little comma.",
       "explanation": "You're a girl!"
     },
     {
@@ -299,8 +306,8 @@
       "say": "am",
       "options": ["am", "my", "I"],
       "answer": 0,
-      "hint": "Am starts with a. Like apple!",
-      "explanation": "Am – a, m. I am!"
+      "hint": "Am starts with [a], like apple!",
+      "explanation": "[a], [a], am. I am!"
     },
 
     {
@@ -327,7 +334,7 @@
       "show": { "color": "red" },
       "options": ["red", "blue", "green"],
       "answer": 0,
-      "hint": "It's red! Red is a short word: r, e, d.",
+      "hint": "It's red! Red is a short word.",
       "explanation": "Red!"
     },
     {
@@ -343,7 +350,7 @@
         { "pic": "🚂", "say": "toy train" }
       ],
       "answer": 0,
-      "hint": "Doll starts with D, like dog.",
+      "hint": "Doll starts with [d], like dog.",
       "explanation": "Doll!"
     },
     {
@@ -372,7 +379,7 @@
         ["doll", { "pic": "🪆", "say": "doll" }],
         ["toy train", { "pic": "🚂", "say": "toy train" }]
       ],
-      "hint": "Look at the first letter. Car starts with C, ball with B.",
+      "hint": "Look at the first letter. Car starts with [c]. Ball starts with [b].",
       "explanation": "Car, ball, doll, toy train."
     },
     {
@@ -388,7 +395,7 @@
         { "pic": "👨", "say": "dad" }
       ],
       "answer": 0,
-      "hint": "Grandma is mom's mom.",
+      "hint": "Grandma is a mom's mom or a dad's mom.",
       "explanation": "Grandma!"
     },
     {
@@ -417,7 +424,7 @@
         ["grandma", { "pic": "👵", "say": "grandma" }],
         ["grandpa", { "pic": "👴", "say": "grandpa" }]
       ],
-      "hint": "Mom starts with M. Dad starts with D. Grandma and grandpa are long words.",
+      "hint": "Dad starts with [d]. Grandma and grandpa are the long words.",
       "explanation": "Mom, dad, grandma, grandpa."
     },
     {
@@ -428,8 +435,8 @@
       "show": { "pic": "👨" },
       "options": ["dad", "mom", "doll"],
       "answer": 0,
-      "hint": "It's dad! Dad starts with D and ends with D.",
-      "explanation": "Dad – d, a, d."
+      "hint": "It's dad! Dad starts with [d] and ends with [d].",
+      "explanation": "[d], [d], dad!"
     },
     {
       "id": "L3-10",
@@ -439,8 +446,8 @@
       "show": { "pic": "🪆" },
       "options": ["doll", "ball", "car"],
       "answer": 0,
-      "hint": "It's a doll. Doll starts with D.",
-      "explanation": "Doll – d, o, l, l."
+      "hint": "It's a doll. Doll starts with [d].",
+      "explanation": "[d], [d], doll!"
     },
     {
       "id": "L3-11",
@@ -465,8 +472,8 @@
       "show": { "pic": "⚽" },
       "options": ["ball", "doll", "dog"],
       "answer": 0,
-      "hint": "It's a ball. Ball starts with B.",
-      "explanation": "Ball – b, a, l, l."
+      "hint": "It's a ball. Ball starts with [b].",
+      "explanation": "[b], [b], ball!"
     },
     {
       "id": "L3-13",
@@ -505,7 +512,7 @@
       "text": "It's a ___ cupcake.",
       "answers": [["pink"]],
       "bank": ["pink", "blue", "green"],
-      "hint": "Look at the cupcake. Pink starts with P.",
+      "hint": "Look at the cupcake. Which colour is it?",
       "explanation": "It's a pink cupcake!"
     },
     {
@@ -529,7 +536,7 @@
       "text": "It's a ___ ball.",
       "answers": [["red"]],
       "bank": ["red", "yellow", "blue"],
-      "hint": "Look at the ball. Red starts with R.",
+      "hint": "Look at the ball. Which colour is it?",
       "explanation": "It's a red ball!"
     },
     {
@@ -553,7 +560,7 @@
       "text": "It's a green ___.",
       "answers": [["box"]],
       "bank": ["box", "ball", "doll"],
-      "hint": "Box starts with B and ends with X.",
+      "hint": "Box starts with [b]. Ball starts with [b] too – box is the short one.",
       "explanation": "It's a green box!"
     },
     {
@@ -577,14 +584,14 @@
       "text": "It's my ___.",
       "answers": [["dog"]],
       "bank": ["dog", "doll", "dad"],
-      "hint": "All three start with D! Dog ends with G.",
+      "hint": "All three start with [d]! Look at the end of the word.",
       "explanation": "It's my dog!"
     },
     {
       "id": "L4-09",
       "level": 4,
       "type": "pick",
-      "instruction": "Which one starts with B?",
+      "instruction": "Which one starts with [b]?",
       "show": "b",
       "speak_options": true,
       "options": [
@@ -593,8 +600,8 @@
         { "pic": "🐶", "say": "dog" }
       ],
       "answer": 0,
-      "hint": "Tap the pictures and listen. B, b, b…",
-      "explanation": "Boy starts with B!"
+      "hint": "Tap the pictures and listen. [b], [b], [b]…",
+      "explanation": "[b], [b], boy!"
     },
     {
       "id": "L4-10",
@@ -605,7 +612,7 @@
       "options": ["you're", "your", "you"],
       "answer": 0,
       "hint": "You're has a little comma at the top.",
-      "explanation": "You're – you, a comma, r, e."
+      "explanation": "You're!"
     }
   ]
 }

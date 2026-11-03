@@ -1,4 +1,4 @@
-"""Command line tools for the game: validate and review unit tasks."""
+"""Command line tools for the game: validate and review unit tasks, make the letter sounds."""
 
 import argparse
 import json
@@ -41,6 +41,14 @@ def cmd_review(args) -> int:
     return 0
 
 
+def cmd_sounds(args) -> int:
+    from .sounds import make_sounds
+
+    for path in make_sounds(ROOT / "web" / "audio", args.letters or None):
+        print(f"Saved {path.relative_to(ROOT)}")
+    return 0
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(prog="booksee-bucksee", description="Tasks for The Word Quest game.")
     sub = parser.add_subparsers(required=True)
@@ -53,6 +61,10 @@ def main() -> None:
     p.add_argument("file")
     p.add_argument("--out", help="save to a Markdown file")
     p.set_defaults(func=cmd_review)
+
+    p = sub.add_parser("sounds", help="make the letter sounds in web/audio/ with the macOS voice")
+    p.add_argument("letters", nargs="*", help="only these letters, e.g. a c (default: all)")
+    p.set_defaults(func=cmd_sounds)
 
     args = parser.parse_args()
     sys.exit(args.func(args))

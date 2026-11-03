@@ -287,6 +287,18 @@ select { min-width: 260px; max-width: 100%; }
 
 .item { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; vertical-align: middle; }
 .item .pic { font-size: 2.6em; line-height: 1.1; }
+.item .sound { font-size: 1.6em; }
+.sound-letter { display: inline-flex; align-items: center; gap: 10px; }
+.show-letter {
+  font: inherit;
+  color: var(--ink);
+  background: #fffaf0;
+  border: 3px solid var(--parchment-dark);
+  border-radius: 14px;
+  padding: 0 28px;
+  cursor: pointer;
+}
+.show-letter:hover { border-color: var(--gold); }
 .item .word { font-family: var(--font-words); font-size: 1.6em; line-height: 1.2; }
 .item .drawing svg { width: 3.4em; height: 3.4em; display: block; }
 .show { text-align: center; margin: 4px 0 10px; }

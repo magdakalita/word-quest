@@ -1,4 +1,4 @@
-import { el, shuffle, asItem, renderItem, itemLabel, itemSay } from "./util.js";
+import { el, shuffle, asItem, renderItem, itemLabel, itemSay, speaksWhenTapped } from "./util.js";
 import { speech } from "../speech.js";
 
 // "Listen and tap": { say?: "she", options: [item, …], answer: 0, speak_options?: true }
@@ -13,7 +13,7 @@ export function render(task, body) {
     const b = el("button", { class: "pick-card", type: "button" }, renderItem(task.options[i]));
     b.addEventListener("click", () => {
       selected = i;
-      if (task.speak_options) speech.say(itemSay(task.options[i]));
+      if (speaksWhenTapped(task, task.options[i])) speech.say(itemSay(task.options[i]));
       for (const [j, other] of buttons) {
         other.classList.toggle("selected", j === i);
         other.classList.remove("right", "wrong");

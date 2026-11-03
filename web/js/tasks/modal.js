@@ -1,5 +1,5 @@
-import { el, renderItem } from "./util.js";
-import { speech } from "../speech.js";
+import { el, renderItem, asItem, itemSay } from "./util.js";
+import { speech, display } from "../speech.js";
 import * as pick from "./pick.js";
 import * as gapFill from "./gapFill.js";
 import * as wordOrder from "./wordOrder.js";
@@ -48,9 +48,9 @@ export function openTasks(tasks, opts) {
       task = tasks[index];
       attempts = 0;
       $("task-meta").textContent = opts.label(index);
-      $("task-instruction").textContent = task.instruction;
+      $("task-instruction").textContent = display(task.instruction);
       body.replaceChildren();
-      if (task.show) body.append(el("div", { class: "show" }, renderItem(task.show)));
+      if (task.show) body.append(showItem(task.show));
       feedback.hidden = true;
       feedback.className = "feedback";
       checkBtn.hidden = false;
@@ -75,7 +75,7 @@ export function openTasks(tasks, opts) {
         taskId: task.id,
         level: task.level,
         type: task.type,
-        instruction: task.instruction,
+        instruction: display(task.instruction),
         answer: ui.answerText(),
         attempts,
         firstTry,
@@ -96,7 +96,7 @@ export function openTasks(tasks, opts) {
         return;
       }
       attempts += 1;
-      const explanation = task.explanation ? el("p", { text: task.explanation }) : null;
+      const explanation = task.explanation ? el("p", { text: display(task.explanation) }) : null;
       const note = r.note ? el("p", { text: r.note }) : null;
 
       if (r.ok) {
@@ -109,7 +109,7 @@ export function openTasks(tasks, opts) {
         opts.sfx.play("wrong");
         showFeedback("wrong",
           el("strong", { text: "Not yet – try again! 🙂" }),
-          task.hint ? el("p", { text: `💡 ${task.hint}` }) : null,
+          task.hint ? el("p", { text: `💡 ${display(task.hint)}` }) : null,
         );
         speech.say(["Not yet. Try again!", task.hint]);
       } else {
@@ -139,6 +139,15 @@ export function openTasks(tasks, opts) {
     document.addEventListener("keydown", onKey);
     showNext();
   });
+}
+
+// The big letter or picture above a task. A letter (or 🔊 card) plays its sound when tapped.
+function showItem(item) {
+  const i = asItem(item);
+  if (!i.sound && !/^[a-z]$/.test(i.text ?? "")) return el("div", { class: "show" }, renderItem(item));
+  const button = el("button", { class: "show-letter", type: "button", "aria-label": "Listen" }, renderItem(item));
+  button.addEventListener("click", () => speech.say(itemSay(item)));
+  return el("div", { class: "show" }, button);
 }
 
 export function isKnownType(type) {

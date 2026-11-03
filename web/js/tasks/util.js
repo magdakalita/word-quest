@@ -1,4 +1,5 @@
 import { drawPic } from "../pics.js";
+import { display } from "../speech.js";
 
 export function el(tag, attrs = {}, ...children) {
   const node = document.createElement(tag);
@@ -60,26 +61,36 @@ export function wordCount(text) {
 }
 
 // An item is a card shown in a task: a word or letter ("she"), a picture ({ pic: "🐶", say: "dog" }),
-// a drawing in a colour ({ draw: "box", color: "blue" }) or a mix ({ text: "doll", pic: "🪆" }).
+// a drawing in a colour ({ draw: "box", color: "blue" }), a letter sound ({ sound: "a" } – a 🔊 card
+// that plays web/audio/a.m4a) or a mix ({ text: "doll", pic: "🪆" }).
 export const asItem = (x) => (typeof x === "string" ? { text: x } : x);
 
 // What the item is called – for solutions and the review list.
 export function itemLabel(x) {
   const i = asItem(x);
-  return i.text ?? i.say ?? i.pic ?? [i.color, i.draw].filter(Boolean).join(" ");
+  return display(i.text ?? i.sound ?? i.say ?? i.pic ?? [i.color, i.draw].filter(Boolean).join(" "));
 }
 
-// What the voice says for the item.
+// What the voice says for the item. A lone small letter says its sound ("[a]" = /æ/), not its name
+// ("ay"). The word "I" stays a word.
 export function itemSay(x) {
   const i = asItem(x);
-  return i.say ?? i.text ?? [i.color, i.draw === "blob" ? "" : i.draw].filter(Boolean).join(" ");
+  if (i.say) return i.say;
+  if (i.sound) return `[${i.sound}]`;
+  if (/^[a-z]$/.test(i.text ?? "")) return `[${i.text}]`;
+  return i.text ?? [i.color, i.draw === "blob" ? "" : i.draw].filter(Boolean).join(" ");
 }
+
+// A 🔊 card means nothing until you hear it, so it always plays its sound when tapped.
+export const speaksWhenTapped = (task, x) => !!(task.speak_options || asItem(x).sound);
 
 export function renderItem(x) {
   const i = asItem(x);
   const node = el("span", { class: "item" });
   if (i.draw || i.color) node.append(drawPic(i.draw ?? "blob", i.color));
+  // A sound card shows its (small) letter too – the sound and the letter always go together.
+  if (i.sound) node.append(el("span", { class: "sound-letter" }, el("span", { class: "pic sound", text: "🔊", "aria-label": "sound" }), el("span", { class: "word", text: i.sound })));
   if (i.pic) node.append(el("span", { class: "pic", text: i.pic }));
-  if (i.text) node.append(el("span", { class: "word", text: i.text }));
+  if (i.text) node.append(el("span", { class: "word", text: display(i.text) }));
   return node;
 }

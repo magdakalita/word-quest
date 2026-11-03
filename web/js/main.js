@@ -146,7 +146,8 @@ function startLevel(n) {
   input.enabled = true;
   game.start();
   toast(`${def.title} – ${def.topic}`);
-  // Speaking right after the click also unlocks the voice on iPad/iPhone.
+  // Speaking right after the click also unlocks the voice and the letter sounds on iPad/iPhone.
+  speech.unlock();
   speech.say(def.say);
 }
 

@@ -1,12 +1,19 @@
 """Checks that a unit file (web/data/unitNN.json) is complete and every task is solvable."""
 
+import re
 from collections import Counter
+from pathlib import Path
 
 LEVELS = (1, 2, 3, 4)
 TYPES = {"pick", "gap_fill", "word_order", "match_pairs"}
 DRAWINGS = {"blob", "box", "ball", "cupcake"}  # see web/js/pics.js
 COLOURS = {"red", "blue", "green", "yellow", "pink", "orange", "purple", "brown", "black", "white"}
-ITEM_KEYS = {"text", "pic", "say", "draw", "color"}
+ITEM_KEYS = {"text", "pic", "say", "draw", "color", "sound"}
+AUDIO = Path(__file__).resolve().parents[2] / "web" / "audio"
+SPOKEN = ("instruction", "say", "hint", "explanation")
+SOUND = re.compile(r"\[([a-z])\]")  # "[a]" = the letter sound, played from web/audio/a.m4a
+# A lone letter would be read by its name ("bee") – only the words "a" and "I" are fine.
+LONE_LETTER = re.compile(r"(?<![\w'\[])([B-HJ-Zb-z])(?![\w'\]])")
 
 
 def _is_str_list(value, min_len=1):
@@ -17,7 +24,7 @@ def item_label(item) -> str:
     """Mirrors itemLabel() in web/js/tasks/util.js."""
     if isinstance(item, str):
         return item
-    return item.get("text") or item.get("say") or item.get("pic") or " ".join(filter(None, [item.get("color"), item.get("draw")]))
+    return item.get("text") or item.get("sound") or item.get("say") or item.get("pic") or " ".join(filter(None, [item.get("color"), item.get("draw")]))
 
 
 def _item_errors(item) -> list[str]:
@@ -28,14 +35,39 @@ def _item_errors(item) -> list[str]:
     errors = []
     if unknown := set(item) - ITEM_KEYS:
         errors.append(f"unknown item keys {sorted(unknown)}")
-    if not any(item.get(k) for k in ("text", "pic", "draw", "color")):
+    if not any(item.get(k) for k in ("text", "pic", "draw", "color", "sound")):
         errors.append(f"item shows nothing: {item!r}")
+    if item.get("sound"):
+        if not re.fullmatch(r"[a-z]", item["sound"]):
+            errors.append(f"sound must be one small letter: {item['sound']!r}")
+        elif not (AUDIO / f"{item['sound']}.m4a").exists():
+            errors.append(f"no sound file web/audio/{item['sound']}.m4a")
     if item.get("draw") and item["draw"] not in DRAWINGS:
         errors.append(f"unknown drawing {item['draw']!r}")
     if item.get("color") and item["color"] not in COLOURS:
         errors.append(f"unknown colour {item['color']!r}")
     if (item.get("pic") or item.get("draw") or item.get("color")) and not item.get("text") and not item.get("say"):
         errors.append(f"picture needs a say: {item!r}")
+    return errors
+
+
+def _spoken_texts(t: dict) -> list[str]:
+    texts = [t[k] for k in SPOKEN if isinstance(t.get(k), str)]
+    items = list(t.get("options", [])) + [x for p in t.get("pairs", []) for x in p]
+    said = [i["say"] for i in items if isinstance(i, dict) and isinstance(i.get("say"), str)]
+    # a lone small letter on a card is spoken as its sound – see itemSay() in web/js/tasks/util.js
+    letters = [f"[{i}]" for i in items if isinstance(i, str) and re.fullmatch(r"[a-z]", i)]
+    return texts + said + letters
+
+
+def _speech_errors(t: dict) -> list[str]:
+    errors = []
+    for text in _spoken_texts(t):
+        for letter in SOUND.findall(text):
+            if not (AUDIO / f"{letter}.m4a").exists():
+                errors.append(f"no sound file web/audio/{letter}.m4a for [{letter}]")
+        if lone := LONE_LETTER.findall(text):
+            errors.append(f"{text!r}: the voice would say the letter name of {lone} – write the sound as [x] or rephrase")
     return errors
 
 
@@ -112,6 +144,8 @@ def validate_task(t: dict) -> list[str]:
                 if len(set(values)) != len(values):
                     err(f"{name} items must be unique")
 
+    for e in _speech_errors(t):
+        err(e)
     if not t.get("hint"):
         err("missing hint")
     return errors

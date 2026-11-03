@@ -1,10 +1,10 @@
-import { el, shuffle, renderItem, itemLabel, itemSay } from "./util.js";
+import { el, shuffle, renderItem, itemLabel, itemSay, speaksWhenTapped } from "./util.js";
 import { speech } from "../speech.js";
 
 const COLORS = ["#8e1b1b", "#1d4a7a", "#2c6a2c", "#7a5a0b", "#5a2a7a", "#0b6a6a", "#8a3a0b", "#4a4a4a"];
 
 // { pairs: [["b", { pic: "⚽", say: "ball" }], …], speak_options?: true }
-// Each side is an item (see util.js). With speak_options, tapping a card says its name.
+// Each side is an item (see util.js). With speak_options, tapping a card says its name (🔊 cards always do).
 export function render(task, body) {
   if (task.context) body.append(el("p", { class: "context", text: task.context }));
   const lefts = shuffle(task.pairs.map((p, i) => ({ i, item: p[0] })));
@@ -21,7 +21,7 @@ export function render(task, body) {
   for (const l of lefts) {
     const b = el("button", { class: "pair-item", type: "button" }, el("span", { class: "tag" }), renderItem(l.item));
     b.addEventListener("click", () => {
-      if (task.speak_options) speech.say(itemSay(l.item));
+      if (speaksWhenTapped(task, l.item)) speech.say(itemSay(l.item));
       links.delete(l.i);
       active = l.i;
       paint();
@@ -32,7 +32,7 @@ export function render(task, body) {
   for (const r of rights) {
     const b = el("button", { class: "pair-item", type: "button" }, el("span", { class: "tag" }), renderItem(r.item));
     b.addEventListener("click", () => {
-      if (task.speak_options) speech.say(itemSay(r.item));
+      if (speaksWhenTapped(task, r.item)) speech.say(itemSay(r.item));
       for (const [li, ri] of links) if (ri === r.i) links.delete(li);
       if (active !== null) {
         links.set(active, r.i);
