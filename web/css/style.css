@@ -242,9 +242,31 @@ select { min-width: 260px; max-width: 100%; }
 #task-instruction { font-family: var(--font-body); font-weight: 700; font-size: 1.15em; }
 .context { font-style: italic; color: var(--ink-soft); margin: 0 0 10px; }
 .sentence { font-family: var(--font-words); font-size: 1.8em; line-height: 2; text-align: center; }
-.sentence input { width: 5em; padding: 2px 6px; text-align: center; font-family: var(--font-words); cursor: pointer; caret-color: transparent; }
-.sentence input.right { border-color: var(--right); background: #eaf6e4; }
-.sentence input.wrong { border-color: var(--wrong); background: #fbe7e4; }
+/* A gap in a sentence: a card from the bank drops into it */
+.gap {
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  min-width: 3.2em;
+  min-height: 1.6em;
+  margin: 0 .15em;
+  padding: 0 .3em;
+  background: #fffaf0;
+  border: 2px dashed #b08a3e;
+  border-radius: 10px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.gap.filled { border-style: solid; }
+.gap.right { border-color: var(--right); background: #eaf6e4; }
+.gap.wrong { border-color: var(--wrong); background: #fbe7e4; }
+
+/* Pictures inside a sentence, a gap or a word card are small, like a word */
+.sentence .item .word, .gap .item .word, .chip .item .word { font-size: 1em; }
+.sentence .item .pic, .gap .item .pic, .chip .item .pic { font-size: 1.15em; }
+.sentence .item .drawing svg, .gap .item .drawing svg, .chip .item .drawing svg { width: 1.3em; height: 1.3em; }
 
 .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 12px 0; min-height: 64px; }
 .chip {

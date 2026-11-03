@@ -269,7 +269,7 @@
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "your",
-      "options": ["your", "you", "you're"],
+      "options": ["your", "you", "my"],
       "answer": 0,
       "hint": "Your looks like you, with one more letter at the end.",
       "explanation": "Your!"
@@ -332,9 +332,10 @@
       "type": "pick",
       "instruction": "What colour is it? Tap the word.",
       "show": { "color": "red" },
+      "speak_options": true,
       "options": ["red", "blue", "green"],
       "answer": 0,
-      "hint": "It's red! Red is a short word.",
+      "hint": "Tap a word and listen. Which one is red?",
       "explanation": "Red!"
     },
     {
@@ -373,13 +374,14 @@
       "level": 3,
       "type": "match_pairs",
       "instruction": "Match the word and the toy.",
+      "speak_options": true,
       "pairs": [
         ["car", { "pic": "🚗", "say": "car" }],
         ["ball", { "pic": "⚽", "say": "ball" }],
         ["doll", { "pic": "🪆", "say": "doll" }],
         ["toy train", { "pic": "🚂", "say": "toy train" }]
       ],
-      "hint": "Look at the first letter. Car starts with [c]. Ball starts with [b].",
+      "hint": "Tap a word and listen. Then find the toy. Car starts with [c]. Ball starts with [b].",
       "explanation": "Car, ball, doll, toy train."
     },
     {
@@ -418,13 +420,14 @@
       "level": 3,
       "type": "match_pairs",
       "instruction": "Match the word and the picture.",
+      "speak_options": true,
       "pairs": [
         ["mom", { "pic": "👩", "say": "mom" }],
         ["dad", { "pic": "👨", "say": "dad" }],
         ["grandma", { "pic": "👵", "say": "grandma" }],
         ["grandpa", { "pic": "👴", "say": "grandpa" }]
       ],
-      "hint": "Dad starts with [d]. Grandma and grandpa are the long words.",
+      "hint": "Tap a word and listen. Then find the person. Dad starts with [d].",
       "explanation": "Mom, dad, grandma, grandpa."
     },
     {
@@ -433,9 +436,10 @@
       "type": "pick",
       "instruction": "Who is it? Tap the word.",
       "show": { "pic": "👨" },
+      "speak_options": true,
       "options": ["dad", "mom", "doll"],
       "answer": 0,
-      "hint": "It's dad! Dad starts with [d] and ends with [d].",
+      "hint": "Tap a word and listen. It's dad! Dad starts with [d] and ends with [d].",
       "explanation": "[d], [d], dad!"
     },
     {
@@ -444,9 +448,10 @@
       "type": "pick",
       "instruction": "What is it? Tap the word.",
       "show": { "pic": "🪆" },
+      "speak_options": true,
       "options": ["doll", "ball", "car"],
       "answer": 0,
-      "hint": "It's a doll. Doll starts with [d].",
+      "hint": "Tap a word and listen. It's a doll. Doll starts with [d].",
       "explanation": "[d], [d], doll!"
     },
     {
@@ -470,9 +475,10 @@
       "type": "pick",
       "instruction": "What is it? Tap the word.",
       "show": { "pic": "⚽" },
+      "speak_options": true,
       "options": ["ball", "doll", "dog"],
       "answer": 0,
-      "hint": "It's a ball. Ball starts with [b].",
+      "hint": "Tap a word and listen. It's a ball. Ball starts with [b].",
       "explanation": "[b], [b], ball!"
     },
     {
@@ -498,8 +504,8 @@
       "instruction": "Listen and make the sentence.",
       "say": "It's a blue box.",
       "show": { "draw": "box", "color": "blue" },
-      "words": ["It's", "a", "blue", "box"],
-      "hint": "Start with It's.",
+      "words": ["It's", "a", { "color": "blue", "say": "blue" }, { "pic": "📦", "say": "box" }],
+      "hint": "Listen again: It's a blue box. Start with It's.",
       "explanation": "It's a blue box!"
     },
     {
@@ -507,13 +513,13 @@
       "level": 4,
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
-      "say": "It's a pink cupcake.",
-      "show": { "draw": "cupcake", "color": "pink" },
-      "text": "It's a ___ cupcake.",
-      "answers": [["pink"]],
-      "bank": ["pink", "blue", "green"],
-      "hint": "Look at the cupcake. Which colour is it?",
-      "explanation": "It's a pink cupcake!"
+      "say": "It's a navy box.",
+      "show": { "draw": "box", "color": "navy" },
+      "text": ["It's a ", "___", " ", { "draw": "box", "color": "white", "say": "box" }, "."],
+      "answers": [["navy"]],
+      "bank": [{ "color": "navy", "say": "navy" }, { "color": "blue", "say": "blue" }, { "color": "grey", "say": "grey" }],
+      "hint": "Look at the box. It's very dark blue – that's navy!",
+      "explanation": "It's a navy box!"
     },
     {
       "id": "L4-03",
@@ -522,8 +528,8 @@
       "instruction": "Listen and make the sentence.",
       "say": "I'm a boy.",
       "show": { "pic": "👦" },
-      "words": ["I'm", "a", "boy"],
-      "hint": "Start with I'm.",
+      "words": ["I'm", "a", { "pic": "👦", "say": "boy" }],
+      "hint": "Listen again: I'm a boy. Start with I'm.",
       "explanation": "I'm a boy!"
     },
     {
@@ -531,13 +537,12 @@
       "level": 4,
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
-      "say": "It's a red ball.",
-      "show": { "draw": "ball", "color": "red" },
-      "text": "It's a ___ ball.",
-      "answers": [["red"]],
-      "bank": ["red", "yellow", "blue"],
-      "hint": "Look at the ball. Which colour is it?",
-      "explanation": "It's a red ball!"
+      "say": "It's a grey ball.",
+      "text": ["___", " a ", { "draw": "ball", "color": "grey", "say": "grey ball" }, "."],
+      "answers": [["It's"]],
+      "bank": ["It's", "I'm", "You're"],
+      "hint": "Listen again: It's a grey ball. It's ends with a curly snake.",
+      "explanation": "It's a grey ball!"
     },
     {
       "id": "L4-05",
@@ -546,8 +551,8 @@
       "instruction": "Listen and make the sentence.",
       "say": "It's my doll.",
       "show": { "pic": "🪆" },
-      "words": ["It's", "my", "doll"],
-      "hint": "Start with It's. Then my.",
+      "words": ["It's", "my", { "pic": "🪆", "say": "doll" }],
+      "hint": "Listen again: It's my doll. Start with It's, then my.",
       "explanation": "It's my doll!"
     },
     {
@@ -555,13 +560,12 @@
       "level": 4,
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
-      "say": "It's a green box.",
-      "show": { "draw": "box", "color": "green" },
-      "text": "It's a green ___.",
-      "answers": [["box"]],
-      "bank": ["box", "ball", "doll"],
-      "hint": "Box starts with [b]. Ball starts with [b] too – box is the short one.",
-      "explanation": "It's a green box!"
+      "say": "I am a boy.",
+      "text": ["I ", "___", " a ", { "pic": "👦", "say": "boy" }, "."],
+      "answers": [["am"]],
+      "bank": ["am", "my", "I'm"],
+      "hint": "Listen again: I am a boy. Am starts with [a], like apple!",
+      "explanation": "I am a boy!"
     },
     {
       "id": "L4-07",
@@ -570,8 +574,8 @@
       "instruction": "Listen and make the sentence.",
       "say": "It's a yellow ball.",
       "show": { "draw": "ball", "color": "yellow" },
-      "words": ["It's", "a", "yellow", "ball"],
-      "hint": "Start with It's. Ball comes last.",
+      "words": ["It's", "a", { "color": "yellow", "say": "yellow" }, { "pic": "⚽", "say": "ball" }],
+      "hint": "Listen again: It's a yellow ball. Start with It's. The ball comes last.",
       "explanation": "It's a yellow ball!"
     },
     {
@@ -580,11 +584,10 @@
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
       "say": "It's my dog.",
-      "show": { "pic": "🐶" },
-      "text": "It's my ___.",
-      "answers": [["dog"]],
-      "bank": ["dog", "doll", "dad"],
-      "hint": "All three start with [d]! Look at the end of the word.",
+      "text": ["It's ", "___", " ", { "pic": "🐶", "say": "dog" }, "."],
+      "answers": [["my"]],
+      "bank": ["my", "am", "I"],
+      "hint": "Listen again: It's my dog. My is a short word with a long tail at the end.",
       "explanation": "It's my dog!"
     },
     {
@@ -609,9 +612,9 @@
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "you're",
-      "options": ["you're", "your", "you"],
+      "options": ["you're", "you", "I'm"],
       "answer": 0,
-      "hint": "You're has a little comma at the top.",
+      "hint": "You're looks like you, with a little comma and more letters at the end.",
       "explanation": "You're!"
     }
   ]

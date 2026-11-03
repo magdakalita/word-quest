@@ -57,7 +57,8 @@ Karta (opcja, element pary, obrazek `show`) to słowo/litera (`"she"`), obrazek 
 - `say` – co mówi głos po poleceniu (np. słowo, które trzeba znaleźć)
 - `[a]`, `[b]`… w `instruction`, `say`, `hint`, `explanation` – głoska z pliku `web/audio/` (patrz wyżej)
 - `show` – duży obrazek lub litera nad zadaniem
-- `speak_options: true` – stuknięcie obrazka mówi jego nazwę (do zadań „Which one starts with c?”). Nie włączaj tego, gdy dziecko ma rozpoznać słowo – głos zdradziłby odpowiedź.
+- zdania-rebusy: w „ułóż zdanie” (`words`) i „uzupełnij lukę” (`text`, `bank`) kafelki i części zdania mogą być obrazkami, np. `"text": ["It's ", "___", " ", { "pic": "🐶", "say": "dog" }, "."]`, `"bank": ["my", "am", "I"]`. Napisane zostają tylko słowa, które dziecko ma rozpoznawać wzrokiem; kolory i rzeczy są obrazkami
+- `speak_options: true` – stuknięcie kafelka mówi jego słowo, a pojedyncza litera – głoskę (działa we wszystkich typach zadań). Zasada: dziecko nie czyta, więc szukane słowo musi albo paść z ust głosu (`say` / polecenie – wtedy zadanie ćwiczy rozpoznawanie słowa wzrokiem i kafelki mogą milczeć), albo kafelki muszą mówić. `validate` pilnuje tej zasady.
 
 ## Nowy unit
 

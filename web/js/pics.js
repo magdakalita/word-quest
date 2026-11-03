@@ -3,12 +3,14 @@
 export const COLOURS = {
   red: "#e53935",
   blue: "#1e6fe0",
+  navy: "#1b2a5e",
   green: "#2e9e44",
   yellow: "#f7c722",
   pink: "#f48fb1",
   orange: "#fb8c00",
   purple: "#8e44ad",
   brown: "#8d5a2b",
+  grey: "#8c9099",
   black: "#222222",
   white: "#ffffff",
 };

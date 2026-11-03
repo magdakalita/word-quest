@@ -7,7 +7,7 @@ from pathlib import Path
 LEVELS = (1, 2, 3, 4)
 TYPES = {"pick", "gap_fill", "word_order", "match_pairs"}
 DRAWINGS = {"blob", "box", "ball", "cupcake"}  # see web/js/pics.js
-COLOURS = {"red", "blue", "green", "yellow", "pink", "orange", "purple", "brown", "black", "white"}
+COLOURS = {"red", "blue", "navy", "green", "yellow", "pink", "orange", "purple", "brown", "grey", "black", "white"}
 ITEM_KEYS = {"text", "pic", "say", "draw", "color", "sound"}
 AUDIO = Path(__file__).resolve().parents[2] / "web" / "audio"
 SPOKEN = ("instruction", "say", "hint", "explanation")
@@ -54,6 +54,7 @@ def _item_errors(item) -> list[str]:
 def _spoken_texts(t: dict) -> list[str]:
     texts = [t[k] for k in SPOKEN if isinstance(t.get(k), str)]
     items = list(t.get("options", [])) + [x for p in t.get("pairs", []) for x in p]
+    items += list(t.get("bank", [])) + list(t.get("words", []))
     said = [i["say"] for i in items if isinstance(i, dict) and isinstance(i.get("say"), str)]
     # a lone small letter on a card is spoken as its sound – see itemSay() in web/js/tasks/util.js
     letters = [f"[{i}]" for i in items if isinstance(i, str) and re.fullmatch(r"[a-z]", i)]
@@ -69,6 +70,59 @@ def _speech_errors(t: dict) -> list[str]:
         if lone := LONE_LETTER.findall(text):
             errors.append(f"{text!r}: the voice would say the letter name of {lone} – write the sound as [x] or rephrase")
     return errors
+
+
+def _silent_words(t: dict) -> list[str]:
+    """Words the child would have to read: the tiles do not speak and the voice never says them.
+
+    The player cannot read, so the word to find must be said by the voice (say / instruction –
+    then the task is to recognise it among silent tiles) or the tiles must speak (speak_options).
+    """
+    if t.get("speak_options"):
+        return []
+    kind = t.get("type")
+    if kind == "pick" and isinstance(t.get("answer"), int) and t["answer"] < len(t.get("options", [])):
+        needed = [t["options"][t["answer"]]]
+    elif kind == "gap_fill":
+        # a picture card in the bank needs no reading
+        bank = {item_label(c): c for c in t.get("bank", []) if isinstance(c, (str, dict))}
+        needed = [bank.get(a[0], a[0]) for a in t.get("answers", []) if a]
+    elif kind == "word_order":
+        needed = t.get("words", [])
+    else:  # match_pairs: every word must be known
+        needed = [x for p in t.get("pairs", []) for x in p]
+    words = [i if isinstance(i, str) else i.get("text") for i in needed]
+    heard = f"{t.get('say', '')} {t.get('instruction', '')}".lower()
+    silent = []
+    for w in words:
+        if not isinstance(w, str) or re.fullmatch(r"[a-z]", w):  # a lone letter speaks its sound
+            continue
+        if not re.search(rf"(?<![\w']){re.escape(w.lower())}(?![\w'])", heard):
+            silent.append(w)
+    return silent
+
+
+# Words that sound the same: when the voice says one of them, the child cannot tell them apart.
+HOMOPHONES = [
+    {"your", "you're"}, {"its", "it's"}, {"there", "their", "they're"}, {"to", "too", "two"},
+    {"for", "four"}, {"no", "know"}, {"i", "eye"}, {"be", "bee"}, {"see", "sea"},
+]
+
+
+def _sound_alike(t: dict) -> list[str]:
+    """Other choices that sound like the word the voice asks for."""
+    if not t.get("say"):
+        return []
+    if t.get("type") == "pick" and isinstance(t.get("answer"), int) and t["answer"] < len(t.get("options", [])):
+        choices = [item_label(o) for o in t["options"]]
+        answer = choices[t["answer"]]
+    elif t.get("type") == "gap_fill" and t.get("answers") and t["answers"][0]:
+        choices = [item_label(c) for c in t.get("bank", [])]
+        answer = t["answers"][0][0]
+    else:
+        return []
+    group = next((g for g in HOMOPHONES if answer.lower() in g), set())
+    return [c for c in choices if c.lower() != answer.lower() and c.lower() in group]
 
 
 def validate_task(t: dict) -> list[str]:
@@ -107,27 +161,45 @@ def validate_task(t: dict) -> list[str]:
         if not t.get("say") and not t.get("show") and "?" not in t.get("instruction", ""):
             err("nothing tells the child what to look for – add say or show")
     elif kind == "gap_fill":
-        text = t.get("text", "")
-        gaps = text.count("___")
+        # text: "___ a boy." or a picture sentence ["It's ", "___", " ", { "pic": "🐶", "say": "dog" }, "."]
+        parts = t.get("text", "")
+        parts = parts if isinstance(parts, list) else [parts]
+        gaps = sum(p.count("___") for p in parts if isinstance(p, str))
+        for p in parts:
+            if not isinstance(p, str):
+                for e in _item_errors(p):
+                    err(f"text: {e}")
         answers = t.get("answers")
+        bank = t.get("bank")
         if gaps == 0:
             err("text has no ___ gap")
         if not isinstance(answers, list) or len(answers) != gaps or not all(_is_str_list(a) for a in answers):
             err(f"answers must be a list of {gaps} non-empty lists of strings")
-        elif not _is_str_list(t.get("bank"), 2):
-            err("bank must list at least 2 words (the child cannot type)")
+        elif not isinstance(bank, list) or len(bank) < 2:
+            err("bank must list at least 2 cards (the child cannot type)")
         else:
-            missing = [a[0] for a in answers if a[0] not in t["bank"]]
+            for c in bank:
+                for e in _item_errors(c):
+                    err(f"bank: {e}")
+            labels = [item_label(c) for c in bank]
+            if len(set(labels)) != len(labels):
+                err("bank cards must be unique")
+            missing = [a[0] for a in answers if a[0] not in labels]
             if missing:
                 err(f"bank is missing the answers {missing}")
     elif kind == "word_order":
-        if not _is_str_list(t.get("words"), 3):
-            err("words must list at least 3 words")
-        elif "accepted" in t:
+        words = t.get("words")
+        if not isinstance(words, list) or len(words) < 3:
+            err("words must list at least 3 cards")
+        else:
+            for w in words:
+                for e in _item_errors(w):
+                    err(f"words: {e}")
+        if isinstance(words, list) and "accepted" in t:
             if not _is_str_list(t["accepted"]):
                 err("accepted must be a list of strings")
             else:
-                chips = Counter(w.lower().strip(".,!?") for w in t["words"])
+                chips = Counter(item_label(w).lower().strip(".,!?") for w in words)
                 for a in t["accepted"]:
                     if Counter(w.lower().strip(".,!?") for w in a.split()) != chips:
                         err(f"accepted variant does not use exactly the given words: {a!r}")
@@ -146,6 +218,10 @@ def validate_task(t: dict) -> list[str]:
 
     for e in _speech_errors(t):
         err(e)
+    if alike := _sound_alike(t):
+        err(f"{alike} sound(s) the same as the answer – the child cannot hear the difference")
+    if silent := _silent_words(t):
+        err(f"the child would have to read {silent} – add \"speak_options\": true or say the word")
     if not t.get("hint"):
         err("missing hint")
     return errors

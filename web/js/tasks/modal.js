@@ -1,4 +1,4 @@
-import { el, renderItem, asItem, itemSay } from "./util.js";
+import { el, renderItem, asItem, itemSay, normalize } from "./util.js";
 import { speech, display } from "../speech.js";
 import * as pick from "./pick.js";
 import * as gapFill from "./gapFill.js";
@@ -120,7 +120,10 @@ export function openTasks(tasks, opts) {
           el("p", { class: "solution", text: ui.solutionText() }),
           explanation,
         );
-        speech.say(["Look, here is the answer.", ui.solutionSay?.(), task.explanation]);
+        const solution = ui.solutionSay?.();
+        const same = (x, y) => [x, y].every(Boolean) && normalize(x).toLowerCase() === normalize(y).toLowerCase();
+        // "It's my dog." and then "It's my dog!" again would be one time too many.
+        speech.say(["Look, here is the answer.", solution, same(solution, task.explanation) ? null : task.explanation]);
         finish(false);
       }
     }

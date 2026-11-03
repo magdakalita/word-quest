@@ -17,3 +17,6 @@ zadania_*.md
 
 # Lesson materials (copyrighted – never publish)
 programme-images/
+
+# Screenshots from browser tests
+.test-shots/

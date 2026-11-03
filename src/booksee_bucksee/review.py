@@ -44,13 +44,14 @@ def _task_md(t: dict) -> list[str]:
     if kind == "pick":
         out += [f"- {'**✓ ' + _item_md(o) + '**' if i == t['answer'] else _item_md(o)}" for i, o in enumerate(t["options"])]
     elif kind == "gap_fill":
-        filled = t["text"]
+        text = t["text"] if isinstance(t["text"], list) else [t["text"]]
+        filled = "".join(p if isinstance(p, str) else f"[{_item_md(p)}]" for p in text)
         for answers in t["answers"]:
             filled = filled.replace("___", f"**[{' / '.join(answers)}]**", 1)
         out.append(filled)
-        out.append(f"\nBank słów: {', '.join(t['bank'])}")
+        out.append(f"\nDo wyboru: {', '.join(_item_md(c) for c in t['bank'])}")
     elif kind == "word_order":
-        out.append(f"Rozwiązanie: **{' '.join(t['words'])}**")
+        out.append(f"Rozwiązanie: **{' · '.join(_item_md(w) for w in t['words'])}**")
         for a in t.get("accepted", []):
             out.append(f"- też akceptowane: {a}")
     elif kind == "match_pairs":
