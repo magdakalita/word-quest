@@ -26,7 +26,6 @@ export function render(task, body) {
   body.append(list);
 
   return {
-    focus: () => buttons.get(order[0])?.focus(),
     check() {
       if (selected === null) return { ok: false, incomplete: true, note: "Tap a card first." };
       const ok = selected === task.answer;

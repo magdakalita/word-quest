@@ -29,7 +29,6 @@ export function render(task, body) {
   const current = () => [...line.children].map((c) => c.dataset.label).join(" ");
 
   return {
-    focus: () => chips[0]?.focus(),
     check() {
       if (bank.children.length) return { ok: false, incomplete: true, note: "Use all the cards." };
       return compare(current(), accepted);

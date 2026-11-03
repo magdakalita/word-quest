@@ -81,7 +81,6 @@ export function render(task, body) {
   };
 
   return {
-    focus: () => chips.firstChild?.focus(),
     check() {
       if (gaps.some((g) => !g.item)) return { ok: false, incomplete: true, note: "Tap a card to fill the gap." };
       let ok = true;

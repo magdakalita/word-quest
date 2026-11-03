@@ -20,6 +20,15 @@ def _is_str_list(value, min_len=1):
     return isinstance(value, list) and len(value) >= min_len and all(isinstance(v, str) and v.strip() for v in value)
 
 
+def _as_list(value) -> list:
+    return value if isinstance(value, list) else []
+
+
+def _is_index(value, items) -> bool:
+    """An index into items – not a bool (True is an int in Python, but never === an index in JS)."""
+    return type(value) is int and isinstance(items, list) and 0 <= value < len(items)
+
+
 def item_label(item) -> str:
     """Mirrors itemLabel() in web/js/tasks/util.js."""
     if isinstance(item, str):
@@ -53,8 +62,8 @@ def _item_errors(item) -> list[str]:
 
 def _spoken_texts(t: dict) -> list[str]:
     texts = [t[k] for k in SPOKEN if isinstance(t.get(k), str)]
-    items = list(t.get("options", [])) + [x for p in t.get("pairs", []) for x in p]
-    items += list(t.get("bank", [])) + list(t.get("words", []))
+    lists = [t.get(k) for k in ("options", "bank", "words")] + [p for p in _as_list(t.get("pairs")) if isinstance(p, list)]
+    items = [x for xs in lists for x in _as_list(xs)]
     said = [i["say"] for i in items if isinstance(i, dict) and isinstance(i.get("say"), str)]
     # a lone small letter on a card is spoken as its sound – see itemSay() in web/js/tasks/util.js
     letters = [f"[{i}]" for i in items if isinstance(i, str) and re.fullmatch(r"[a-z]", i)]
@@ -81,7 +90,7 @@ def _silent_words(t: dict) -> list[str]:
     if t.get("speak_options"):
         return []
     kind = t.get("type")
-    if kind == "pick" and isinstance(t.get("answer"), int) and t["answer"] < len(t.get("options", [])):
+    if kind == "pick" and _is_index(t.get("answer"), t.get("options")):
         needed = [t["options"][t["answer"]]]
     elif kind == "gap_fill":
         # a picture card in the bank needs no reading
@@ -113,7 +122,7 @@ def _sound_alike(t: dict) -> list[str]:
     """Other choices that sound like the word the voice asks for."""
     if not t.get("say"):
         return []
-    if t.get("type") == "pick" and isinstance(t.get("answer"), int) and t["answer"] < len(t.get("options", [])):
+    if t.get("type") == "pick" and _is_index(t.get("answer"), t.get("options")):
         choices = [item_label(o) for o in t["options"]]
         answer = choices[t["answer"]]
     elif t.get("type") == "gap_fill" and t.get("answers") and t["answers"][0]:
@@ -135,7 +144,7 @@ def validate_task(t: dict) -> list[str]:
     if t.get("level") not in LEVELS:
         err(f"level must be one of {LEVELS}")
     kind = t.get("type")
-    if kind not in TYPES:
+    if not isinstance(kind, str) or kind not in TYPES:
         err(f"unknown type {kind!r}")
         return errors
     if not isinstance(t.get("instruction"), str) or not t["instruction"].strip():
@@ -150,12 +159,12 @@ def validate_task(t: dict) -> list[str]:
         if not isinstance(options, list) or len(options) < 2:
             err("options must list at least 2 items")
         else:
-            for o in options:
-                for e in _item_errors(o):
-                    err(f"option: {e}")
-            if not isinstance(t.get("answer"), int) or not 0 <= t["answer"] < len(options):
+            bad = [f"option: {e}" for o in options for e in _item_errors(o)]
+            for e in bad:
+                err(e)
+            if not _is_index(t.get("answer"), options):
                 err("answer must be the index of the correct option")
-            labels = [item_label(o) for o in options]
+            labels = [item_label(o) for o in options] if not bad else []
             if len(set(labels)) != len(labels):
                 err("options must be unique")
         if not t.get("say") and not t.get("show") and "?" not in t.get("instruction", ""):
@@ -178,24 +187,26 @@ def validate_task(t: dict) -> list[str]:
         elif not isinstance(bank, list) or len(bank) < 2:
             err("bank must list at least 2 cards (the child cannot type)")
         else:
-            for c in bank:
-                for e in _item_errors(c):
-                    err(f"bank: {e}")
-            labels = [item_label(c) for c in bank]
-            if len(set(labels)) != len(labels):
-                err("bank cards must be unique")
-            missing = [a[0] for a in answers if a[0] not in labels]
-            if missing:
-                err(f"bank is missing the answers {missing}")
+            bad = [f"bank: {e}" for c in bank for e in _item_errors(c)]
+            for e in bad:
+                err(e)
+            if not bad:
+                labels = [item_label(c) for c in bank]
+                if len(set(labels)) != len(labels):
+                    err("bank cards must be unique")
+                missing = [a[0] for a in answers if a[0] not in labels]
+                if missing:
+                    err(f"bank is missing the answers {missing}")
     elif kind == "word_order":
         words = t.get("words")
+        bad = []
         if not isinstance(words, list) or len(words) < 3:
             err("words must list at least 3 cards")
         else:
-            for w in words:
-                for e in _item_errors(w):
-                    err(f"words: {e}")
-        if isinstance(words, list) and "accepted" in t:
+            bad = [f"words: {e}" for w in words for e in _item_errors(w)]
+            for e in bad:
+                err(e)
+        if isinstance(words, list) and not bad and "accepted" in t:
             if not _is_str_list(t["accepted"]):
                 err("accepted must be a list of strings")
             else:
@@ -209,19 +220,21 @@ def validate_task(t: dict) -> list[str]:
             err("pairs must be a list of at least 3 [left, right] pairs")
         else:
             for side, name in ((0, "left"), (1, "right")):
-                for p in pairs:
-                    for e in _item_errors(p[side]):
-                        err(f"{name}: {e}")
-                values = [item_label(p[side]) for p in pairs]
+                bad = [f"{name}: {e}" for p in pairs for e in _item_errors(p[side])]
+                for e in bad:
+                    err(e)
+                values = [item_label(p[side]) for p in pairs] if not bad else []
                 if len(set(values)) != len(values):
                     err(f"{name} items must be unique")
 
-    for e in _speech_errors(t):
-        err(e)
-    if alike := _sound_alike(t):
-        err(f"{alike} sound(s) the same as the answer – the child cannot hear the difference")
-    if silent := _silent_words(t):
-        err(f"the child would have to read {silent} – add \"speak_options\": true or say the word")
+    # The checks below assume a well-formed task – fix the errors above first.
+    if not errors:
+        for e in _speech_errors(t):
+            err(e)
+        if alike := _sound_alike(t):
+            err(f"{alike} sound(s) the same as the answer – the child cannot hear the difference")
+        if silent := _silent_words(t):
+            err(f"the child would have to read {silent} – add \"speak_options\": true or say the word")
     if not t.get("hint"):
         err("missing hint")
     return errors
@@ -232,6 +245,8 @@ def validate_unit(data: dict) -> list[str]:
     tasks = data.get("tasks")
     if not isinstance(tasks, list) or not tasks:
         return ["file has no tasks"]
+    if bad := [i for i, t in enumerate(tasks) if not isinstance(t, dict)]:
+        return [f"tasks at positions {bad} are not objects"]
     ids = [t.get("id") for t in tasks]
     dupes = [i for i, n in Counter(ids).items() if n > 1]
     if dupes:

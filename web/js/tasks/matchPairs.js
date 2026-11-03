@@ -22,8 +22,7 @@ export function render(task, body) {
     const b = el("button", { class: "pair-item", type: "button" }, el("span", { class: "tag" }), renderItem(l.item));
     b.addEventListener("click", () => {
       if (speaksWhenTapped(task, l.item)) speech.say(itemSay(l.item));
-      links.delete(l.i);
-      active = l.i;
+      active = l.i; // the old pair stays until a new right card is chosen
       paint();
     });
     leftBtns.set(l.i, b);
@@ -33,8 +32,9 @@ export function render(task, body) {
     const b = el("button", { class: "pair-item", type: "button" }, el("span", { class: "tag" }), renderItem(r.item));
     b.addEventListener("click", () => {
       if (speaksWhenTapped(task, r.item)) speech.say(itemSay(r.item));
-      for (const [li, ri] of links) if (ri === r.i) links.delete(li);
+      // Without a chosen left card a tap only plays the card – the pairs stay.
       if (active !== null) {
+        for (const [li, ri] of links) if (ri === r.i) links.delete(li);
         links.set(active, r.i);
         active = lefts.map((x) => x.i).find((i) => !links.has(i)) ?? null;
       }
@@ -69,11 +69,9 @@ export function render(task, body) {
     }
   }
 
-  active = lefts[0].i;
   paint();
 
   return {
-    focus: () => leftBtns.get(lefts[0].i)?.focus(),
     check() {
       if (links.size < task.pairs.length) return { ok: false, incomplete: true, note: "Make all the pairs." };
       let ok = true;

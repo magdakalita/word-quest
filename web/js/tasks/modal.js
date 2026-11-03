@@ -59,7 +59,6 @@ export function openTasks(tasks, opts) {
       ui = TYPES[task.type].render(task, body);
       screen.hidden = false;
       screen.scrollTop = 0;
-      setTimeout(() => ui.focus?.(), 50);
       speech.say(prompt());
     }
 
@@ -69,14 +68,15 @@ export function openTasks(tasks, opts) {
       feedback.replaceChildren(...content.filter(Boolean));
     }
 
-    function finish(ok) {
+    // answer: what the child chose – read before reveal() shows the solution.
+    function finish(ok, answer) {
       const firstTry = ok && attempts === 1;
       const result = {
         taskId: task.id,
         level: task.level,
         type: task.type,
         instruction: display(task.instruction),
-        answer: ui.answerText(),
+        answer,
         attempts,
         firstTry,
         stars: firstTry ? 3 : ok ? 1 : 0,
@@ -96,6 +96,7 @@ export function openTasks(tasks, opts) {
         return;
       }
       attempts += 1;
+      const answer = ui.answerText();
       const explanation = task.explanation ? el("p", { text: display(task.explanation) }) : null;
       const note = r.note ? el("p", { text: r.note }) : null;
 
@@ -104,7 +105,7 @@ export function openTasks(tasks, opts) {
         opts.sfx.play("right");
         showFeedback("right", el("strong", { text: `${praise} ✨` }), note, explanation);
         speech.say([praise, task.explanation]);
-        finish(true);
+        finish(true, answer);
       } else if (attempts === 1) {
         opts.sfx.play("wrong");
         showFeedback("wrong",
@@ -124,7 +125,7 @@ export function openTasks(tasks, opts) {
         const same = (x, y) => [x, y].every(Boolean) && normalize(x).toLowerCase() === normalize(y).toLowerCase();
         // "It's my dog." and then "It's my dog!" again would be one time too many.
         speech.say(["Look, here is the answer.", solution, same(solution, task.explanation) ? null : task.explanation]);
-        finish(false);
+        finish(false, answer);
       }
     }
 
