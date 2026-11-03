@@ -2,6 +2,8 @@
 
 Angielska wersja gry [Die Wortqueste](https://github.com/magdakalita/wortqueste) dla dzieci, które jeszcze nie czytają. Ta sama platformówka: dziecko wybiera czarodzieja i biega po magicznym zamku – zaczarowane drzwi otwierają się dopiero po rozwiązaniu zadania, latające księgi zaklęć dają zadania bonusowe, a na końcu wieży sfinks zadaje pytania.
 
+Zagraj: <https://magdakalita.github.io/word-quest/>
+
 - wszystkie polecenia, podpowiedzi i pochwały są czytane na głos (głos wbudowany w przeglądarkę), przycisk 🔊 powtarza polecenie
 - litery a, b, c, d brzmią jak głoski (phonics: „æ, æ, apple”, „k, k, cat”), a nie jak nazwy liter („ej”, „si”)
 - odpowiada się wyłącznie stuknięciem – bez klawiatury
