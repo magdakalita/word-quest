@@ -1,0 +1,17 @@
+[project]
+name = "booksee-bucksee"
+version = "0.1.0"
+description = "The Word Quest – a browser platformer for little English learners (pre-readers)"
+readme = "README.md"
+authors = [
+    { name = "magdalee", email = "magkalita@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+booksee-bucksee = "booksee_bucksee:main"
+
+[build-system]
+requires = ["uv_build>=0.12.22,<0.13.0"]
+build-backend = "uv_build"

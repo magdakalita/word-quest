@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Word Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400&family=Andika:wght@400;700&family=MedievalSharp&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="stage">
+      <canvas id="game" width="960" height="544"></canvas>
+
+      <div id="hud" hidden>
+        <div class="hud-left">
+          <span id="hud-hearts"></span>
+          <span id="hud-stars"></span>
+        </div>
+        <div id="hud-level"></div>
+        <div class="hud-right">
+          <span id="hud-tasks"></span>
+          <button id="btn-sound" class="hud-btn" title="Sound on/off">♪</button>
+          <button id="btn-pause" class="hud-btn" title="Pause (Esc)">❚❚</button>
+        </div>
+      </div>
+
+      <div id="toast" hidden></div>
+
+      <div id="touch" hidden>
+        <button data-key="left" aria-label="left">◀</button>
+        <button data-key="right" aria-label="right">▶</button>
+        <button data-key="jump" class="jump" aria-label="jump">▲</button>
+      </div>
+    </div>
+
+    <!-- Main menu -->
+    <section id="menu" class="screen">
+      <div class="parchment wide">
+        <h1>The Word Quest</h1>
+        <p class="subtitle">Adventures in Castle Wordstone · English for little wizards</p>
+
+        <label class="field">
+          <span>What's your name?</span>
+          <input id="player-name" type="text" maxlength="30" autocomplete="off" placeholder="Your name">
+        </label>
+
+        <h2>Choose your wizard</h2>
+        <div id="characters" class="cards"></div>
+
+        <h2>Unit</h2>
+        <select id="unit-select"></select>
+
+        <h2>Choose a level</h2>
+        <div id="levels" class="cards levels"></div>
+
+        <p class="controls-help">Controls: ← → or A / D to run · Space or ↑ to jump · Esc to pause</p>
+      </div>
+    </section>
+
+    <!-- Task modal -->
+    <section id="task" class="screen" hidden>
+      <div class="parchment">
+        <div class="seal">✦</div>
+        <p id="task-meta" class="meta"></p>
+        <div class="task-head">
+          <button id="task-listen" class="listen" type="button" aria-label="Listen again" title="Listen again">🔊</button>
+          <h2 id="task-instruction"></h2>
+        </div>
+        <div id="task-body"></div>
+        <div id="task-feedback" class="feedback" hidden></div>
+        <div class="actions">
+          <button id="task-check" class="btn primary">✔ Check</button>
+          <button id="task-next" class="btn primary" hidden>Next ➜</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pause -->
+    <section id="pause" class="screen" hidden>
+      <div class="parchment narrow">
+        <h2>Pause</h2>
+        <div class="actions column">
+          <button id="pause-resume" class="btn primary">▶ Play</button>
+          <button id="pause-menu" class="btn">Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Level summary -->
+    <section id="summary" class="screen" hidden>
+      <div class="parchment">
+        <h2 id="summary-title">Level complete!</h2>
+        <div id="summary-stats" class="stats"></div>
+        <div class="actions">
+          <button id="summary-menu" class="btn">Menu</button>
+          <button id="summary-next" class="btn primary">Next level ➜</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

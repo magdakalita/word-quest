@@ -1,0 +1,611 @@
+{
+  "unit": "01",
+  "title": "Family & Toys",
+  "tasks": [
+    {
+      "id": "L1-01",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "B",
+      "options": ["b", "d", "a", "c"],
+      "answer": 0,
+      "hint": "B is for ball. The b has its tummy on the right.",
+      "explanation": "B, b, ball!"
+    },
+    {
+      "id": "L1-02",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Which one starts with C?",
+      "show": "c",
+      "speak_options": true,
+      "options": [
+        { "pic": "🐱", "say": "cat" },
+        { "pic": "🐶", "say": "dog" },
+        { "pic": "🍎", "say": "apple" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. C, c, c…",
+      "explanation": "Cat starts with C!"
+    },
+    {
+      "id": "L1-03",
+      "level": 1,
+      "type": "match_pairs",
+      "instruction": "Match the letter and the picture.",
+      "speak_options": true,
+      "pairs": [
+        ["a", { "pic": "🍎", "say": "apple" }],
+        ["b", { "pic": "⚽", "say": "ball" }],
+        ["c", { "pic": "🐱", "say": "cat" }],
+        ["d", { "pic": "🐶", "say": "dog" }]
+      ],
+      "hint": "Tap a picture and listen. Apple starts with A.",
+      "explanation": "A, apple. B, ball. C, cat. D, dog."
+    },
+    {
+      "id": "L1-04",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Dog. What letter does dog start with?",
+      "show": { "pic": "🐶" },
+      "options": ["d", "b", "c"],
+      "answer": 0,
+      "hint": "D, d, dog. The d has its tummy on the left.",
+      "explanation": "Dog starts with D!"
+    },
+    {
+      "id": "L1-05",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "D",
+      "options": ["d", "b", "a"],
+      "answer": 0,
+      "hint": "D is for dog. The d has a tall line on the right.",
+      "explanation": "D, d, dog!"
+    },
+    {
+      "id": "L1-06",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Which one starts with A?",
+      "show": "a",
+      "speak_options": true,
+      "options": [
+        { "pic": "🍎", "say": "apple" },
+        { "pic": "🚗", "say": "car" },
+        { "pic": "🐶", "say": "dog" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. A, a, a…",
+      "explanation": "Apple starts with A!"
+    },
+    {
+      "id": "L1-07",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Which one starts with B?",
+      "show": "b",
+      "speak_options": true,
+      "options": [
+        { "pic": "📦", "say": "box" },
+        { "pic": "🐱", "say": "cat" },
+        { "pic": "🥤", "say": "drink" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. B, b, b…",
+      "explanation": "Box starts with B!"
+    },
+    {
+      "id": "L1-08",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Car. What letter does car start with?",
+      "show": { "pic": "🚗" },
+      "options": ["c", "a", "d"],
+      "answer": 0,
+      "hint": "C, c, car. The c is like a cookie with a bite.",
+      "explanation": "Car starts with C!"
+    },
+    {
+      "id": "L1-09",
+      "level": 1,
+      "type": "match_pairs",
+      "instruction": "Match the letter and the picture.",
+      "speak_options": true,
+      "pairs": [
+        ["a", { "pic": "🐜", "say": "ant" }],
+        ["b", { "pic": "📦", "say": "box" }],
+        ["c", { "pic": "🧢", "say": "cap" }],
+        ["d", { "pic": "🥤", "say": "drink" }]
+      ],
+      "hint": "Tap a picture and listen. Cap starts with C.",
+      "explanation": "A, ant. B, box. C, cap. D, drink."
+    },
+    {
+      "id": "L1-10",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "A",
+      "options": ["a", "d", "c", "b"],
+      "answer": 0,
+      "hint": "A is for apple. The a is small and round.",
+      "explanation": "A, a, apple!"
+    },
+    {
+      "id": "L1-11",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Which one starts with D?",
+      "show": "d",
+      "speak_options": true,
+      "options": [
+        { "pic": "🪆", "say": "doll" },
+        { "pic": "⚽", "say": "ball" },
+        { "pic": "🐱", "say": "cat" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. D, d, d…",
+      "explanation": "Doll starts with D!"
+    },
+    {
+      "id": "L1-12",
+      "level": 1,
+      "type": "pick",
+      "instruction": "Cupcake. What letter does cupcake start with?",
+      "show": { "pic": "🧁" },
+      "options": ["c", "b", "d"],
+      "answer": 0,
+      "hint": "C, c, cupcake. Like cat and car!",
+      "explanation": "Cupcake starts with C!"
+    },
+
+    {
+      "id": "L2-01",
+      "level": 2,
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "I",
+      "options": ["I", "my", "am"],
+      "answer": 0,
+      "hint": "I is just one tall line.",
+      "explanation": "I – one tall line!"
+    },
+    {
+      "id": "L2-02",
+      "level": 2,
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "you",
+      "options": ["you", "your", "I'm"],
+      "answer": 0,
+      "hint": "You has three letters: y, o, u.",
+      "explanation": "You – y, o, u."
+    },
+    {
+      "id": "L2-03",
+      "level": 2,
+      "type": "pick",
+      "instruction": "A boy. Tap: he or she?",
+      "show": { "pic": "👦" },
+      "options": ["he", "she"],
+      "answer": 0,
+      "hint": "A boy is he. He is the short word.",
+      "explanation": "A boy – he!"
+    },
+    {
+      "id": "L2-04",
+      "level": 2,
+      "type": "pick",
+      "instruction": "A girl. Tap: he or she?",
+      "show": { "pic": "👧" },
+      "options": ["he", "she"],
+      "answer": 1,
+      "hint": "A girl is she. She is the long word.",
+      "explanation": "A girl – she!"
+    },
+    {
+      "id": "L2-05",
+      "level": 2,
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "my",
+      "options": ["my", "am", "I'm"],
+      "answer": 0,
+      "hint": "My starts with m and ends with a long y.",
+      "explanation": "My – m, y."
+    },
+    {
+      "id": "L2-06",
+      "level": 2,
+      "type": "match_pairs",
+      "instruction": "Find the same word.",
+      "pairs": [
+        ["I", "I"],
+        ["I'm", "I'm"],
+        ["it's", "it's"],
+        ["you're", "you're"]
+      ],
+      "hint": "Look at the first letter and the little comma at the top.",
+      "explanation": "I, I'm, it's, you're."
+    },
+    {
+      "id": "L2-07",
+      "level": 2,
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "it's",
+      "options": ["it's", "I'm", "you're"],
+      "answer": 0,
+      "hint": "It's starts with i and t.",
+      "explanation": "It's – i, t, s."
+    },
+    {
+      "id": "L2-08",
+      "level": 2,
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "I'm a boy.",
+      "show": { "pic": "👦" },
+      "text": "___ a boy.",
+      "answers": [["I'm"]],
+      "bank": ["I'm", "You're", "It's"],
+      "hint": "I'm starts with a big I.",
+      "explanation": "I'm a boy!"
+    },
+    {
+      "id": "L2-09",
+      "level": 2,
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "your",
+      "options": ["your", "you", "you're"],
+      "answer": 0,
+      "hint": "Your is you with an r at the end.",
+      "explanation": "Your – y, o, u, r."
+    },
+    {
+      "id": "L2-10",
+      "level": 2,
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "she",
+      "options": ["she", "he", "my"],
+      "answer": 0,
+      "hint": "She is the long one: s, h, e.",
+      "explanation": "She – s, h, e."
+    },
+    {
+      "id": "L2-11",
+      "level": 2,
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "You're a girl.",
+      "show": { "pic": "👧" },
+      "text": "___ a girl.",
+      "answers": [["You're"]],
+      "bank": ["You're", "I'm", "It's"],
+      "hint": "You're starts with Y, like you.",
+      "explanation": "You're a girl!"
+    },
+    {
+      "id": "L2-12",
+      "level": 2,
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "am",
+      "options": ["am", "my", "I"],
+      "answer": 0,
+      "hint": "Am starts with a. Like apple!",
+      "explanation": "Am – a, m. I am!"
+    },
+
+    {
+      "id": "L3-01",
+      "level": 3,
+      "type": "pick",
+      "instruction": "Listen and tap the colour.",
+      "say": "blue",
+      "options": [
+        { "color": "blue", "say": "blue" },
+        { "color": "red", "say": "red" },
+        { "color": "green", "say": "green" },
+        { "color": "yellow", "say": "yellow" }
+      ],
+      "answer": 0,
+      "hint": "Blue is like the sky.",
+      "explanation": "Blue!"
+    },
+    {
+      "id": "L3-02",
+      "level": 3,
+      "type": "pick",
+      "instruction": "What colour is it? Tap the word.",
+      "show": { "color": "red" },
+      "options": ["red", "blue", "green"],
+      "answer": 0,
+      "hint": "It's red! Red is a short word: r, e, d.",
+      "explanation": "Red!"
+    },
+    {
+      "id": "L3-03",
+      "level": 3,
+      "type": "pick",
+      "instruction": "Listen and tap the toy.",
+      "say": "doll",
+      "options": [
+        { "pic": "🪆", "say": "doll" },
+        { "pic": "🚗", "say": "car" },
+        { "pic": "⚽", "say": "ball" },
+        { "pic": "🚂", "say": "toy train" }
+      ],
+      "answer": 0,
+      "hint": "Doll starts with D, like dog.",
+      "explanation": "Doll!"
+    },
+    {
+      "id": "L3-04",
+      "level": 3,
+      "type": "pick",
+      "instruction": "Listen and tap the picture.",
+      "say": "toy train",
+      "options": [
+        { "pic": "🚂", "say": "toy train" },
+        { "pic": "🚗", "say": "car" },
+        { "pic": "🧸", "say": "teddy" }
+      ],
+      "answer": 0,
+      "hint": "A train goes choo choo!",
+      "explanation": "Toy train!"
+    },
+    {
+      "id": "L3-05",
+      "level": 3,
+      "type": "match_pairs",
+      "instruction": "Match the word and the toy.",
+      "pairs": [
+        ["car", { "pic": "🚗", "say": "car" }],
+        ["ball", { "pic": "⚽", "say": "ball" }],
+        ["doll", { "pic": "🪆", "say": "doll" }],
+        ["toy train", { "pic": "🚂", "say": "toy train" }]
+      ],
+      "hint": "Look at the first letter. Car starts with C, ball with B.",
+      "explanation": "Car, ball, doll, toy train."
+    },
+    {
+      "id": "L3-06",
+      "level": 3,
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "grandma",
+      "options": [
+        { "pic": "👵", "say": "grandma" },
+        { "pic": "👴", "say": "grandpa" },
+        { "pic": "👩", "say": "mom" },
+        { "pic": "👨", "say": "dad" }
+      ],
+      "answer": 0,
+      "hint": "Grandma is mom's mom.",
+      "explanation": "Grandma!"
+    },
+    {
+      "id": "L3-07",
+      "level": 3,
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "brother",
+      "options": [
+        { "pic": "👦", "say": "brother" },
+        { "pic": "👧", "say": "sister" },
+        { "pic": "👴", "say": "grandpa" }
+      ],
+      "answer": 0,
+      "hint": "A brother is a boy.",
+      "explanation": "Brother!"
+    },
+    {
+      "id": "L3-08",
+      "level": 3,
+      "type": "match_pairs",
+      "instruction": "Match the word and the picture.",
+      "pairs": [
+        ["mom", { "pic": "👩", "say": "mom" }],
+        ["dad", { "pic": "👨", "say": "dad" }],
+        ["grandma", { "pic": "👵", "say": "grandma" }],
+        ["grandpa", { "pic": "👴", "say": "grandpa" }]
+      ],
+      "hint": "Mom starts with M. Dad starts with D. Grandma and grandpa are long words.",
+      "explanation": "Mom, dad, grandma, grandpa."
+    },
+    {
+      "id": "L3-09",
+      "level": 3,
+      "type": "pick",
+      "instruction": "Who is it? Tap the word.",
+      "show": { "pic": "👨" },
+      "options": ["dad", "mom", "doll"],
+      "answer": 0,
+      "hint": "It's dad! Dad starts with D and ends with D.",
+      "explanation": "Dad – d, a, d."
+    },
+    {
+      "id": "L3-10",
+      "level": 3,
+      "type": "pick",
+      "instruction": "What is it? Tap the word.",
+      "show": { "pic": "🪆" },
+      "options": ["doll", "ball", "car"],
+      "answer": 0,
+      "hint": "It's a doll. Doll starts with D.",
+      "explanation": "Doll – d, o, l, l."
+    },
+    {
+      "id": "L3-11",
+      "level": 3,
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "family",
+      "options": [
+        { "pic": "👨‍👩‍👧‍👦", "say": "family" },
+        { "pic": "👵", "say": "grandma" },
+        { "pic": "🧸", "say": "toys" }
+      ],
+      "answer": 0,
+      "hint": "A family is mom, dad, sister and brother.",
+      "explanation": "Family!"
+    },
+    {
+      "id": "L3-12",
+      "level": 3,
+      "type": "pick",
+      "instruction": "What is it? Tap the word.",
+      "show": { "pic": "⚽" },
+      "options": ["ball", "doll", "dog"],
+      "answer": 0,
+      "hint": "It's a ball. Ball starts with B.",
+      "explanation": "Ball – b, a, l, l."
+    },
+    {
+      "id": "L3-13",
+      "level": 3,
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "sister",
+      "options": [
+        { "pic": "👧", "say": "sister" },
+        { "pic": "👦", "say": "brother" },
+        { "pic": "👵", "say": "grandma" }
+      ],
+      "answer": 0,
+      "hint": "A sister is a girl.",
+      "explanation": "Sister!"
+    },
+
+    {
+      "id": "L4-01",
+      "level": 4,
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's a blue box.",
+      "show": { "draw": "box", "color": "blue" },
+      "words": ["It's", "a", "blue", "box"],
+      "hint": "Start with It's.",
+      "explanation": "It's a blue box!"
+    },
+    {
+      "id": "L4-02",
+      "level": 4,
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's a pink cupcake.",
+      "show": { "draw": "cupcake", "color": "pink" },
+      "text": "It's a ___ cupcake.",
+      "answers": [["pink"]],
+      "bank": ["pink", "blue", "green"],
+      "hint": "Look at the cupcake. Pink starts with P.",
+      "explanation": "It's a pink cupcake!"
+    },
+    {
+      "id": "L4-03",
+      "level": 4,
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "I'm a boy.",
+      "show": { "pic": "👦" },
+      "words": ["I'm", "a", "boy"],
+      "hint": "Start with I'm.",
+      "explanation": "I'm a boy!"
+    },
+    {
+      "id": "L4-04",
+      "level": 4,
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's a red ball.",
+      "show": { "draw": "ball", "color": "red" },
+      "text": "It's a ___ ball.",
+      "answers": [["red"]],
+      "bank": ["red", "yellow", "blue"],
+      "hint": "Look at the ball. Red starts with R.",
+      "explanation": "It's a red ball!"
+    },
+    {
+      "id": "L4-05",
+      "level": 4,
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's my doll.",
+      "show": { "pic": "🪆" },
+      "words": ["It's", "my", "doll"],
+      "hint": "Start with It's. Then my.",
+      "explanation": "It's my doll!"
+    },
+    {
+      "id": "L4-06",
+      "level": 4,
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's a green box.",
+      "show": { "draw": "box", "color": "green" },
+      "text": "It's a green ___.",
+      "answers": [["box"]],
+      "bank": ["box", "ball", "doll"],
+      "hint": "Box starts with B and ends with X.",
+      "explanation": "It's a green box!"
+    },
+    {
+      "id": "L4-07",
+      "level": 4,
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's a yellow ball.",
+      "show": { "draw": "ball", "color": "yellow" },
+      "words": ["It's", "a", "yellow", "ball"],
+      "hint": "Start with It's. Ball comes last.",
+      "explanation": "It's a yellow ball!"
+    },
+    {
+      "id": "L4-08",
+      "level": 4,
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's my dog.",
+      "show": { "pic": "🐶" },
+      "text": "It's my ___.",
+      "answers": [["dog"]],
+      "bank": ["dog", "doll", "dad"],
+      "hint": "All three start with D! Dog ends with G.",
+      "explanation": "It's my dog!"
+    },
+    {
+      "id": "L4-09",
+      "level": 4,
+      "type": "pick",
+      "instruction": "Which one starts with B?",
+      "show": "b",
+      "speak_options": true,
+      "options": [
+        { "pic": "👦", "say": "boy" },
+        { "pic": "🐱", "say": "cat" },
+        { "pic": "🐶", "say": "dog" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. B, b, b…",
+      "explanation": "Boy starts with B!"
+    },
+    {
+      "id": "L4-10",
+      "level": 4,
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "you're",
+      "options": ["you're", "your", "you"],
+      "answer": 0,
+      "hint": "You're has a little comma at the top.",
+      "explanation": "You're – you, a comma, r, e."
+    }
+  ]
+}

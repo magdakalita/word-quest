@@ -1,0 +1,146 @@
+import { el, renderItem } from "./util.js";
+import { speech } from "../speech.js";
+import * as pick from "./pick.js";
+import * as gapFill from "./gapFill.js";
+import * as wordOrder from "./wordOrder.js";
+import * as matchPairs from "./matchPairs.js";
+
+const TYPES = {
+  pick,
+  gap_fill: gapFill,
+  word_order: wordOrder,
+  match_pairs: matchPairs,
+};
+
+const PRAISE = ["Great job!", "Super!", "Well done!", "Brilliant!", "Yes, that's right!", "Perfect!", "Magic!"];
+
+const $ = (id) => document.getElementById(id);
+
+// Shows tasks one after another. Resolves with one result per task.
+// Everything the child needs to understand is also spoken – the player cannot read yet.
+// opts: { label(i) -> string, onProgress(n), sfx }
+export function openTasks(tasks, opts) {
+  const screen = $("task");
+  const body = $("task-body");
+  const feedback = $("task-feedback");
+  const checkBtn = $("task-check");
+  const nextBtn = $("task-next");
+  const listenBtn = $("task-listen");
+  const results = [];
+
+  return new Promise((resolve) => {
+    let index = -1;
+    let ui;
+    let attempts;
+    let task;
+
+    const prompt = () => [task.instruction, task.say];
+
+    function showNext() {
+      index += 1;
+      if (index >= tasks.length) {
+        speech.stop();
+        screen.hidden = true;
+        document.removeEventListener("keydown", onKey);
+        resolve(results);
+        return;
+      }
+      task = tasks[index];
+      attempts = 0;
+      $("task-meta").textContent = opts.label(index);
+      $("task-instruction").textContent = task.instruction;
+      body.replaceChildren();
+      if (task.show) body.append(el("div", { class: "show" }, renderItem(task.show)));
+      feedback.hidden = true;
+      feedback.className = "feedback";
+      checkBtn.hidden = false;
+      checkBtn.disabled = false;
+      nextBtn.hidden = true;
+      ui = TYPES[task.type].render(task, body);
+      screen.hidden = false;
+      screen.scrollTop = 0;
+      setTimeout(() => ui.focus?.(), 50);
+      speech.say(prompt());
+    }
+
+    function showFeedback(kind, ...content) {
+      feedback.hidden = false;
+      feedback.className = `feedback ${kind}`;
+      feedback.replaceChildren(...content.filter(Boolean));
+    }
+
+    function finish(ok) {
+      const firstTry = ok && attempts === 1;
+      const result = {
+        taskId: task.id,
+        level: task.level,
+        type: task.type,
+        instruction: task.instruction,
+        answer: ui.answerText(),
+        attempts,
+        firstTry,
+        stars: firstTry ? 3 : ok ? 1 : 0,
+      };
+      results.push(result);
+      opts.onProgress?.(results.length);
+      checkBtn.hidden = true;
+      nextBtn.hidden = false;
+      nextBtn.focus();
+    }
+
+    function onCheck() {
+      const r = ui.check();
+      if (r.incomplete) {
+        showFeedback("", r.note);
+        speech.say(r.note);
+        return;
+      }
+      attempts += 1;
+      const explanation = task.explanation ? el("p", { text: task.explanation }) : null;
+      const note = r.note ? el("p", { text: r.note }) : null;
+
+      if (r.ok) {
+        const praise = PRAISE[Math.floor(Math.random() * PRAISE.length)];
+        opts.sfx.play("right");
+        showFeedback("right", el("strong", { text: `${praise} ✨` }), note, explanation);
+        speech.say([praise, task.explanation]);
+        finish(true);
+      } else if (attempts === 1) {
+        opts.sfx.play("wrong");
+        showFeedback("wrong",
+          el("strong", { text: "Not yet – try again! 🙂" }),
+          task.hint ? el("p", { text: `💡 ${task.hint}` }) : null,
+        );
+        speech.say(["Not yet. Try again!", task.hint]);
+      } else {
+        opts.sfx.play("wrong");
+        ui.reveal();
+        showFeedback("wrong",
+          el("strong", { text: "Look, here is the answer:" }),
+          el("p", { class: "solution", text: ui.solutionText() }),
+          explanation,
+        );
+        speech.say(["Look, here is the answer.", ui.solutionSay?.(), task.explanation]);
+        finish(false);
+      }
+    }
+
+    function onKey(e) {
+      if (e.key !== "Enter") return;
+      if (e.target.tagName === "BUTTON" && e.target !== nextBtn && e.target !== checkBtn) return;
+      e.preventDefault();
+      if (!nextBtn.hidden) nextBtn.click();
+      else if (!checkBtn.hidden) checkBtn.click();
+    }
+
+    checkBtn.onclick = onCheck;
+    nextBtn.onclick = showNext;
+    listenBtn.onclick = () => speech.say(prompt());
+    document.addEventListener("keydown", onKey);
+    showNext();
+  });
+}
+
+export function isKnownType(type) {
+  return type in TYPES;
+}
