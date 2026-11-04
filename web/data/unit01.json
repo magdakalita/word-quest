@@ -330,12 +330,12 @@
       "id": "L3-02",
       "level": 3,
       "type": "pick",
-      "instruction": "What colour is it? Tap the word.",
+      "instruction": "What colour is it? Tap and listen.",
       "show": { "color": "red" },
       "speak_options": true,
-      "options": ["red", "blue", "green"],
+      "options": [{ "pic": "🔊", "say": "red" }, { "pic": "🔊", "say": "blue" }, { "pic": "🔊", "say": "green" }],
       "answer": 0,
-      "hint": "Tap a word and listen. Which one is red?",
+      "hint": "Tap a card and listen. Which one is red?",
       "explanation": "Red!"
     },
     {
