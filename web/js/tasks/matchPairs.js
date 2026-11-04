@@ -36,7 +36,7 @@ export function render(task, body) {
       if (active !== null) {
         for (const [li, ri] of links) if (ri === r.i) links.delete(li);
         links.set(active, r.i);
-        active = lefts.map((x) => x.i).find((i) => !links.has(i)) ?? null;
+        active = null; // nothing is chosen until the child taps the next left card
       }
       paint();
     });
