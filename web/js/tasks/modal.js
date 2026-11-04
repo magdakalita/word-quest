@@ -12,7 +12,15 @@ const TYPES = {
   match_pairs: matchPairs,
 };
 
-const PRAISE = ["Great job!", "Super!", "Well done!", "Brilliant!", "Yes, that's right!", "Perfect!", "Magic!"];
+const PRAISE = ["Great job!", "Super!", "Well done!", "Brilliant!", "Yes, that's right!", "Perfect!", "Amazing!", "Remarkable!", "Awesome!"];
+let lastPraise = null;
+
+// A random praise – never the same one twice in a row.
+function nextPraise() {
+  const choices = PRAISE.filter((p) => p !== lastPraise);
+  lastPraise = choices[Math.floor(Math.random() * choices.length)];
+  return lastPraise;
+}
 
 const $ = (id) => document.getElementById(id);
 
@@ -101,7 +109,7 @@ export function openTasks(tasks, opts) {
       const note = r.note ? el("p", { text: r.note }) : null;
 
       if (r.ok) {
-        const praise = PRAISE[Math.floor(Math.random() * PRAISE.length)];
+        const praise = nextPraise();
         opts.sfx.play("right");
         showFeedback("right", el("strong", { text: `${praise} ✨` }), note, explanation);
         speech.say([praise, task.explanation]);
