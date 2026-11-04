@@ -10,6 +10,7 @@ export const LEVELS = [
     theme: "garden",
     chunksPerTask: [1, 1],
     pool: ["flat", "pitSmall", "steps", "ghostFlat"],
+    ghosts: 10,
   },
   {
     n: 2,
@@ -19,6 +20,7 @@ export const LEVELS = [
     theme: "library",
     chunksPerTask: [1, 2],
     pool: ["flat", "pitSmall", "steps", "ghostFlat", "shelves", "pillars"],
+    ghosts: 11,
   },
   {
     n: 3,
@@ -28,6 +30,7 @@ export const LEVELS = [
     theme: "dungeon",
     chunksPerTask: [1, 2],
     pool: ["pitSmall", "steps", "ghostFlat", "shelves", "pillars", "highRoute", "doublePit"],
+    ghosts: 12,
   },
   {
     n: 4,
@@ -37,6 +40,7 @@ export const LEVELS = [
     theme: "tower",
     chunksPerTask: [1, 2],
     pool: ["steps", "ghostFlat", "shelves", "pillars", "highRoute", "doublePit"],
+    ghosts: 12,
     bossTasks: 2, // the last N tasks are asked by the sphinx at the top of the tower
   },
 ];

@@ -2,7 +2,7 @@
 //
 // Chunk legend (bottom 8 rows of the 17-row map; row 15 is the ground surface):
 //   #  ground        =  stone block     -  one-way platform
-//   *  star          g  ghost
+//   *  star          G  a place for a ghost (each level picks how many – see `ghosts` in levels.js)
 
 export const ROWS = 17;
 const CHUNK_TOP = ROWS - 8;
@@ -15,7 +15,7 @@ const CHUNKS = {
     "         ",
     "   * *   ",
     "         ",
-    "         ",
+    "      G  ",
     "#########",
     "#########",
   ],
@@ -25,7 +25,7 @@ const CHUNKS = {
     "           ",
     "     **    ",
     "           ",
-    "           ",
+    "        G  ",
     "####  #####",
     "####  #####",
   ],
@@ -35,7 +35,7 @@ const CHUNKS = {
     "       *    ",
     "      ===   ",
     "   *        ",
-    "  ===       ",
+    "  ===    G  ",
     "############",
     "############",
   ],
@@ -45,7 +45,7 @@ const CHUNKS = {
     "            ",
     "            ",
     "    *  *    ",
-    "       g    ",
+    "       G    ",
     "############",
     "############",
   ],
@@ -65,7 +65,7 @@ const CHUNKS = {
     "        *    ",
     "       ==    ",
     "   *   ==    ",
-    "  ==   ==    ",
+    "  ==   ==  G ",
     "#############",
     "#############",
   ],
@@ -75,7 +75,7 @@ const CHUNKS = {
     "     -------   ",
     "               ",
     "  ==           ",
-    "  ==        g  ",
+    "  ==        G  ",
     "###############",
     "###############",
   ],
@@ -85,7 +85,7 @@ const CHUNKS = {
     "              ",
     "   *    *     ",
     "              ",
-    "              ",
+    "           G  ",
     "##  ###  #####",
     "##  ###  #####",
   ],
@@ -106,7 +106,7 @@ export function buildLevel(def, tasks) {
 
   const columns = []; // each column: array of ROWS chars
   const stars = [];
-  const ghosts = [];
+  const slots = []; // places where a ghost may stand
   const triggers = [];
 
   const emptyColumn = () => Array(ROWS).fill(" ");
@@ -126,7 +126,7 @@ export function buildLevel(def, tasks) {
         const ch = row[x] ?? " ";
         const y = CHUNK_TOP + r;
         if (ch === "*") stars.push({ col: columns.length, row: y });
-        else if (ch === "g") ghosts.push({ col: columns.length, row: y });
+        else if (ch === "G") slots.push({ col: columns.length, row: y });
         else col[y] = ch;
       });
       columns.push(col);
@@ -201,6 +201,10 @@ export function buildLevel(def, tasks) {
 
   const width = columns.length;
   const tiles = Array.from({ length: ROWS }, (_, r) => columns.map((c) => c[r]));
+
+  // The level's ghosts, spread evenly over the places for them.
+  const n = Math.min(def.ghosts ?? slots.length, slots.length);
+  const ghosts = Array.from({ length: n }, (_, k) => slots[Math.floor(((k + 0.5) * slots.length) / n)]);
 
   const decorations = decorate(def.theme, tiles, width, rand);
 
