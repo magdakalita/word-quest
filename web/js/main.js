@@ -8,6 +8,7 @@ import { openTasks } from "./tasks/modal.js";
 import { el } from "./tasks/util.js";
 import { speech } from "./speech.js";
 import { loadProgress, saveProgress, unitProgress } from "./storage.js";
+import { unitBooks } from "./stickers.js";
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -17,7 +18,8 @@ const input = new Input();
 const sfx = new Sfx();
 const progress = loadProgress();
 let units = [];
-let unit = null; // { id, title, tasks }
+let unit = null; // { id, title, tasks, books }
+let levelStickers = []; // stickers won on the current level
 let currentLevel = null;
 let toastTimer = null;
 
@@ -26,6 +28,7 @@ const game = new Game($("game"), input, sfx, {
   onFinish: showSummary,
   onHud: updateHud,
   onToast: toast,
+  onBookNear: callBook,
 });
 if (params.has("debug")) window.spiel = { game, startLevel: (n) => startLevel(n) };
 
@@ -60,7 +63,7 @@ async function fetchJson(url) {
 async function selectUnit(id) {
   const meta = units.find((u) => u.id === id);
   const data = await fetchJson(`data/${meta.file}`);
-  unit = { id, title: meta.title, tasks: data.tasks };
+  unit = { id, title: meta.title, tasks: data.tasks, books: unitBooks(data.tasks) };
   progress.lastUnit = id;
   saveProgress(progress);
   renderLevels();
@@ -104,6 +107,37 @@ function renderLevels() {
     card.addEventListener("click", () => startLevel(def.n));
     box.append(card);
   }
+  renderAlbum();
+}
+
+// The sticker album: one row per level, a grey "?" for every sticker still hidden in a book.
+function renderAlbum() {
+  const owned = new Set(unitProgress(progress, unit.id).stickers);
+  const box = $("album");
+  box.replaceChildren();
+  for (const def of LEVELS) {
+    const books = unit.books.filter((b) => b.level === def.n);
+    if (!books.length) continue;
+    const row = el("div", { class: "album-row" }, el("span", { class: "album-level", text: `Level ${def.n}` }));
+    for (const b of books) row.append(stickerButton(b.sticker, owned.has(b.taskId)));
+    box.append(row);
+  }
+  $("album-count").textContent = `${owned.size}/${unit.books.length}`;
+}
+
+function stickerButton(sticker, owned) {
+  const b = el("button", { class: `sticker${owned ? "" : " missing"}`, type: "button", text: owned ? sticker.pic : "?" });
+  b.addEventListener("click", () => speech.say(owned ? sticker.say : "Find this sticker in a magic book!"));
+  return b;
+}
+
+const bookOf = (taskId) => unit.books.find((b) => b.taskId === taskId);
+const hasSticker = (taskId) => unitProgress(progress, unit.id).stickers.includes(taskId);
+
+function callBook(trigger) {
+  const win = !hasSticker(trigger.taskIds[0]);
+  toast(win ? "A magic book! Jump up and win a sticker!" : "A magic book! Jump up and open it!");
+  speech.say(win ? "A magic book! Jump up and win a sticker!" : "A magic book! Jump up and open it!");
 }
 
 function wireButtons() {
@@ -138,7 +172,11 @@ function startLevel(n) {
   const tasks = unit.tasks.filter((t) => t.level === n);
   const character = CHARACTERS.find((c) => c.id === progress.character) ?? CHARACTERS[0];
   currentLevel = n;
-  game.load(def, buildLevel(def, tasks), character, tasks.length);
+  const map = buildLevel(def, tasks);
+  // A book still holding its sticker shows it above the book.
+  for (const tr of map.triggers) if (tr.kind === "book" && !hasSticker(tr.taskIds[0])) tr.sticker = bookOf(tr.taskIds[0])?.sticker.pic;
+  levelStickers = [];
+  game.load(def, map, character, tasks.length);
   for (const id of ["menu", "summary", "pause", "task"]) $(id).hidden = true;
   $("hud").hidden = false;
   $("hud-level").textContent = `Level ${n} · ${def.title}`;
@@ -181,13 +219,31 @@ async function runTasks(trigger, onProgress) {
     speech.say("I am the Sphinx! Answer my questions, then you may pass!");
     await new Promise((r) => setTimeout(r, 3500));
   }
-  return openTasks(tasks, { label, onProgress, sfx });
+  const results = await openTasks(tasks, { label, onProgress, sfx });
+  if (trigger.kind === "book") rewardBook(trigger, results);
+  return results;
+}
+
+// After a magic book: a sticker for a right answer (first or second try) and the super wizard.
+function rewardBook(trigger, results) {
+  const taskId = trigger.taskIds[0];
+  const book = bookOf(taskId);
+  const won = book && results.length && results.every((r) => r.stars > 0) && !hasSticker(taskId);
+  if (won) {
+    unitProgress(progress, unit.id).stickers.push(taskId);
+    saveProgress(progress);
+    levelStickers.push(book.sticker);
+  }
+  toast(won ? `New sticker! ${book.sticker.pic} · Super wizard! ✨` : "Super wizard! ✨");
+  speech.say([won ? `You got a sticker! ${book.sticker.say[0].toUpperCase()}${book.sticker.say.slice(1)}!` : null, "You are a super wizard!"]);
 }
 
 function updateHud(s) {
   $("hud-hearts").textContent = "♥".repeat(s.hearts) + "♡".repeat(s.maxHearts - s.hearts);
   $("hud-stars").textContent = `★ ${s.stars}`;
   $("hud-tasks").textContent = `✦ ${s.done}/${s.total}`;
+  $("hud-power").hidden = !s.power;
+  $("hud-power").textContent = `✨ ${s.power}`;
 }
 
 function toast(msg) {
@@ -219,7 +275,16 @@ function showSummary(stats) {
     stat(`★ ${stats.stars}`, "Stars"),
     stat(`${firstTry}/${total}`, "right the first time"),
     stat(`${mm}:${ss}`, "Time"),
-    ...(stats.skipped.length ? [stat(String(stats.skipped.length), "magic books missed")] : []),
+  );
+  const books = unit.books.filter((b) => b.level === currentLevel);
+  if (books.length) {
+    const owned = books.filter((b) => hasSticker(b.taskId)).length;
+    $("summary-stats").append(stat(`${owned}/${books.length}`, "stickers"));
+  }
+  $("summary-stickers").hidden = !levelStickers.length;
+  $("summary-stickers").replaceChildren(
+    el("span", { class: "label", text: "New stickers:" }),
+    ...levelStickers.map((st) => stickerButton(st, true)),
   );
 
   $("summary-next").textContent = last ? "Menu" : "Next level ➜";

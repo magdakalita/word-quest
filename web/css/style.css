@@ -399,6 +399,21 @@ select { min-width: 260px; max-width: 100%; }
 .stat .value { font-family: var(--font-title); font-size: 1.8em; color: var(--red); }
 .stat .label { font-size: .85em; color: var(--ink-soft); }
 
+/* Stickers from the magic books */
+#hud-power { color: var(--gold); }
+.album { display: grid; gap: 8px; margin-bottom: 12px; }
+.album-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.album-level { font-family: var(--font-title); color: var(--red); min-width: 4.5em; }
+.album-count { font-size: .7em; color: var(--ink-soft); }
+.sticker {
+  width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--gold);
+  background: #fffaf0; font-size: 28px; line-height: 1; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.sticker.missing { border-style: dashed; border-color: #bbb; background: rgba(255, 255, 255, .35); color: #aaa; font-family: var(--font-title); }
+.summary-stickers { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 0 0 16px; }
+.summary-stickers .label { font-family: var(--font-title); color: var(--red); }
+
 @media (max-width: 520px) {
   .pairs { grid-template-columns: 1fr; }
   .actions { justify-content: stretch; }

@@ -22,5 +22,6 @@ export function saveProgress(p) {
 
 export function unitProgress(p, id) {
   p.units[id] ??= { unlocked: 1, best: {} };
+  p.units[id].stickers ??= []; // task ids of the solved magic books
   return p.units[id];
 }

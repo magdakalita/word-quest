@@ -18,6 +18,7 @@
         <div class="hud-left">
           <span id="hud-hearts"></span>
           <span id="hud-stars"></span>
+          <span id="hud-power" hidden></span>
         </div>
         <div id="hud-level"></div>
         <div class="hud-right">
@@ -55,6 +56,9 @@
 
         <h2>Choose a level</h2>
         <div id="levels" class="cards levels"></div>
+
+        <h2>My stickers <span id="album-count" class="album-count"></span></h2>
+        <div id="album" class="album"></div>
 
         <p class="controls-help">Controls: ← → or A / D to run · Space or ↑ to jump · Esc to pause</p>
       </div>
@@ -94,6 +98,7 @@
       <div class="parchment">
         <h2 id="summary-title">Level complete!</h2>
         <div id="summary-stats" class="stats"></div>
+        <div id="summary-stickers" class="summary-stickers" hidden></div>
         <div class="actions">
           <button id="summary-menu" class="btn">Menu</button>
           <button id="summary-next" class="btn primary">Next level ➜</button>

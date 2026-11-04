@@ -13,6 +13,13 @@ const MAX_FALL = 900;
 const COYOTE = 0.1;
 const JUMP_BUFFER = 0.12;
 const MAX_HEARTS = 3;
+// Super wizard – the reward for a magic book: bigger, faster, and ghosts vanish at a touch.
+const POWER_FIRST_TRY = 15; // seconds
+const POWER_LATER = 7;
+const POWER_SIZE = 1.5;
+const POWER_RUN = 1.3;
+const POWER_JUMP = 1.12;
+const BOOK_CALL = 6 * TILE; // a book calls the child from this far away
 
 export class Game {
   constructor(canvas, input, sfx, hooks) {
@@ -21,7 +28,7 @@ export class Game {
     this.ctx.imageSmoothingEnabled = false;
     this.input = input;
     this.sfx = sfx;
-    this.hooks = hooks; // { onTask(trigger) -> Promise<result[]>, onFinish(stats), onHud(state), onToast(msg) }
+    this.hooks = hooks; // { onTask(trigger) -> Promise<result[]>, onFinish(stats), onHud(state), onToast(msg), onBookNear(trigger) }
     this.running = false;
     this.mode = "idle";
     this.time = 0;
@@ -36,11 +43,12 @@ export class Game {
     this.theme = def.theme;
     this.stars = map.stars.map((s) => ({ x: s.col * TILE + TILE / 2, y: s.row * TILE + TILE / 2, taken: false }));
     this.ghosts = map.ghosts.map((g) => ({ x: g.col * TILE + 3, y: g.row * TILE + 2, w: 26, h: 28, vx: -45, dead: false, phase: g.col }));
-    this.triggers = map.triggers.map((t) => ({ ...t, done: false, solved: 0 }));
+    this.triggers = map.triggers.map((t) => ({ ...t, done: false, solved: 0, called: false }));
     this.particles = [];
     this.player = {
       x: map.start.col * TILE, y: map.start.row * TILE + 4, w: 18, h: 28,
       vx: 0, vy: 0, onGround: false, facing: 1, coyote: 0, jumpBuffer: 0, invuln: 0, walkT: 0,
+      power: 0, size: 1, // super wizard seconds left; drawn size (grows and shrinks smoothly)
     };
     this.checkpoint = { x: this.player.x, y: this.player.y };
     this.hearts = MAX_HEARTS;
@@ -108,7 +116,7 @@ export class Game {
     const inp = this.input;
 
     const dir = (inp.down.has("right") ? 1 : 0) - (inp.down.has("left") ? 1 : 0);
-    const target = dir * RUN;
+    const target = dir * RUN * (p.power > 0 ? POWER_RUN : 1);
     const accel = p.onGround ? 2200 : 1400;
     if (p.invuln > 1.2) {
       // knockback – no control for a moment
@@ -119,7 +127,7 @@ export class Game {
     p.coyote = p.onGround ? COYOTE : Math.max(0, p.coyote - dt);
     p.jumpBuffer = inp.wasPressed("jump") ? JUMP_BUFFER : Math.max(0, p.jumpBuffer - dt);
     if (p.jumpBuffer > 0 && p.coyote > 0) {
-      p.vy = -JUMP_V;
+      p.vy = -JUMP_V * (p.power > 0 ? POWER_JUMP : 1);
       p.coyote = 0;
       p.jumpBuffer = 0;
       p.onGround = false;
@@ -129,6 +137,7 @@ export class Game {
 
     p.vy = Math.min(MAX_FALL, p.vy + GRAVITY * dt);
     p.invuln = Math.max(0, p.invuln - dt);
+    this.updatePower(dt);
 
     this.moveX(p, p.vx * dt);
     const prevBottom = p.y + p.h;
@@ -143,6 +152,7 @@ export class Game {
     }
 
     this.updateGhosts(dt);
+    this.callBooks();
     this.collectStars();
     this.checkTriggers();
     this.checkFinish();
@@ -215,7 +225,15 @@ export class Game {
       if (this.isSolid(frontCol, bodyRow) || !this.isSolid(frontCol, footRow)) g.vx = -g.vx;
       else g.x = nextX;
 
-      if (!overlap(p, g)) continue;
+      if (!overlap(p.power > 0 ? this.powerReach() : p, g)) continue;
+      if (p.power > 0) {
+        g.dead = true;
+        this.starCount += 1;
+        this.burst(g.x + g.w / 2, g.y + g.h / 2, "#f5d36b", 18);
+        this.sfx.play("zap");
+        this.emitHud();
+        continue;
+      }
       const stomp = p.vy > 0 && p.y + p.h - g.y < 16;
       if (stomp) {
         g.dead = true;
@@ -229,6 +247,39 @@ export class Game {
         p.vy = -320;
         this.hurt(false);
       }
+    }
+  }
+
+  // The super wizard is drawn bigger, so ghosts are touched a little sooner.
+  powerReach() {
+    const p = this.player;
+    return { x: p.x - 6, y: p.y - 14, w: p.w + 12, h: p.h + 14 };
+  }
+
+  updatePower(dt) {
+    const p = this.player;
+    if (p.power > 0) {
+      const shown = Math.ceil(p.power);
+      p.power = Math.max(0, p.power - dt);
+      if (Math.ceil(p.power) !== shown) this.emitHud();
+      if (p.power === 0) this.sfx.play("powerDown");
+      if (Math.random() < 0.4) {
+        this.particles.push({ x: p.x + Math.random() * p.w, y: p.y + Math.random() * p.h, vx: 0, vy: -30, life: 0.5, color: "#f5d36b" });
+      }
+    }
+    const size = p.power > 0 ? POWER_SIZE : 1;
+    p.size += (size - p.size) * Math.min(1, dt * 6);
+  }
+
+  // A magic book rings and calls once when the child comes near.
+  callBooks() {
+    const p = this.player;
+    for (const tr of this.triggers) {
+      if (tr.kind !== "book" || tr.done || tr.called) continue;
+      if (Math.abs(tr.col * TILE + TILE / 2 - (p.x + p.w / 2)) > BOOK_CALL) continue;
+      tr.called = true;
+      this.sfx.play("book");
+      this.hooks.onBookNear?.(tr);
     }
   }
 
@@ -302,7 +353,11 @@ export class Game {
     const cx = tr.col * TILE + (tr.kind === "sphinx" ? TILE : TILE / 2);
     const cy = tr.row * TILE + TILE / 2;
     this.burst(cx, cy, tr.kind === "book" ? "#f5d36b" : "#c08bff", 24);
-    this.sfx.play("unlock");
+    if (tr.kind === "book" && results.length) {
+      p.power = results.every((r) => r.firstTry) ? POWER_FIRST_TRY : POWER_LATER;
+      this.burst(p.x + p.w / 2, p.y + p.h / 2, "#f5d36b", 30);
+      this.sfx.play("power");
+    } else this.sfx.play("unlock");
 
     const groundY = (ROWS - 3) * TILE + (TILE - p.h);
     this.checkpoint = tr.kind === "book"
@@ -336,6 +391,7 @@ export class Game {
       maxHearts: MAX_HEARTS,
       stars: this.starCount,
       done: this.results.length,
+      power: Math.ceil(this.player.power),
       total: this.taskCount,
     });
   }
@@ -407,14 +463,7 @@ export class Game {
       const x = tr.col * TILE;
       const y = tr.row * TILE;
       if (tr.kind === "door") drawDoor(ctx, x, y, tr.done, t);
-      else if (tr.kind === "book" && !tr.done) {
-        const bob = Math.sin(t * 3 + tr.col) * 4;
-        ctx.fillStyle = "rgba(245,211,107,0.18)";
-        ctx.beginPath();
-        ctx.arc(x + TILE / 2, y + TILE / 2 + bob, 22 + Math.sin(t * 5) * 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.drawImage(bookSprite(), x + 4, y + 5 + bob);
-      } else if (tr.kind === "sphinx" && !tr.done) {
+      else if (tr.kind === "book" && !tr.done) this.drawBook(ctx, tr, x + TILE / 2, y + TILE / 2 + Math.sin(t * 3 + tr.col) * 4, t); else if (tr.kind === "sphinx" && !tr.done) {
         drawSphinx(ctx, x, y, tr.solved, tr.taskIds.length, t);
       }
     }
@@ -445,6 +494,35 @@ export class Game {
     ctx.restore();
   }
 
+  // A bigger, glowing book with sparkles; the sticker inside floats above it in a bubble.
+  drawBook(ctx, tr, cx, cy, t) {
+    const pulse = Math.sin(t * 5);
+    ctx.fillStyle = "rgba(245,211,107,0.28)";
+    ctx.beginPath();
+    ctx.arc(cx, cy, 28 + pulse * 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#fff6c8";
+    for (let i = 0; i < 4; i++) {
+      const a = t * 2 + (i * Math.PI) / 2;
+      ctx.fillRect(Math.round(cx + Math.cos(a) * 26) - 1, Math.round(cy + Math.sin(a) * 22) - 1, 3, 3);
+    }
+    const book = bookSprite();
+    const w = book.width * 1.3;
+    const h = book.height * 1.3;
+    ctx.drawImage(book, Math.round(cx - w / 2), Math.round(cy - h / 2), w, h);
+    if (tr.sticker) {
+      const by = cy - 44 + pulse * 2;
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      ctx.beginPath();
+      ctx.arc(cx, by, 15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = "18px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(tr.sticker, cx, by + 1);
+    }
+  }
+
   drawPlayer(ctx) {
     const p = this.player;
     if (p.invuln > 0 && Math.floor(p.invuln * 12) % 2 === 0) return;
@@ -453,12 +531,24 @@ export class Game {
     else if (p.walkT > 0) pose = Math.floor(p.walkT * 10) % 2 ? "walk1" : "walk2";
     const sprite = characterFrame(this.character, pose);
     ctx.save();
-    ctx.translate(Math.round(p.x + p.w / 2), Math.round(p.y - 4));
-    if (p.facing < 0) ctx.scale(-1, 1);
-    ctx.drawImage(sprite, -12, 0);
+    // Drawn from the feet, so the super wizard grows upwards.
+    ctx.translate(Math.round(p.x + p.w / 2), Math.round(p.y + p.h));
+    // The glow blinks during the last 2 seconds – the magic is running out.
+    if (p.power > 0 && (p.power > 2 || Math.floor(p.power * 6) % 2 === 0)) {
+      const r = 26 * p.size;
+      const glow = ctx.createRadialGradient(0, -16 * p.size, 0, 0, -16 * p.size, r);
+      glow.addColorStop(0, "rgba(255,226,120,0.6)");
+      glow.addColorStop(1, "rgba(255,226,120,0)");
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(0, -16 * p.size, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.scale(p.facing < 0 ? -p.size : p.size, p.size);
+    ctx.drawImage(sprite, -12, -32);
     if (this.mode === "play" && Math.random() < 0.15) {
       ctx.fillStyle = "#f5d36b";
-      ctx.fillRect(11 + Math.random() * 4, 14 + Math.random() * 6, 2, 2); // wand sparkle
+      ctx.fillRect(11 + Math.random() * 4, -18 + Math.random() * 6, 2, 2); // wand sparkle
     }
     ctx.restore();
   }
