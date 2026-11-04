@@ -1,0 +1,4 @@
+# Netlify: the game is a static site – publish the web/ folder as it is, no build step.
+[build]
+  publish = "web"
+  command = ""
