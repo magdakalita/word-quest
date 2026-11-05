@@ -5,6 +5,7 @@
 import { LEVELS } from "./levels/levels.js";
 import { castleArt } from "./sprites.js";
 import { spaceArt, SPACE_HEROES } from "./sprites-space.js";
+import { ninjaArt, NINJA_HEROES } from "./sprites-ninja.js";
 
 const castle = {
   id: "castle",
@@ -117,7 +118,60 @@ const space = {
   art: spaceArt,
 };
 
-export const WORLDS = [castle, space];
+const ninja = {
+  id: "ninja",
+  name: "Ninja Valley",
+  pic: "🥷",
+  subtitle: "Adventures in the Far East · English for little ninja",
+  chooseHero: "Choose your ninja",
+  characters: NINJA_HEROES,
+  levels: {
+    1: { title: "The Bamboo Forest", say: "Level one. The bamboo forest. Letters!", theme: "bamboo" },
+    2: { title: "The Dojo", say: "Level two. The dojo. Little words!", theme: "dojo" },
+    3: { title: "The Misty Mountains", say: "Level three. The misty mountains. Colours, toys and family!", theme: "mountains" },
+    4: { title: "The Dragon Temple", say: "Level four. The dragon temple. Sentences!", theme: "temple" },
+  },
+  stickers: [
+    { pic: "🐉", say: "a dragon" },
+    { pic: "🐼", say: "a panda" },
+    { pic: "🏯", say: "a castle" },
+    { pic: "🎋", say: "bamboo" },
+    { pic: "🏮", say: "a lantern" },
+    { pic: "🌸", say: "a flower" },
+    { pic: "🗻", say: "a mountain" },
+    { pic: "🐍", say: "a snake" },
+    { pic: "🥷", say: "a ninja" },
+    { pic: "⛩️", say: "a gate" },
+    { pic: "🎏", say: "a fish kite" },
+    { pic: "🍵", say: "a cup of tea" },
+    { pic: "🍙", say: "a rice ball" },
+    { pic: "🥢", say: "chopsticks" },
+    { pic: "🐯", say: "a tiger" },
+    { pic: "🐒", say: "a monkey" },
+    { pic: "🎐", say: "a wind chime" },
+    { pic: "🌊", say: "a wave" },
+    { pic: "🍜", say: "noodles" },
+    { pic: "🪁", say: "a kite" },
+  ],
+  text: {
+    door: "Temple gate",
+    bonus: "Golden scroll (bonus)",
+    bonusNear: "A golden scroll! Jump up and open it!",
+    bonusNearSticker: "A golden scroll! Jump up and win a sticker!",
+    stickerHidden: "Find this sticker in a golden scroll!",
+    boss: "The Great Dragon asks",
+    bossToast: "The Great Dragon: “Answer my questions, then you may pass!”",
+    bossSay: "I am the Great Dragon! Answer my questions, then you may pass!",
+    power: "Super ninja! ✨",
+    powerSay: "You are a super ninja!",
+    unitDone: "🥷",
+    unitDoneSay: "You are a real ninja!",
+    respawn: "Oh no! Back to the last gate …",
+  },
+  art: ninjaArt,
+};
+
+export const WORLDS = [castle, space, ninja];
 
 export const worldById = (id) => WORLDS.find((w) => w.id === id) ?? castle;
 

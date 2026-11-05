@@ -212,12 +212,17 @@ export function buildLevel(def, tasks) {
 }
 
 // Outdoor themes: something standing on the ground now and then.
-const OUTDOOR = { garden: "torch", tower: "torch", launchpad: "beacon", planet: "plant", darkstar: "beacon" };
+const OUTDOOR = {
+  garden: "torch", tower: "torch",
+  launchpad: "beacon", planet: "plant", darkstar: "beacon",
+  bamboo: "stoneLantern", mountains: "blossom", temple: "stoneLantern",
+};
 // Indoor themes: a light high on the wall, a tall thing, a thing on the floor, a small thing on the wall.
 const INDOOR = {
   library: { high: "torch", tall: "window", floor: null, low: "portrait" },
   dungeon: { high: "torch", tall: "portrait", floor: "cauldron", low: "portrait" },
   station: { high: "lamp", tall: "porthole", floor: "crate", low: "screen" },
+  dojo: { high: "paperLantern", tall: "shoji", floor: "dummy", low: "scroll" },
 };
 
 function decorate(theme, tiles, width, rand) {
