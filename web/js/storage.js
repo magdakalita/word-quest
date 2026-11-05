@@ -2,14 +2,20 @@
 
 const KEY = "wordquest.progress";
 
+// heroes: the character chosen in each world. Unlocked levels and best stars are shared by
+// all worlds, the stickers are kept per world.
 export function loadProgress() {
+  let p = null;
   try {
-    const p = JSON.parse(localStorage.getItem(KEY));
-    if (p && typeof p === "object") return { name: "", character: "mila", units: {}, ...p };
+    p = JSON.parse(localStorage.getItem(KEY));
   } catch {
     // ignore
   }
-  return { name: "", character: "mila", units: {} };
+  if (!p || typeof p !== "object") p = {};
+  p = { name: "", world: "castle", units: {}, ...p };
+  p.heroes ??= { castle: p.character ?? "mila" }; // saved before there were worlds
+  delete p.character;
+  return p;
 }
 
 export function saveProgress(p) {
@@ -20,8 +26,24 @@ export function saveProgress(p) {
   }
 }
 
+// Start again: unlocked levels, best stars and stickers of every unit and world are gone.
+// The name, the world and the chosen heroes stay.
+export function resetProgress(p) {
+  p.units = {};
+  saveProgress(p);
+}
+
 export function unitProgress(p, id) {
   p.units[id] ??= { unlocked: 1, best: {} };
-  p.units[id].stickers ??= []; // task ids of the solved magic books
-  return p.units[id];
+  const up = p.units[id];
+  if (Array.isArray(up.stickers)) up.stickers = { castle: up.stickers }; // saved before there were worlds
+  up.stickers ??= {};
+  return up;
+}
+
+// Task ids of the solved magic books of a unit in a world.
+export function worldStickers(p, unitId, worldId) {
+  const all = unitProgress(p, unitId).stickers;
+  all[worldId] ??= [];
+  return all[worldId];
 }

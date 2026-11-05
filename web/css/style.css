@@ -228,6 +228,8 @@ select { min-width: 260px; max-width: 100%; }
 .card canvas { image-rendering: pixelated; width: 72px; height: 96px; display: block; margin: 0 auto 4px; }
 .card .name { font-family: var(--font-title); font-size: 1.1em; }
 .card .house { font-size: .8em; color: var(--ink-soft); }
+.worlds .card { padding: 12px 8px; }
+.world-pic { font-size: 48px; line-height: 1.2; }
 .levels .card { text-align: left; padding: 12px; }
 .levels .card .num { font-family: var(--font-title); color: var(--red); }
 .levels .card .title { font-family: var(--font-title); font-size: 1.1em; }
@@ -235,6 +237,19 @@ select { min-width: 260px; max-width: 100%; }
 .levels .card .best { color: var(--gold); letter-spacing: 1px; }
 .levels .card.locked { opacity: .5; cursor: not-allowed; }
 .controls-help { font-size: .85em; color: var(--ink-soft); text-align: center; margin-top: 20px; }
+.reset-btn {
+  display: block;
+  margin: 8px auto 0;
+  font: inherit;
+  font-size: .8em;
+  color: var(--ink-soft);
+  background: none;
+  border: 1px solid var(--parchment-dark);
+  border-radius: 6px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.reset-btn:hover { color: var(--ink); border-color: var(--gold); }
 
 /* ---------- Tasks ---------- */
 
@@ -419,3 +434,42 @@ select { min-width: 260px; max-width: 100%; }
   .actions { justify-content: stretch; }
   .actions .btn { flex: 1; }
 }
+
+/* ---------- Space world: a ship's control panel instead of parchment ---------- */
+
+body[data-world="space"] {
+  --night: #03050f;
+  --night-2: #0f1d3d;
+  --parchment: #e6edf6;
+  --parchment-dark: #9fb3cc;
+  --ink: #13233f;
+  --ink-soft: #46597a;
+  --gold: #1fa7d6;
+  --gold-light: #9fe8ff;
+  --red: #1d5fa8;
+  --font-title: "Orbitron", "Trebuchet MS", sans-serif;
+}
+body[data-world="space"] #menu {
+  background:
+    radial-gradient(1px 1px at 12% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 68% 8%, #fff, transparent),
+    radial-gradient(2px 2px at 85% 32%, #cfe8ff, transparent),
+    radial-gradient(1px 1px at 30% 62%, #fff, transparent),
+    radial-gradient(2px 2px at 52% 88%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 74%, #fff, transparent),
+    radial-gradient(ellipse at top, var(--night-2), var(--night) 75%);
+}
+body[data-world="space"] .parchment {
+  background: linear-gradient(160deg, rgba(255, 255, 255, .6), transparent 45%), var(--parchment);
+  border-color: var(--parchment-dark);
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .6), 0 0 30px rgba(60, 170, 255, .25), 0 10px 40px rgba(0, 0, 0, .6);
+}
+body[data-world="space"] h1 { font-size: clamp(26px, 5vw, 44px); letter-spacing: .04em; }
+body[data-world="space"] .card { background: rgba(255, 255, 255, .7); }
+body[data-world="space"] .card.selected { background: #f2f8ff; }
+body[data-world="space"] .btn { background: linear-gradient(#f4f8fd, #cbd8e8); border-color: #7d93b0; box-shadow: 0 2px 0 #5b6f8c; font-size: .95em; }
+body[data-world="space"] .btn.primary { background: linear-gradient(#2a7ac9, #17508f); color: #fff; border-color: #0f3563; box-shadow: 0 2px 0 #0b2748; }
+body[data-world="space"] .seal { background: radial-gradient(circle at 35% 35%, #3fa9f5, #17508f); color: #fff; }
+body[data-world="space"] #game { box-shadow: 0 0 40px rgba(60, 170, 255, .25); }
+body[data-world="space"] .listen { background: linear-gradient(#f4f8fd, #cbd8e8); border-color: #7d93b0; }

@@ -1,0 +1,125 @@
+// Worlds: the same levels and tasks, played in a different place with different heroes.
+// A world gives every level its title, voice line and theme, and has its own stickers,
+// texts and art (the drawing functions the game engine calls – see castleArt in sprites.js).
+
+import { LEVELS } from "./levels/levels.js";
+import { castleArt } from "./sprites.js";
+import { spaceArt, SPACE_HEROES } from "./sprites-space.js";
+
+const castle = {
+  id: "castle",
+  name: "Castle Wordstone",
+  pic: "🏰",
+  subtitle: "Adventures in Castle Wordstone · English for little wizards",
+  chooseHero: "Choose your wizard",
+  characters: [
+    { id: "mila",  name: "Mila",  house: "House Firehawk",    robe: "#7a1520", robeDark: "#4e0b12", accent: "#e8b923", hair: "#5a3214", skin: "#f1c9a5" },
+    { id: "jonas", name: "Jonas", house: "House Forest Stag", robe: "#1f5a2c", robeDark: "#123a1b", accent: "#c9d1c8", hair: "#e3c26a", skin: "#f6d3b3" },
+    { id: "aylin", name: "Aylin", house: "House Star Raven",  robe: "#1d3a7a", robeDark: "#11234d", accent: "#b9874a", hair: "#1b1410", skin: "#d8a47f" },
+    { id: "theo",  name: "Theo",  house: "House Amber Fox",   robe: "#b8860b", robeDark: "#7a5806", accent: "#2b2b2b", hair: "#b5481d", skin: "#f3cfb0" },
+  ],
+  levels: {
+    1: { title: "The Castle Garden", say: "Level one. The castle garden. Letters!", theme: "garden" },
+    2: { title: "The Library", say: "Level two. The library. Little words!", theme: "library" },
+    3: { title: "The Potion Cellar", say: "Level three. The potion cellar. Colours, toys and family!", theme: "dungeon" },
+    4: { title: "The Astronomy Tower", say: "Level four. The astronomy tower. Sentences!", theme: "tower" },
+  },
+  stickers: [
+    { pic: "🦄", say: "a unicorn" },
+    { pic: "🐉", say: "a dragon" },
+    { pic: "🦉", say: "an owl" },
+    { pic: "🧚", say: "a fairy" },
+    { pic: "🐸", say: "a frog" },
+    { pic: "🦊", say: "a fox" },
+    { pic: "🐢", say: "a turtle" },
+    { pic: "🧜", say: "a mermaid" },
+    { pic: "🐧", say: "a penguin" },
+    { pic: "🦁", say: "a lion" },
+    { pic: "🐙", say: "an octopus" },
+    { pic: "🦋", say: "a butterfly" },
+    { pic: "🐝", say: "a bee" },
+    { pic: "🐳", say: "a whale" },
+    { pic: "🦖", say: "a dinosaur" },
+    { pic: "🐼", say: "a panda" },
+    { pic: "🦩", say: "a flamingo" },
+    { pic: "🐞", say: "a ladybird" },
+    { pic: "🐿️", say: "a squirrel" },
+    { pic: "🦔", say: "a hedgehog" },
+  ],
+  text: {
+    door: "Magic door",
+    bonus: "Magic book (bonus)",
+    bonusNear: "A magic book! Jump up and open it!",
+    bonusNearSticker: "A magic book! Jump up and win a sticker!",
+    stickerHidden: "Find this sticker in a magic book!",
+    boss: "The Sphinx asks",
+    bossToast: "The Sphinx: “Answer my questions, then you may pass!”",
+    bossSay: "I am the Sphinx! Answer my questions, then you may pass!",
+    power: "Super wizard! ✨",
+    powerSay: "You are a super wizard!",
+    unitDone: "🎓",
+    unitDoneSay: "You are a real wizard!",
+    respawn: "Oh no! Back to the last spell …",
+  },
+  art: castleArt,
+};
+
+const space = {
+  id: "space",
+  name: "Outer Space",
+  pic: "🚀",
+  subtitle: "Adventures among the stars · English for little space heroes",
+  chooseHero: "Choose your hero",
+  characters: SPACE_HEROES,
+  levels: {
+    1: { title: "The Launch Pad", say: "Level one. The launch pad. Letters!", theme: "launchpad" },
+    2: { title: "The Space Station", say: "Level two. The space station. Little words!", theme: "station" },
+    3: { title: "The Alien Planet", say: "Level three. The alien planet. Colours, toys and family!", theme: "planet" },
+    4: { title: "The Dark Star", say: "Level four. The dark star. Sentences!", theme: "darkstar" },
+  },
+  stickers: [
+    { pic: "🚀", say: "a rocket" },
+    { pic: "🪐", say: "a planet" },
+    { pic: "👽", say: "an alien" },
+    { pic: "🛸", say: "a flying saucer" },
+    { pic: "🌙", say: "the moon" },
+    { pic: "☄️", say: "a comet" },
+    { pic: "🤖", say: "a robot" },
+    { pic: "🛰️", say: "a satellite" },
+    { pic: "👩‍🚀", say: "an astronaut" },
+    { pic: "🌌", say: "a galaxy" },
+    { pic: "🌠", say: "a shooting star" },
+    { pic: "🔭", say: "a telescope" },
+    { pic: "⭐", say: "a star" },
+    { pic: "🌍", say: "the Earth" },
+    { pic: "🌞", say: "the sun" },
+    { pic: "🌑", say: "a dark moon" },
+    { pic: "💫", say: "a sparkle" },
+    { pic: "🧑‍🚀", say: "a space pilot" },
+    { pic: "🌕", say: "a full moon" },
+    { pic: "🪨", say: "a space rock" },
+  ],
+  text: {
+    door: "Airlock",
+    bonus: "Star crystal (bonus)",
+    bonusNear: "A star crystal! Jump up and touch it!",
+    bonusNearSticker: "A star crystal! Jump up and win a sticker!",
+    stickerHidden: "Find this sticker in a star crystal!",
+    boss: "The Robot Guardian asks",
+    bossToast: "The Robot Guardian: “Answer my questions, then you may pass!”",
+    bossSay: "I am the Robot Guardian! Answer my questions, then you may pass!",
+    power: "Super space hero! ✨",
+    powerSay: "You are a super space hero!",
+    unitDone: "🚀",
+    unitDoneSay: "You are a real space hero!",
+    respawn: "Oh no! Back to the last airlock …",
+  },
+  art: spaceArt,
+};
+
+export const WORLDS = [castle, space];
+
+export const worldById = (id) => WORLDS.find((w) => w.id === id) ?? castle;
+
+// A level as it is played in a world: the shared layout (levels.js) with the world's look.
+export const levelDef = (world, n) => ({ ...LEVELS.find((l) => l.n === n), ...world.levels[n] });

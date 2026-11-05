@@ -1,14 +1,8 @@
 // Pixel-art sprites drawn in code – no external image assets.
 // Each sprite is a grid of palette letters; "." is transparent.
+// This file draws the castle world (castleArt) and holds the helpers other worlds share.
 
 export const TILE = 32;
-
-export const CHARACTERS = [
-  { id: "mila",  name: "Mila",  house: "House Firehawk",    robe: "#7a1520", robeDark: "#4e0b12", accent: "#e8b923", hair: "#5a3214", skin: "#f1c9a5" },
-  { id: "jonas", name: "Jonas", house: "House Forest Stag",    robe: "#1f5a2c", robeDark: "#123a1b", accent: "#c9d1c8", hair: "#e3c26a", skin: "#f6d3b3" },
-  { id: "aylin", name: "Aylin", house: "House Star Raven",   robe: "#1d3a7a", robeDark: "#11234d", accent: "#b9874a", hair: "#1b1410", skin: "#d8a47f" },
-  { id: "theo",  name: "Theo",  house: "House Amber Fox", robe: "#b8860b", robeDark: "#7a5806", accent: "#2b2b2b", hair: "#b5481d", skin: "#f3cfb0" },
-];
 
 const BODY = [
   "...hhhhhh...",
@@ -60,14 +54,14 @@ const BOOK = [
   ".pppppppppp.",
 ];
 
-function makeCanvas(w, h) {
+export function makeCanvas(w, h) {
   const c = document.createElement("canvas");
   c.width = w;
   c.height = h;
   return c;
 }
 
-function paint(grid, palette, scale) {
+export function paint(grid, palette, scale) {
   const h = grid.length;
   const w = Math.max(...grid.map((r) => r.length));
   const c = makeCanvas(w * scale, h * scale);
@@ -84,14 +78,15 @@ function paint(grid, palette, scale) {
 }
 
 const cache = new Map();
-function cached(key, make) {
+export function cached(key, make) {
   if (!cache.has(key)) cache.set(key, make());
   return cache.get(key);
 }
 
+// A character is the wizard body in its own colours, or its own grid (`body`) with a `palette`.
 export function characterFrame(ch, pose) {
   return cached(`char:${ch.id}:${pose}`, () =>
-    paint([...BODY, ...LEGS[pose]], {
+    paint([...(ch.body ?? BODY), ...LEGS[pose]], ch.palette ?? {
       h: ch.hair, s: ch.skin, e: "#1a1a1a", y: ch.accent, r: ch.robe, R: ch.robeDark, b: "#2a1c12", w: "#6b4423",
     }, 2),
   );
@@ -380,7 +375,7 @@ export function drawPortal(ctx, x, y, t) {
 
 // ---------- Backgrounds ----------
 
-function rand(seed) {
+export function rand(seed) {
   let s = seed;
   return () => {
     s = (s * 16807) % 2147483647;
@@ -409,7 +404,7 @@ function drawSky(ctx, theme, w, h, t) {
   ctx.globalAlpha = 1;
 }
 
-function drawMoon(ctx, x, y, r) {
+export function drawMoon(ctx, x, y, r) {
   ctx.fillStyle = "rgba(255,250,220,0.15)";
   ctx.beginPath();
   ctx.arc(x, y, r * 1.6, 0, Math.PI * 2);
@@ -451,7 +446,7 @@ function drawCastleSilhouette(ctx, offset, baseY, t) {
   }
 }
 
-function drawHills(ctx, offset, baseY, color, amp, freq) {
+export function drawHills(ctx, offset, baseY, color, amp, freq) {
   ctx.fillStyle = color;
   ctx.beginPath();
   ctx.moveTo(0, 544);
@@ -555,3 +550,39 @@ export function drawBackground(ctx, themeName, camX, t) {
     drawTowerBricks(ctx, camX * 0.35);
   }
 }
+
+// ---------- The castle world, as the game engine draws it ----------
+
+function drawDecoration(ctx, d, x, y, t, themeName) {
+  if (d.kind === "torch") {
+    if (THEMES[themeName].outdoor) {
+      ctx.fillStyle = "#2b2b3a";
+      ctx.fillRect(x + 14, y + 10, 4, 22);
+      drawTorch(ctx, x + 16, y - 2, t);
+    } else drawTorch(ctx, x + 16, y + 10, t);
+  } else if (d.kind === "portrait") drawPortrait(ctx, x - 1, y - 6, d.col);
+  else if (d.kind === "window") drawWindow(ctx, x + 2, y, t);
+  else if (d.kind === "cauldron") drawCauldron(ctx, x, y + 4, t);
+}
+
+// (x, y) is the middle of the enemy's top edge.
+function drawGhost(ctx, x, y, facingRight) {
+  ctx.save();
+  ctx.globalAlpha = 0.85;
+  ctx.translate(x, y);
+  if (facingRight) ctx.scale(-1, 1);
+  ctx.drawImage(ghostSprite(), -15, -2);
+  ctx.restore();
+}
+
+export const castleArt = {
+  tile: tileSprite,
+  drawBackground,
+  drawDecoration,
+  drawEnemy: drawGhost,
+  bonusSprite: bookSprite,
+  bonusGlow: "rgba(245,211,107,0.28)",
+  drawDoor,
+  drawBoss: drawSphinx,
+  drawPortal,
+};

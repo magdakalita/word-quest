@@ -211,21 +211,31 @@ export function buildLevel(def, tasks) {
   return { width, height: ROWS, tiles, stars, ghosts, triggers, start, finish, decorations };
 }
 
+// Outdoor themes: something standing on the ground now and then.
+const OUTDOOR = { garden: "torch", tower: "torch", launchpad: "beacon", planet: "plant", darkstar: "beacon" };
+// Indoor themes: a light high on the wall, a tall thing, a thing on the floor, a small thing on the wall.
+const INDOOR = {
+  library: { high: "torch", tall: "window", floor: null, low: "portrait" },
+  dungeon: { high: "torch", tall: "portrait", floor: "cauldron", low: "portrait" },
+  station: { high: "lamp", tall: "porthole", floor: "crate", low: "screen" },
+};
+
 function decorate(theme, tiles, width, rand) {
   const decorations = [];
   const free = (col, row) => tiles[row]?.[col] === " ";
+  const onGround = (col) => free(col, GROUND_ROW - 1) && tiles[GROUND_ROW][col] === "#";
+  const indoor = INDOOR[theme];
+  if (!OUTDOOR[theme] && !indoor) return decorations;
   for (let col = 6; col < width - 4; col += 5 + Math.floor(rand() * 5)) {
-    if (theme === "garden" || theme === "tower") {
-      if (free(col, GROUND_ROW - 1) && tiles[GROUND_ROW][col] === "#" && rand() < 0.6) {
-        decorations.push({ kind: "torch", col, row: GROUND_ROW - 1 });
-      }
+    if (OUTDOOR[theme]) {
+      if (onGround(col) && rand() < 0.6) decorations.push({ kind: OUTDOOR[theme], col, row: GROUND_ROW - 1 });
       continue;
     }
     const roll = rand();
-    if (roll < 0.45 && free(col, 9)) decorations.push({ kind: "torch", col, row: 9 });
-    else if (roll < 0.7 && free(col, 7) && free(col, 8)) decorations.push({ kind: theme === "library" ? "window" : "portrait", col, row: 7 });
-    else if (theme === "dungeon" && free(col, GROUND_ROW - 1) && tiles[GROUND_ROW][col] === "#") decorations.push({ kind: "cauldron", col, row: GROUND_ROW - 1 });
-    else if (free(col, 8)) decorations.push({ kind: "portrait", col, row: 8 });
+    if (roll < 0.45 && free(col, 9)) decorations.push({ kind: indoor.high, col, row: 9 });
+    else if (roll < 0.7 && free(col, 7) && free(col, 8)) decorations.push({ kind: indoor.tall, col, row: 7 });
+    else if (indoor.floor && onGround(col)) decorations.push({ kind: indoor.floor, col, row: GROUND_ROW - 1 });
+    else if (free(col, 8)) decorations.push({ kind: indoor.low, col, row: 8 });
   }
   return decorations;
 }

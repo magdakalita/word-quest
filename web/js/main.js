@@ -3,11 +3,12 @@ import { Input } from "./engine/input.js";
 import { Sfx } from "./engine/sfx.js";
 import { LEVELS } from "./levels/levels.js";
 import { buildLevel } from "./levels/builder.js";
-import { CHARACTERS, drawCharacterPreview } from "./sprites.js";
+import { drawCharacterPreview } from "./sprites.js";
+import { WORLDS, worldById, levelDef } from "./worlds.js";
 import { openTasks } from "./tasks/modal.js";
 import { el } from "./tasks/util.js";
 import { speech } from "./speech.js";
-import { loadProgress, saveProgress, unitProgress } from "./storage.js";
+import { loadProgress, saveProgress, resetProgress, unitProgress, worldStickers } from "./storage.js";
 import { unitBooks } from "./stickers.js";
 
 const $ = (id) => document.getElementById(id);
@@ -18,7 +19,8 @@ const input = new Input();
 const sfx = new Sfx();
 const progress = loadProgress();
 let units = [];
-let unit = null; // { id, title, tasks, books }
+let world = worldById(params.get("world") ?? progress.world);
+let unit = null; // { id, title, tasks, books } – the books hold the stickers of the current world
 let levelStickers = []; // stickers won on the current level
 let currentLevel = null;
 let toastTimer = null;
@@ -49,7 +51,8 @@ async function boot() {
     saveProgress(progress);
   });
 
-  renderCharacters();
+  renderWorlds();
+  applyWorld();
   await selectUnit(select.value);
   wireButtons();
 }
@@ -63,7 +66,7 @@ async function fetchJson(url) {
 async function selectUnit(id) {
   const meta = units.find((u) => u.id === id);
   const data = await fetchJson(`data/${meta.file}`);
-  unit = { id, title: meta.title, tasks: data.tasks, books: unitBooks(data.tasks) };
+  unit = { id, title: meta.title, tasks: data.tasks, books: unitBooks(data.tasks, world.stickers) };
   progress.lastUnit = id;
   saveProgress(progress);
   renderLevels();
@@ -71,16 +74,48 @@ async function selectUnit(id) {
 
 // ---------- Menu ----------
 
+function renderWorlds() {
+  const box = $("worlds");
+  box.replaceChildren();
+  for (const w of WORLDS) {
+    const card = el("button", { class: "card world", type: "button" }, el("div", { class: "world-pic", text: w.pic }), el("div", { class: "name", text: w.name }));
+    card.classList.toggle("selected", w === world);
+    card.addEventListener("click", () => {
+      speech.say(w.name);
+      if (w === world) return;
+      world = w;
+      progress.world = w.id;
+      saveProgress(progress);
+      renderWorlds();
+      applyWorld();
+      unit.books = unitBooks(unit.tasks, world.stickers);
+      renderLevels();
+    });
+    box.append(card);
+  }
+}
+
+// The menu dressed for the current world: its look, subtitle and heroes.
+function applyWorld() {
+  document.body.dataset.world = world.id;
+  $("menu-subtitle").textContent = world.subtitle;
+  $("hero-heading").textContent = world.chooseHero;
+  renderCharacters();
+}
+
+const heroOf = () => world.characters.find((c) => c.id === progress.heroes[world.id]) ?? world.characters[0];
+
 function renderCharacters() {
   const box = $("characters");
   box.replaceChildren();
-  for (const ch of CHARACTERS) {
+  const chosen = heroOf();
+  for (const ch of world.characters) {
     const canvas = el("canvas", { width: "24", height: "32" });
     drawCharacterPreview(canvas, ch);
     const card = el("button", { class: "card", type: "button" }, canvas, el("div", { class: "name", text: ch.name }), el("div", { class: "house", text: ch.house }));
-    card.classList.toggle("selected", progress.character === ch.id);
+    card.classList.toggle("selected", chosen === ch);
     card.addEventListener("click", () => {
-      progress.character = ch.id;
+      progress.heroes[world.id] = ch.id;
       saveProgress(progress);
       speech.say(ch.name);
       renderCharacters();
@@ -93,7 +128,8 @@ function renderLevels() {
   const box = $("levels");
   box.replaceChildren();
   const up = unitProgress(progress, unit.id);
-  for (const def of LEVELS) {
+  for (const { n } of LEVELS) {
+    const def = levelDef(world, n);
     const count = unit.tasks.filter((t) => t.level === def.n).length;
     const locked = !UNLOCK_ALL && def.n > up.unlocked;
     const best = up.best[def.n];
@@ -112,7 +148,7 @@ function renderLevels() {
 
 // The sticker album: one row per level, a grey "?" for every sticker still hidden in a book.
 function renderAlbum() {
-  const owned = new Set(unitProgress(progress, unit.id).stickers);
+  const owned = new Set(worldStickers(progress, unit.id, world.id));
   const box = $("album");
   box.replaceChildren();
   for (const def of LEVELS) {
@@ -127,17 +163,17 @@ function renderAlbum() {
 
 function stickerButton(sticker, owned) {
   const b = el("button", { class: `sticker${owned ? "" : " missing"}`, type: "button", text: owned ? sticker.pic : "?" });
-  b.addEventListener("click", () => speech.say(owned ? sticker.say : "Find this sticker in a magic book!"));
+  b.addEventListener("click", () => speech.say(owned ? sticker.say : world.text.stickerHidden));
   return b;
 }
 
 const bookOf = (taskId) => unit.books.find((b) => b.taskId === taskId);
-const hasSticker = (taskId) => unitProgress(progress, unit.id).stickers.includes(taskId);
+const hasSticker = (taskId) => worldStickers(progress, unit.id, world.id).includes(taskId);
 
 function callBook(trigger) {
-  const win = !hasSticker(trigger.taskIds[0]);
-  toast(win ? "A magic book! Jump up and win a sticker!" : "A magic book! Jump up and open it!");
-  speech.say(win ? "A magic book! Jump up and win a sticker!" : "A magic book! Jump up and open it!");
+  const msg = hasSticker(trigger.taskIds[0]) ? world.text.bonusNear : world.text.bonusNearSticker;
+  toast(msg);
+  speech.say(msg);
 }
 
 function wireButtons() {
@@ -145,6 +181,11 @@ function wireButtons() {
   $("pause-resume").addEventListener("click", () => setPause(false));
   $("pause-menu").addEventListener("click", backToMenu);
   $("summary-menu").addEventListener("click", backToMenu);
+  $("btn-reset").addEventListener("click", () => {
+    if (!confirm("Start again from the beginning? All unlocked levels, stars and stickers will be lost.")) return;
+    resetProgress(progress);
+    renderLevels();
+  });
   $("summary-next").addEventListener("click", () => {
     if (currentLevel < LEVELS.length) startLevel(currentLevel + 1);
     else backToMenu();
@@ -168,15 +209,14 @@ function wireButtons() {
 // ---------- Playing ----------
 
 function startLevel(n) {
-  const def = LEVELS.find((l) => l.n === n);
+  const def = levelDef(world, n);
   const tasks = unit.tasks.filter((t) => t.level === n);
-  const character = CHARACTERS.find((c) => c.id === progress.character) ?? CHARACTERS[0];
   currentLevel = n;
   const map = buildLevel(def, tasks);
   // A book still holding its sticker shows it above the book.
   for (const tr of map.triggers) if (tr.kind === "book" && !hasSticker(tr.taskIds[0])) tr.sticker = bookOf(tr.taskIds[0])?.sticker.pic;
   levelStickers = [];
-  game.load(def, map, character, tasks.length);
+  game.load(def, map, heroOf(), tasks.length, world);
   for (const id of ["menu", "summary", "pause", "task"]) $(id).hidden = true;
   $("hud").hidden = false;
   $("hud-level").textContent = `Level ${n} · ${def.title}`;
@@ -209,14 +249,14 @@ async function runTasks(trigger, onProgress) {
   const tasks = trigger.taskIds.map((id) => unit.tasks.find((t) => t.id === id));
   const allTasks = unit.tasks.filter((t) => t.level === currentLevel);
   const label = (i) => {
-    if (trigger.kind === "sphinx") return `The Sphinx asks · Question ${i + 1} of ${tasks.length}`;
+    if (trigger.kind === "sphinx") return `${world.text.boss} · Question ${i + 1} of ${tasks.length}`;
     const pos = allTasks.indexOf(tasks[i]) + 1;
-    if (trigger.kind === "book") return `Magic book (bonus) · Task ${pos} of ${allTasks.length}`;
-    return `Magic door · Task ${pos} of ${allTasks.length}`;
+    if (trigger.kind === "book") return `${world.text.bonus} · Task ${pos} of ${allTasks.length}`;
+    return `${world.text.door} · Task ${pos} of ${allTasks.length}`;
   };
   if (trigger.kind === "sphinx") {
-    toast("The Sphinx: “Answer my questions, then you may pass!”");
-    speech.say("I am the Sphinx! Answer my questions, then you may pass!");
+    toast(world.text.bossToast);
+    speech.say(world.text.bossSay);
     await new Promise((r) => setTimeout(r, 3500));
   }
   const results = await openTasks(tasks, { label, onProgress, sfx });
@@ -224,18 +264,19 @@ async function runTasks(trigger, onProgress) {
   return results;
 }
 
-// After a magic book: a sticker for a right answer (first or second try) and the super wizard.
+// After a magic book: a sticker for a right answer (first or second try) and the super wizard
+// (or the world's own super hero).
 function rewardBook(trigger, results) {
   const taskId = trigger.taskIds[0];
   const book = bookOf(taskId);
   const won = book && results.length && results.every((r) => r.stars > 0) && !hasSticker(taskId);
   if (won) {
-    unitProgress(progress, unit.id).stickers.push(taskId);
+    worldStickers(progress, unit.id, world.id).push(taskId);
     saveProgress(progress);
     levelStickers.push(book.sticker);
   }
-  toast(won ? `New sticker! ${book.sticker.pic} · Super wizard! ✨` : "Super wizard! ✨");
-  speech.say([won ? `You got a sticker! ${book.sticker.say[0].toUpperCase()}${book.sticker.say.slice(1)}!` : null, "You are a super wizard!"]);
+  toast(won ? `New sticker! ${book.sticker.pic} · ${world.text.power}` : world.text.power);
+  speech.say([won ? `You got a sticker! ${book.sticker.say[0].toUpperCase()}${book.sticker.say.slice(1)}!` : null, world.text.powerSay]);
 }
 
 function updateHud(s) {
@@ -268,8 +309,8 @@ function showSummary(stats) {
   const ss = String(stats.seconds % 60).padStart(2, "0");
   const last = currentLevel >= LEVELS.length;
 
-  $("summary-title").textContent = last ? `Unit ${Number(unit.id)} complete! 🎓` : `Level ${currentLevel} complete! 🎉`;
-  speech.say(last ? `Hooray${progress.name ? `, ${progress.name}` : ""}! You finished the whole unit! You are a real wizard!` : `Well done${progress.name ? `, ${progress.name}` : ""}! Level ${currentLevel} complete!`);
+  $("summary-title").textContent = last ? `Unit ${Number(unit.id)} complete! ${world.text.unitDone}` : `Level ${currentLevel} complete! 🎉`;
+  speech.say(last ? `Hooray${progress.name ? `, ${progress.name}` : ""}! You finished the whole unit! ${world.text.unitDoneSay}` : `Well done${progress.name ? `, ${progress.name}` : ""}! Level ${currentLevel} complete!`);
   const stat = (value, label) => el("div", { class: "stat" }, el("div", { class: "value", text: value }), el("div", { class: "label", text: label }));
   $("summary-stats").replaceChildren(
     stat(`★ ${stats.stars}`, "Stars"),

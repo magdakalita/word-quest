@@ -1,7 +1,4 @@
-import {
-  TILE, characterFrame, ghostSprite, bookSprite, tileSprite, drawBackground, drawStar,
-  drawTorch, drawPortrait, drawWindow, drawCauldron, drawDoor, drawSphinx, drawPortal, THEMES,
-} from "../sprites.js";
+import { TILE, characterFrame, drawStar } from "../sprites.js";
 import { ROWS } from "../levels/builder.js";
 
 const W = 960;
@@ -20,6 +17,8 @@ const POWER_SIZE = 1.5;
 const POWER_RUN = 1.3;
 const POWER_JUMP = 1.12;
 const BOOK_CALL = 6 * TILE; // a book calls the child from this far away
+// Sparkles at the tip of the wand – a character can have its own (a glowing sword).
+const WAND_SPARKLE = { x: 11, y: -18, w: 4, h: 6, color: "#f5d36b" };
 
 export class Game {
   constructor(canvas, input, sfx, hooks) {
@@ -35,8 +34,11 @@ export class Game {
     this.frame = this.frame.bind(this);
   }
 
-  load(def, map, character, taskCount) {
+  // world: see worlds.js – its `art` draws the level, its `text` speaks in it.
+  load(def, map, character, taskCount, world) {
     this.def = def;
+    this.art = world.art;
+    this.text = world.text;
     this.map = map;
     this.character = character;
     this.taskCount = taskCount;
@@ -291,7 +293,7 @@ export class Game {
       if (this.hearts <= 0) {
         this.hearts = MAX_HEARTS;
         this.starCount = Math.max(0, this.starCount - 5);
-        this.hooks.onToast("Oh no! Back to the last spell …");
+        this.hooks.onToast(this.text.respawn);
       }
       p.x = this.checkpoint.x;
       p.y = this.checkpoint.y;
@@ -421,28 +423,18 @@ export class Game {
     if (!this.map) return;
     const t = this.time;
     const cam = Math.round(this.camX);
-    drawBackground(ctx, this.theme, cam, t);
+    const art = this.art;
+    art.drawBackground(ctx, this.theme, cam, t);
 
     ctx.save();
     ctx.translate(-cam, 0);
 
     const firstCol = Math.max(0, Math.floor(cam / TILE) - 1);
     const lastCol = Math.min(this.map.width - 1, Math.ceil((cam + W) / TILE) + 1);
-    const outdoor = THEMES[this.theme].outdoor;
 
     for (const d of this.map.decorations) {
       if (d.col < firstCol - 2 || d.col > lastCol + 2) continue;
-      const x = d.col * TILE;
-      const y = d.row * TILE;
-      if (d.kind === "torch") {
-        if (outdoor) {
-          ctx.fillStyle = "#2b2b3a";
-          ctx.fillRect(x + 14, y + 10, 4, 22);
-          drawTorch(ctx, x + 16, y - 2, t);
-        } else drawTorch(ctx, x + 16, y + 10, t);
-      } else if (d.kind === "portrait") drawPortrait(ctx, x - 1, y - 6, d.col);
-      else if (d.kind === "window") drawWindow(ctx, x + 2, y, t);
-      else if (d.kind === "cauldron") drawCauldron(ctx, x, y + 4, t);
+      art.drawDecoration(ctx, d, d.col * TILE, d.row * TILE, t, this.theme);
     }
 
     for (let r = 0; r < ROWS; r++) {
@@ -450,9 +442,9 @@ export class Game {
         const ch = this.map.tiles[r][c];
         if (ch === " ") continue;
         let sprite;
-        if (ch === "#") sprite = tileSprite(this.theme, this.map.tiles[r - 1]?.[c] === "#" ? "ground" : "ground-top");
-        else if (ch === "=") sprite = tileSprite(this.theme, "block");
-        else if (ch === "-") sprite = tileSprite(this.theme, "plank");
+        if (ch === "#") sprite = art.tile(this.theme, this.map.tiles[r - 1]?.[c] === "#" ? "ground" : "ground-top");
+        else if (ch === "=") sprite = art.tile(this.theme, "block");
+        else if (ch === "-") sprite = art.tile(this.theme, "plank");
         if (sprite) ctx.drawImage(sprite, c * TILE, r * TILE);
       }
     }
@@ -462,25 +454,17 @@ export class Game {
     for (const tr of this.triggers) {
       const x = tr.col * TILE;
       const y = tr.row * TILE;
-      if (tr.kind === "door") drawDoor(ctx, x, y, tr.done, t);
-      else if (tr.kind === "book" && !tr.done) this.drawBook(ctx, tr, x + TILE / 2, y + TILE / 2 + Math.sin(t * 3 + tr.col) * 4, t); else if (tr.kind === "sphinx" && !tr.done) {
-        drawSphinx(ctx, x, y, tr.solved, tr.taskIds.length, t);
-      }
+      if (tr.kind === "door") art.drawDoor(ctx, x, y, tr.done, t);
+      else if (tr.kind === "book" && !tr.done) this.drawBook(ctx, tr, x + TILE / 2, y + TILE / 2 + Math.sin(t * 3 + tr.col) * 4, t);
+      else if (tr.kind === "sphinx" && !tr.done) art.drawBoss(ctx, x, y, tr.solved, tr.taskIds.length, t);
     }
 
     const f = this.map.finish;
-    drawPortal(ctx, f.col * TILE, f.row * TILE, t);
+    art.drawPortal(ctx, f.col * TILE, f.row * TILE, t);
 
-    const ghost = ghostSprite();
     for (const g of this.ghosts) {
       if (g.dead) continue;
-      const bob = Math.sin(t * 4 + g.phase) * 3;
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.translate(g.x + g.w / 2, g.y + bob);
-      if (g.vx > 0) ctx.scale(-1, 1);
-      ctx.drawImage(ghost, -15, -2);
-      ctx.restore();
+      art.drawEnemy(ctx, g.x + g.w / 2, g.y + Math.sin(t * 4 + g.phase) * 3, g.vx > 0, t + g.phase);
     }
 
     this.drawPlayer(ctx);
@@ -494,10 +478,10 @@ export class Game {
     ctx.restore();
   }
 
-  // A bigger, glowing book with sparkles; the sticker inside floats above it in a bubble.
+  // A bigger, glowing book (or the world's other bonus) with sparkles; the sticker inside floats above it in a bubble.
   drawBook(ctx, tr, cx, cy, t) {
     const pulse = Math.sin(t * 5);
-    ctx.fillStyle = "rgba(245,211,107,0.28)";
+    ctx.fillStyle = this.art.bonusGlow;
     ctx.beginPath();
     ctx.arc(cx, cy, 28 + pulse * 4, 0, Math.PI * 2);
     ctx.fill();
@@ -506,7 +490,7 @@ export class Game {
       const a = t * 2 + (i * Math.PI) / 2;
       ctx.fillRect(Math.round(cx + Math.cos(a) * 26) - 1, Math.round(cy + Math.sin(a) * 22) - 1, 3, 3);
     }
-    const book = bookSprite();
+    const book = this.art.bonusSprite();
     const w = book.width * 1.3;
     const h = book.height * 1.3;
     ctx.drawImage(book, Math.round(cx - w / 2), Math.round(cy - h / 2), w, h);
@@ -546,9 +530,10 @@ export class Game {
     }
     ctx.scale(p.facing < 0 ? -p.size : p.size, p.size);
     ctx.drawImage(sprite, -12, -32);
+    const sp = this.character.sparkle ?? WAND_SPARKLE;
     if (this.mode === "play" && Math.random() < 0.15) {
-      ctx.fillStyle = "#f5d36b";
-      ctx.fillRect(11 + Math.random() * 4, -18 + Math.random() * 6, 2, 2); // wand sparkle
+      ctx.fillStyle = sp.color;
+      ctx.fillRect(sp.x + Math.random() * sp.w, sp.y + Math.random() * sp.h, 2, 2);
     }
     ctx.restore();
   }

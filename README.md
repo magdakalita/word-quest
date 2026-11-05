@@ -10,7 +10,8 @@ Zagraj: <https://magdakalita.github.io/word-quest/>
 - 4 poziomy: litery a, b, c, d → małe słowa (I, you, he, she, my, your, am, it's, I'm, you're) → kolory, zabawki i rodzina → zdania („It's a blue box.”)
 - 4 typy zadań: posłuchaj i stuknij (`pick`), dopasuj pary, uzupełnij lukę z banku słów, ułóż zdanie
 - zła odpowiedź = podpowiedź i druga próba, potem rozwiązanie (bez „game over” za błędy językowe)
-- postęp zapisuje się w przeglądarce
+- 2 światy do wyboru: magiczny zamek (czarodzieje) i kosmos (astronautka, rycerz gwiazd, mroczny lord, mały zielony mistrz) – te same zadania w innej scenerii
+- postęp zapisuje się w przeglądarce; przycisk „Reset progress” na dole menu (po potwierdzeniu) kasuje odblokowane poziomy, gwiazdki i naklejki – imię i wybrane postacie zostają
 
 Gra to statyczna strona (`web/`) – bez serwera i bez kosztów. Python (`src/booksee_bucksee/`) służy tylko do sprawdzania zadań.
 
@@ -23,6 +24,22 @@ python3 -m http.server -d web 8000
 Potem otwórz <http://localhost:8000> w Chrome lub Safari. Dodaj `?all` do adresu (<http://localhost:8000/?all>), żeby odblokować wszystkie poziomy – przydatne do sprawdzania.
 
 Głos: gra wybiera angielski głos systemu (np. „Samantha” na Macu/iPadzie, „Google UK English Female” w Chrome). Przycisk ♪ wycisza dźwięki i głos.
+
+## Światy
+
+W menu dziecko wybiera świat, a potem postać z tego świata. Świat zmienia tylko wygląd i teksty – plansze, zadania i poziomy są wszędzie takie same:
+
+| | Zamek | Kosmos |
+|---|---|---|
+| postacie | Mila, Jonas, Aylin, Theo | Nova, Kai, Lord Zark, Master Moko |
+| poziomy | ogród, biblioteka, piwnica z eliksirami, wieża astronomiczna | wyrzutnia rakiet, stacja kosmiczna, planeta kosmitów, Dark Star |
+| przeszkody | zaczarowane drzwi, duszki | śluzy, kosmici |
+| bonus z naklejką | latająca księga | kryształ gwiazd |
+| pytania na końcu | sfinks | robot-strażnik |
+
+Odblokowane poziomy i rekordy ★ są wspólne dla wszystkich światów, a każdy świat ma własny album naklejek – jest po co przejść unit drugi raz. Dodaj `?world=space` do adresu, żeby od razu otworzyć kosmos.
+
+Nowy świat: dopisz obiekt w `web/js/worlds.js` (postacie, tytuły i motywy poziomów, naklejki, teksty) i jego grafikę w osobnym pliku na wzór `web/js/sprites-space.js` (`spaceArt`: kafle, tło, dekoracje, wróg, bonus, drzwi, boss, portal). Rodzaje dekoracji dla nowych motywów dopisz w `decorate()` w `web/js/levels/builder.js`.
 
 ## Głoski (phonics)
 
@@ -85,7 +102,9 @@ web/                   gra (publikowana)
   js/tasks/            okno zadania i 4 typy zadań
   js/speech.js         czytanie na głos (Web Speech API) i głoski z plików
   js/pics.js           kolorowe rysunki (pudełko, piłka, babeczka)
-  js/sprites.js        grafika pixel art rysowana w kodzie
+  js/worlds.js         światy: postacie, nazwy poziomów, naklejki, teksty
+  js/sprites.js        grafika pixel art rysowana w kodzie (zamek) i wspólne pomocnicze funkcje
+  js/sprites-space.js  grafika kosmosu
   data/                zadania (unitNN.json) i lista unitów
   audio/               głoski (a.m4a, b.m4a, …)
 src/booksee_bucksee/   narzędzia: validate, review, sounds

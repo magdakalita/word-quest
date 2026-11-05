@@ -6,7 +6,7 @@
   <title>The Word Quest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400&family=Andika:wght@400;700&family=MedievalSharp&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400&family=Andika:wght@400;700&family=MedievalSharp&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -41,14 +41,17 @@
     <section id="menu" class="screen">
       <div class="parchment wide">
         <h1>The Word Quest</h1>
-        <p class="subtitle">Adventures in Castle Wordstone · English for little wizards</p>
+        <p id="menu-subtitle" class="subtitle">Adventures in Castle Wordstone · English for little wizards</p>
 
         <label class="field">
           <span>What's your name?</span>
           <input id="player-name" type="text" maxlength="30" autocomplete="off" placeholder="Your name">
         </label>
 
-        <h2>Choose your wizard</h2>
+        <h2>Choose a world</h2>
+        <div id="worlds" class="cards worlds"></div>
+
+        <h2 id="hero-heading">Choose your wizard</h2>
         <div id="characters" class="cards"></div>
 
         <h2>Unit</h2>
@@ -61,6 +64,7 @@
         <div id="album" class="album"></div>
 
         <p class="controls-help">Controls: ← → or A / D to run · Space or ↑ to jump · Esc to pause</p>
+        <button id="btn-reset" class="reset-btn" type="button">↺ Reset progress</button>
       </div>
     </section>
 
