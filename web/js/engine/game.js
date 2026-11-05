@@ -241,7 +241,9 @@ export class Game {
         g.dead = true;
         p.vy = -480;
         this.starCount += 1;
-        this.burst(g.x + g.w / 2, g.y + g.h / 2, "#e8ecff", 14);
+        // a world can make the puff its own colours (e.g. police blue and red)
+        const colors = [].concat(this.art.enemyBurst ?? "#e8ecff");
+        for (const c of colors) this.burst(g.x + g.w / 2, g.y + g.h / 2, c, Math.ceil(14 / colors.length));
         this.sfx.play("stomp");
         this.emitHud();
       } else if (p.invuln <= 0) {

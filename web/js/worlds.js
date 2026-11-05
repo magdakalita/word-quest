@@ -6,6 +6,7 @@ import { LEVELS } from "./levels/levels.js";
 import { castleArt } from "./sprites.js";
 import { spaceArt, SPACE_HEROES } from "./sprites-space.js";
 import { ninjaArt, NINJA_HEROES } from "./sprites-ninja.js";
+import { cityArt, CITY_HEROES } from "./sprites-city.js";
 
 const castle = {
   id: "castle",
@@ -171,7 +172,60 @@ const ninja = {
   art: ninjaArt,
 };
 
-export const WORLDS = [castle, space, ninja];
+const city = {
+  id: "city",
+  name: "Brick City",
+  pic: "🚓",
+  subtitle: "Adventures in Brick City · English for little heroes",
+  chooseHero: "Choose your hero",
+  characters: CITY_HEROES,
+  levels: {
+    1: { title: "The City Park", say: "Level one. The city park. Letters!", theme: "park" },
+    2: { title: "The Town Hall", say: "Level two. The town hall. Little words!", theme: "townhall" },
+    3: { title: "The Police Station", say: "Level three. The police station. Colours, toys and family!", theme: "precinct" },
+    4: { title: "The City Square", say: "Level four. The city square. Sentences!", theme: "square" },
+  },
+  stickers: [
+    { pic: "🚓", say: "a police car" },
+    { pic: "🚒", say: "a fire engine" },
+    { pic: "🚑", say: "an ambulance" },
+    { pic: "🚌", say: "a bus" },
+    { pic: "🏛️", say: "a town hall" },
+    { pic: "🚧", say: "a roadblock" },
+    { pic: "🚦", say: "a traffic light" },
+    { pic: "🏙️", say: "a city" },
+    { pic: "🌭", say: "a hot dog" },
+    { pic: "🍕", say: "a pizza" },
+    { pic: "🍦", say: "an ice cream" },
+    { pic: "🎈", say: "a balloon" },
+    { pic: "🛴", say: "a scooter" },
+    { pic: "🚲", say: "a bike" },
+    { pic: "🐕", say: "a dog" },
+    { pic: "🌽", say: "corn" },
+    { pic: "🚁", say: "a helicopter" },
+    { pic: "🏆", say: "a cup" },
+    { pic: "🎡", say: "a big wheel" },
+    { pic: "🚂", say: "a train" },
+  ],
+  text: {
+    door: "Roadblock",
+    bonus: "Golden badge (bonus)",
+    bonusNear: "A golden badge! Jump up and get it!",
+    bonusNearSticker: "A golden badge! Jump up and win a sticker!",
+    stickerHidden: "Find this sticker in a golden badge!",
+    boss: "The Mayor asks",
+    bossToast: "The Mayor: “Answer my questions, then you may pass!”",
+    bossSay: "I am the Mayor! Answer my questions, then you may pass!",
+    power: "Super hero! ✨",
+    powerSay: "You are a super city hero!",
+    unitDone: "🏆",
+    unitDoneSay: "You are a real city hero!",
+    respawn: "Oh no! Back to the last roadblock …",
+  },
+  art: cityArt,
+};
+
+export const WORLDS = [castle, space, ninja, city];
 
 export const worldById = (id) => WORLDS.find((w) => w.id === id) ?? castle;
 

@@ -216,6 +216,7 @@ const OUTDOOR = {
   garden: "torch", tower: "torch",
   launchpad: "beacon", planet: "plant", darkstar: "beacon",
   bamboo: "stoneLantern", mountains: "blossom", temple: "stoneLantern",
+  park: "streetLamp", square: "streetLamp",
 };
 // Indoor themes: a light high on the wall, a tall thing, a thing on the floor, a small thing on the wall.
 const INDOOR = {
@@ -223,6 +224,8 @@ const INDOOR = {
   dungeon: { high: "torch", tall: "portrait", floor: "cauldron", low: "portrait" },
   station: { high: "lamp", tall: "porthole", floor: "crate", low: "screen" },
   dojo: { high: "paperLantern", tall: "shoji", floor: "dummy", low: "scroll" },
+  townhall: { high: "chandelier", tall: "flag", floor: null, low: "portrait" },
+  precinct: { high: "siren", tall: "cityMap", floor: "desk", low: "wanted" },
 };
 
 function decorate(theme, tiles, width, rand) {

@@ -10,7 +10,7 @@ Zagraj: <https://magdakalita.github.io/word-quest/>
 - 4 poziomy: litery a, b, c, d → małe słowa (I, you, he, she, my, your, am, it's, I'm, you're) → kolory, zabawki i rodzina → zdania („It's a blue box.”)
 - 4 typy zadań: posłuchaj i stuknij (`pick`), dopasuj pary, uzupełnij lukę z banku słów, ułóż zdanie
 - zła odpowiedź = podpowiedź i druga próba, potem rozwiązanie (bez „game over” za błędy językowe)
-- 3 światy do wyboru: magiczny zamek (czarodzieje), kosmos (astronautka, rycerz gwiazd, mroczny lord, mały zielony mistrz) i dolina ninja na Dalekim Wschodzie (ninja ognia, zielony ninja, ninja ziemi, stary sensei) – te same zadania w innej scenerii
+- 4 światy do wyboru: magiczny zamek (czarodzieje), kosmos (astronautka, rycerz gwiazd, mroczny lord, mały zielony mistrz), dolina ninja na Dalekim Wschodzie (ninja ognia, zielony ninja, ninja ziemi, stary sensei) i miasto z klocków (porucznik policji, strażak, budowlaniec, portier hotelowy) – te same zadania w innej scenerii
 - postęp zapisuje się w przeglądarce; przycisk „Reset progress” na dole menu (po potwierdzeniu) kasuje odblokowane poziomy, gwiazdki i naklejki – imię i wybrane postacie zostają
 
 Gra to statyczna strona (`web/`) – bez serwera i bez kosztów. Python (`src/booksee_bucksee/`) służy tylko do sprawdzania zadań.
@@ -29,15 +29,15 @@ Głos: gra wybiera angielski głos systemu (np. „Samantha” na Macu/iPadzie, 
 
 W menu dziecko wybiera świat, a potem postać z tego świata. Świat zmienia tylko wygląd i teksty – plansze, zadania i poziomy są wszędzie takie same:
 
-| | Zamek | Kosmos | Ninja |
-|---|---|---|---|
-| postacie | Mila, Jonas, Aylin, Theo | Nova, Kai, Lord Zark, Master Moko | Akira, Leo, Bruno, Sensei Bo |
-| poziomy | ogród, biblioteka, piwnica z eliksirami, wieża astronomiczna | wyrzutnia rakiet, stacja kosmiczna, planeta kosmitów, Dark Star | las bambusowy, dojo, góry we mgle, świątynia smoka |
-| przeszkody | zaczarowane drzwi, duszki | śluzy, kosmici | bramy świątyni, węże |
-| bonus z naklejką | latająca księga | kryształ gwiazd | złoty zwój |
-| pytania na końcu | sfinks | robot-strażnik | wielki smok |
+| | Zamek | Kosmos | Ninja | Miasto |
+|---|---|---|---|---|
+| postacie | Mila, Jonas, Aylin, Theo | Nova, Kai, Lord Zark, Master Moko | Akira, Leo, Bruno, Sensei Bo | Lieutenant Dex, Fred, Hank, Max |
+| poziomy | ogród, biblioteka, piwnica z eliksirami, wieża astronomiczna | wyrzutnia rakiet, stacja kosmiczna, planeta kosmitów, Dark Star | las bambusowy, dojo, góry we mgle, świątynia smoka | park, ratusz, komisariat, rynek wieczorem |
+| przeszkody | zaczarowane drzwi, duszki | śluzy, kosmici | bramy świątyni, węże | policyjne blokady, złodziejaszki |
+| bonus z naklejką | latająca księga | kryształ gwiazd | złoty zwój | złota odznaka |
+| pytania na końcu | sfinks | robot-strażnik | wielki smok | burmistrz w kostiumie kukurydzy |
 
-Odblokowane poziomy i rekordy ★ są wspólne dla wszystkich światów, a każdy świat ma własny album naklejek – jest po co przejść unit drugi raz. Dodaj `?world=space` albo `?world=ninja` do adresu, żeby od razu otworzyć dany świat.
+Odblokowane poziomy i rekordy ★ są wspólne dla wszystkich światów, a każdy świat ma własny album naklejek – jest po co przejść unit drugi raz. Dodaj `?world=space`, `?world=ninja` albo `?world=city` do adresu, żeby od razu otworzyć dany świat.
 
 Nowy świat: dopisz obiekt w `web/js/worlds.js` (postacie, tytuły i motywy poziomów, naklejki, teksty) i jego grafikę w osobnym pliku na wzór `web/js/sprites-space.js` (`spaceArt`: kafle, tło, dekoracje, wróg, bonus, drzwi, boss, portal). Rodzaje dekoracji dla nowych motywów dopisz w `decorate()` w `web/js/levels/builder.js`.
 
@@ -106,6 +106,7 @@ web/                   gra (publikowana)
   js/sprites.js        grafika pixel art rysowana w kodzie (zamek) i wspólne pomocnicze funkcje
   js/sprites-space.js  grafika kosmosu
   js/sprites-ninja.js  grafika świata ninja
+  js/sprites-city.js   grafika miasta
   data/                zadania (unitNN.json) i lista unitów
   audio/               głoski (a.m4a, b.m4a, …)
 src/booksee_bucksee/   narzędzia: validate, review, sounds

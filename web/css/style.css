@@ -506,3 +506,38 @@ body[data-world="ninja"] .btn { font-size: .9em; }
 body[data-world="ninja"] .btn.primary { background: linear-gradient(#c0392b, #8e1b1b); color: var(--gold-light); border-color: #4e0c0e; }
 body[data-world="ninja"] .seal { background: radial-gradient(circle at 35% 35%, #e04a3a, #8e1b1b); }
 body[data-world="ninja"] #game { box-shadow: 0 0 40px rgba(230, 90, 50, .25); }
+
+/* ---------- City world: a bright toy city in police blue and brick yellow ---------- */
+
+body[data-world="city"] {
+  --night: #071430;
+  --night-2: #1d4a8a;
+  --parchment: #fbfcff;
+  --parchment-dark: #c4d2e6;
+  --ink: #14213d;
+  --ink-soft: #4a5878;
+  --gold: #f2b705;
+  --gold-light: #ffd84a;
+  --red: #1f4fa8;
+  --font-title: "Lilita One", "Trebuchet MS", sans-serif;
+}
+body[data-world="city"] #menu {
+  background:
+    linear-gradient(transparent 82%, rgba(10, 20, 50, .55) 82%),
+    radial-gradient(ellipse at top, var(--night-2), var(--night) 75%);
+}
+body[data-world="city"] .parchment {
+  background: var(--parchment);
+  border: 3px solid var(--parchment-dark);
+  border-top: 8px solid var(--gold);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .55);
+}
+body[data-world="city"] h1 { letter-spacing: .02em; }
+body[data-world="city"] .card { background: #f4f7fc; }
+body[data-world="city"] .card.selected { background: #fffbe6; }
+body[data-world="city"] .btn { background: linear-gradient(#ffffff, #dde6f2); border-color: #8a9ab8; box-shadow: 0 2px 0 #6a7a98; }
+body[data-world="city"] .btn.primary { background: linear-gradient(#ffd23f, #f2b705); color: var(--ink); border-color: #b88a00; box-shadow: 0 2px 0 #8a6800; }
+body[data-world="city"] .seal { background: radial-gradient(circle at 35% 35%, #4a7ad8, #1f4fa8); color: #ffd84a; }
+body[data-world="city"] .listen { background: linear-gradient(#ffffff, #dde6f2); border-color: #8a9ab8; }
+body[data-world="city"] #game { box-shadow: 0 0 40px rgba(80, 140, 255, .25); }
