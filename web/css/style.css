@@ -338,6 +338,17 @@ select { min-width: 260px; max-width: 100%; }
 .show-letter:hover { border-color: var(--gold); }
 .item .word { font-family: var(--font-words); font-size: 1.6em; line-height: 1.2; }
 .item .drawing svg { width: 3.4em; height: 3.4em; display: block; }
+/* big and small: the same picture in two sizes; old (faded, with a plaster) and new (shiny) */
+.item.size-big { font-size: 1.3em; }
+.item.size-small { font-size: 0.55em; }
+.item.look { position: relative; }
+.item.look-old > .pic, .item.look-old > .drawing { filter: sepia(0.9) saturate(0.5) brightness(0.85); transform: rotate(-8deg); }
+.item.look-new > .pic, .item.look-new > .drawing { filter: saturate(1.3) brightness(1.08); }
+.item .look-mark { position: absolute; right: -0.2em; top: -0.1em; font-size: 1.1em; }
+/* a picture inside another one: a book peeking out of a bag */
+.item .nest { position: relative; display: inline-block; }
+.item .nest .inner { position: absolute; left: 50%; top: -0.38em; font-size: 0.6em; transform: translateX(-40%) rotate(-14deg); }
+.item .nest .outer { position: relative; }
 .show { text-align: center; margin: 4px 0 10px; }
 .show .item .pic { font-size: 4.4em; }
 .show .item .word { font-size: 3em; }

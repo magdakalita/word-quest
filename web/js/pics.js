@@ -31,6 +31,13 @@ const SHAPES = {
     <path d="M38 58l2 32M50 58v32M62 58l-2 32" stroke="#2e1d0e" stroke-width="2" opacity=".5"/>
     <path d="M18 58c-6-12 4-20 12-18 0-12 12-18 20-14 2-12 14-14 20-6 8-2 16 8 10 18 8 4 6 16 0 20z" fill="${c}" stroke="#2e1d0e" stroke-width="3" stroke-linejoin="round"/>
     <circle cx="50" cy="16" r="6" fill="#d81b60" stroke="#2e1d0e" stroke-width="2"/>`,
+  // a school desk with a drawer
+  desk: (c) => `
+    <path d="M10 34h80v10H10z" fill="${c}" stroke="#2e1d0e" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M16 44h8v44h-8zM76 44h8v44h-8z" fill="${c}" stroke="#2e1d0e" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M44 44h32v18H44z" fill="${c}" stroke="#2e1d0e" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M10 34h80v4H10z" fill="#fff" opacity=".25"/>
+    <circle cx="60" cy="53" r="3" fill="#2e1d0e"/>`,
 };
 
 export function drawPic(shape, colour) {

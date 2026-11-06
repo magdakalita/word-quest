@@ -6,9 +6,11 @@ from pathlib import Path
 
 LEVELS = (1, 2, 3, 4)
 TYPES = {"pick", "gap_fill", "word_order", "match_pairs"}
-DRAWINGS = {"blob", "box", "ball", "cupcake"}  # see web/js/pics.js
+DRAWINGS = {"blob", "box", "ball", "cupcake", "desk"}  # see web/js/pics.js
 COLOURS = {"red", "blue", "navy", "green", "yellow", "pink", "orange", "purple", "brown", "grey", "black", "white"}
-ITEM_KEYS = {"text", "pic", "say", "draw", "color", "sound"}
+ITEM_KEYS = {"text", "pic", "say", "draw", "color", "sound", "size", "look", "in"}
+SIZES = {"big", "small"}
+LOOKS = {"old", "new"}
 AUDIO = Path(__file__).resolve().parents[2] / "web" / "audio"
 SPOKEN = ("instruction", "say", "hint", "explanation")
 SOUND = re.compile(r"\[([a-z])\]")  # "[a]" = the letter sound, played from web/audio/a.m4a
@@ -55,6 +57,12 @@ def _item_errors(item) -> list[str]:
         errors.append(f"unknown drawing {item['draw']!r}")
     if item.get("color") and item["color"] not in COLOURS:
         errors.append(f"unknown colour {item['color']!r}")
+    if "size" in item and item["size"] not in SIZES:
+        errors.append(f"size must be one of {sorted(SIZES)}: {item['size']!r}")
+    if "look" in item and item["look"] not in LOOKS:
+        errors.append(f"look must be one of {sorted(LOOKS)}: {item['look']!r}")
+    if "in" in item and (not isinstance(item["in"], str) or not item["in"].strip() or not item.get("pic")):
+        errors.append(f"in needs a picture to put something in, and a pic to put there: {item!r}")
     if (item.get("pic") or item.get("draw") or item.get("color")) and not item.get("text") and not item.get("say"):
         errors.append(f"picture needs a say: {item!r}")
     return errors
@@ -253,8 +261,83 @@ def validate_unit(data: dict) -> list[str]:
         errors.append(f"duplicate task ids: {dupes}")
     for t in tasks:
         errors.extend(validate_task(t))
+    errors.extend(_plan_errors(data.get("plan"), tasks))
+    errors.extend(_vocabulary_errors(data.get("vocabulary"), tasks))
+    return errors
+
+
+# How many tasks a group needs for each door it fills: with fewer, the next game would bring
+# the same tasks again.
+POOL_PER_DOOR = 2
+
+
+def _plan_errors(plan, tasks: list[dict]) -> list[str]:
+    """The plan: for each level the group of every door, in order (see web/js/pool.js)."""
+    if not isinstance(plan, dict):
+        return ["plan must say, for every level, which group of tasks each door draws from"]
+    errors = []
     for level in LEVELS:
-        n = sum(1 for t in tasks if t.get("level") == level)
-        if not 6 <= n <= 14:
-            errors.append(f"level {level} has {n} tasks (expected 6–14)")
+        groups = plan.get(str(level))
+        if not isinstance(groups, list) or not all(isinstance(g, str) and g for g in groups):
+            errors.append(f"plan for level {level} must be a list of group names")
+            continue
+        if not 6 <= len(groups) <= 14:
+            errors.append(f"level {level} has {len(groups)} doors (expected 6–14)")
+        level_tasks = [t for t in tasks if t.get("level") == level]
+        for group, doors in Counter(groups).items():
+            n = sum(1 for t in level_tasks if t.get("group") == group)
+            if n < POOL_PER_DOOR * doors:
+                errors.append(f"level {level}: group {group!r} has {n} tasks for {doors} door(s) – needs at least {POOL_PER_DOOR * doors}")
+            kinds = {t.get("type") for t in level_tasks if t.get("group") == group}
+            if len(kinds) > 1:
+                errors.append(f"level {level}: group {group!r} mixes task types {sorted(kinds)} – a door always has one kind of task")
+        for t in level_tasks:
+            if t.get("group") not in groups:
+                errors.append(f"{t.get('id', '?')}: group {t.get('group')!r} is not in the plan for level {level}")
+    if unknown := set(plan) - {str(level) for level in LEVELS}:
+        errors.append(f"plan has unknown levels {sorted(unknown)}")
+    return errors
+
+
+# The words of the game itself – instructions and hints ("Listen and tap.", "Then find the picture.").
+# They come back in every task, so the child learns them by playing.
+GAME_WORDS = {
+    "again", "an", "and", "card", "cards", "colour", "does", "find", "finish", "is", "it", "letter",
+    "listen", "make", "match", "one", "or", "picture", "pictures", "same", "sentence", "sound", "start",
+    "starts", "tap", "the", "then", "what", "which", "who", "with", "word",
+}
+TEXT_KEYS = ("options", "pairs", "bank", "words", "text", "answers", "show")
+WORD = re.compile(r"[a-z][a-z']*")
+
+
+def _task_words(t: dict) -> set[str]:
+    """Every word the child hears or sees in a task (letter sounds and single letters left out)."""
+    texts = [t[k] for k in SPOKEN if isinstance(t.get(k), str)]
+
+    def walk(x):
+        if isinstance(x, str):
+            texts.append(x)
+        elif isinstance(x, dict):
+            texts.extend(x[k] for k in ("text", "say") if isinstance(x.get(k), str))
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+
+    for k in TEXT_KEYS:
+        walk(t.get(k))
+    words = set()
+    for text in texts:
+        words.update(WORD.findall(SOUND.sub(" ", text.lower().replace("’", "'"))))
+    return {w for w in words if len(w) > 1}
+
+
+def _vocabulary_errors(vocabulary, tasks: list[dict]) -> list[str]:
+    """Only words from the course programme (the unit's vocabulary) and the game's own words."""
+    if not _is_str_list(vocabulary):
+        return ["vocabulary must list the words of the course programme for this unit"]
+    known = {w.lower() for w in vocabulary} | GAME_WORDS
+    errors = []
+    for t in tasks:
+        if unknown := sorted(_task_words(t) - known):
+            errors.append(f"{t.get('id', '?')}: words outside the vocabulary {unknown} – use words from the programme or add them to vocabulary")
     return errors

@@ -1,22 +1,31 @@
 {
   "unit": "01",
   "title": "Family & Toys",
+  "vocabulary": ["family", "mum", "dad", "brother", "sister", "grandma", "grandpa", "boy", "girl", "I", "you", "he", "she", "my", "your", "am", "it's", "I'm", "you're", "a", "in", "on", "yes", "no", "hello", "goodbye", "red", "yellow", "pink", "blue", "green", "grey", "navy", "one", "two", "three", "four", "five", "toy", "toys", "doll", "ball", "kite", "teddy", "bear", "blocks", "car", "train", "plane", "box", "book", "bag", "desk", "big", "small", "old", "new", "happy", "sad", "angry", "ant", "apple", "cat", "cap", "cold", "cup", "cupcake", "juice", "dog", "drink"],
+  "plan": {
+    "1": ["listen-letter", "starts-with", "pairs", "picture-letter", "listen-letter", "starts-with", "starts-with", "picture-letter", "pairs", "listen-letter", "starts-with", "picture-letter"],
+    "2": ["listen-word", "listen-word", "he-she", "he-she", "listen-word", "same-word", "listen-word", "gap-word", "listen-word", "listen-word", "gap-word", "listen-word"],
+    "3": ["colour-listen", "colour-name", "listen-thing", "listen-thing", "pairs", "listen-person", "listen-person", "pairs", "name-it", "name-it", "listen-person", "name-it", "listen-person"],
+    "4": ["sentence", "gap", "sentence", "gap", "sentence", "gap", "sentence", "gap", "boss-sound", "boss-word"]
+  },
   "tasks": [
     {
       "id": "L1-01",
       "level": 1,
+      "group": "listen-letter",
       "type": "pick",
       "instruction": "Listen and tap the letter.",
       "say": "[b]",
       "speak_options": true,
       "options": ["b", "d", "a", "c"],
       "answer": 0,
-      "hint": "[b], [b], ball. The [b] has its tummy on the right.",
+      "hint": "Listen again: [b], [b], ball!",
       "explanation": "[b], [b], ball!"
     },
     {
       "id": "L1-02",
       "level": 1,
+      "group": "starts-with",
       "type": "pick",
       "instruction": "Which one starts with [c]?",
       "show": "c",
@@ -33,6 +42,7 @@
     {
       "id": "L1-03",
       "level": 1,
+      "group": "pairs",
       "type": "match_pairs",
       "instruction": "Listen and match the sound and the picture.",
       "speak_options": true,
@@ -42,36 +52,39 @@
         [{ "sound": "c" }, { "pic": "🐱", "say": "cat" }],
         [{ "sound": "d" }, { "pic": "🐶", "say": "dog" }]
       ],
-      "hint": "Tap a sound and listen. Then find the picture that starts with that sound. [a], [a], apple!",
+      "hint": "Tap a sound and listen. Then find the picture. [a], [a], apple!",
       "explanation": "[a], apple. [b], ball. [c], cat. [d], dog."
     },
     {
       "id": "L1-04",
       "level": 1,
+      "group": "picture-letter",
       "type": "pick",
       "instruction": "Dog. Which letter does dog start with?",
       "show": { "pic": "🐶" },
       "speak_options": true,
       "options": ["d", "b", "c"],
       "answer": 0,
-      "hint": "[d], [d], dog. The [d] has its tummy on the left.",
+      "hint": "Listen again: [d], [d], dog!",
       "explanation": "[d], [d], dog!"
     },
     {
       "id": "L1-05",
       "level": 1,
+      "group": "listen-letter",
       "type": "pick",
       "instruction": "Listen and tap the letter.",
       "say": "[d]",
       "speak_options": true,
       "options": ["d", "b", "a"],
       "answer": 0,
-      "hint": "[d], [d], dog. The [d] has a tall line on the right.",
+      "hint": "Listen again: [d], [d], dog!",
       "explanation": "[d], [d], dog!"
     },
     {
       "id": "L1-06",
       "level": 1,
+      "group": "starts-with",
       "type": "pick",
       "instruction": "Which one starts with [a]?",
       "show": "a",
@@ -88,6 +101,7 @@
     {
       "id": "L1-07",
       "level": 1,
+      "group": "starts-with",
       "type": "pick",
       "instruction": "Which one starts with [b]?",
       "show": "b",
@@ -104,18 +118,20 @@
     {
       "id": "L1-08",
       "level": 1,
+      "group": "picture-letter",
       "type": "pick",
       "instruction": "Car. Which letter does car start with?",
       "show": { "pic": "🚗" },
       "speak_options": true,
       "options": ["c", "a", "d"],
       "answer": 0,
-      "hint": "[c], [c], car. The [c] is like a cookie with a bite.",
+      "hint": "Listen again: [c], [c], car!",
       "explanation": "[c], [c], car!"
     },
     {
       "id": "L1-09",
       "level": 1,
+      "group": "pairs",
       "type": "match_pairs",
       "instruction": "Match the letter and the picture.",
       "speak_options": true,
@@ -125,24 +141,26 @@
         ["c", { "pic": "🧢", "say": "cap" }],
         ["d", { "pic": "🥤", "say": "drink" }]
       ],
-      "hint": "Tap a letter and listen to its sound. Then find the picture that starts with that sound. [c], [c], cap!",
+      "hint": "Tap a letter and listen. Then find the picture. [c], [c], cap!",
       "explanation": "[a], ant. [b], box. [c], cap. [d], drink."
     },
     {
       "id": "L1-10",
       "level": 1,
+      "group": "listen-letter",
       "type": "pick",
       "instruction": "Listen and tap the letter.",
       "say": "[a]",
       "speak_options": true,
       "options": ["a", "d", "c", "b"],
       "answer": 0,
-      "hint": "[a], [a], apple. The [a] is small and round.",
+      "hint": "Listen again: [a], [a], apple!",
       "explanation": "[a], [a], apple!"
     },
     {
       "id": "L1-11",
       "level": 1,
+      "group": "starts-with",
       "type": "pick",
       "instruction": "Which one starts with [d]?",
       "show": "d",
@@ -159,74 +177,436 @@
     {
       "id": "L1-12",
       "level": 1,
+      "group": "picture-letter",
       "type": "pick",
       "instruction": "Cupcake. Which letter does cupcake start with?",
       "show": { "pic": "🧁" },
       "speak_options": true,
       "options": ["c", "b", "d"],
       "answer": 0,
-      "hint": "[c], [c], cupcake. Like cat and car!",
+      "hint": "Listen again: [c], [c], cupcake!",
       "explanation": "[c], [c], cupcake!"
     },
-
+    {
+      "id": "L1-13",
+      "level": 1,
+      "group": "listen-letter",
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "[c]",
+      "speak_options": true,
+      "options": ["c", "a", "b", "d"],
+      "answer": 0,
+      "hint": "Listen again: [c], [c], cat!",
+      "explanation": "[c], [c], cat!"
+    },
+    {
+      "id": "L1-14",
+      "level": 1,
+      "group": "listen-letter",
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "[b]",
+      "speak_options": true,
+      "options": ["b", "d", "c"],
+      "answer": 0,
+      "hint": "Listen again: [b], [b], book!",
+      "explanation": "[b], [b], book!"
+    },
+    {
+      "id": "L1-15",
+      "level": 1,
+      "group": "listen-letter",
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "[d]",
+      "speak_options": true,
+      "options": ["d", "b", "c", "a"],
+      "answer": 0,
+      "hint": "Listen again: [d], [d], desk!",
+      "explanation": "[d], [d], desk!"
+    },
+    {
+      "id": "L1-16",
+      "level": 1,
+      "group": "listen-letter",
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "[a]",
+      "speak_options": true,
+      "options": ["a", "c", "d"],
+      "answer": 0,
+      "hint": "Listen again: [a], [a], ant!",
+      "explanation": "[a], [a], ant!"
+    },
+    {
+      "id": "L1-17",
+      "level": 1,
+      "group": "listen-letter",
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "[c]",
+      "speak_options": true,
+      "options": ["c", "d", "b"],
+      "answer": 0,
+      "hint": "Listen again: [c], [c], car!",
+      "explanation": "[c], [c], car!"
+    },
+    {
+      "id": "L1-18",
+      "level": 1,
+      "group": "listen-letter",
+      "type": "pick",
+      "instruction": "Listen and tap the letter.",
+      "say": "[d]",
+      "speak_options": true,
+      "options": ["d", "a", "b"],
+      "answer": 0,
+      "hint": "Listen again: [d], [d], dad!",
+      "explanation": "[d], [d], dad!"
+    },
+    {
+      "id": "L1-19",
+      "level": 1,
+      "group": "starts-with",
+      "type": "pick",
+      "instruction": "Which one starts with [a]?",
+      "show": "a",
+      "speak_options": true,
+      "options": [
+        { "pic": "🐜", "say": "ant" },
+        { "pic": "🐶", "say": "dog" },
+        { "pic": "⚽", "say": "ball" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [a], [a], [a]…",
+      "explanation": "[a], [a], ant!"
+    },
+    {
+      "id": "L1-20",
+      "level": 1,
+      "group": "starts-with",
+      "type": "pick",
+      "instruction": "Which one starts with [b]?",
+      "show": "b",
+      "speak_options": true,
+      "options": [
+        { "pic": "📖", "say": "book" },
+        { "pic": "🐱", "say": "cat" },
+        { "pic": "🪆", "say": "doll" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [b], [b], [b]…",
+      "explanation": "[b], [b], book!"
+    },
+    {
+      "id": "L1-21",
+      "level": 1,
+      "group": "starts-with",
+      "type": "pick",
+      "instruction": "Which one starts with [c]?",
+      "show": "c",
+      "speak_options": true,
+      "options": [
+        { "pic": "🧢", "say": "cap" },
+        { "pic": "🎒", "say": "bag" },
+        { "pic": "🍎", "say": "apple" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [c], [c], [c]…",
+      "explanation": "[c], [c], cap!"
+    },
+    {
+      "id": "L1-22",
+      "level": 1,
+      "group": "starts-with",
+      "type": "pick",
+      "instruction": "Which one starts with [d]?",
+      "show": "d",
+      "speak_options": true,
+      "options": [
+        { "pic": "🥤", "say": "drink" },
+        { "pic": "🚗", "say": "car" },
+        { "pic": "🐜", "say": "ant" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [d], [d], [d]…",
+      "explanation": "[d], [d], drink!"
+    },
+    {
+      "id": "L1-23",
+      "level": 1,
+      "group": "starts-with",
+      "type": "pick",
+      "instruction": "Which one starts with [a]?",
+      "show": "a",
+      "speak_options": true,
+      "options": [
+        { "pic": "😠", "say": "angry" },
+        { "pic": "🧢", "say": "cap" },
+        { "pic": "📖", "say": "book" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [a], [a], [a]…",
+      "explanation": "[a], [a], angry!"
+    },
+    {
+      "id": "L1-24",
+      "level": 1,
+      "group": "starts-with",
+      "type": "pick",
+      "instruction": "Which one starts with [b]?",
+      "show": "b",
+      "speak_options": true,
+      "options": [
+        { "pic": "🎒", "say": "bag" },
+        { "pic": "🐶", "say": "dog" },
+        { "pic": "🧁", "say": "cupcake" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [b], [b], [b]…",
+      "explanation": "[b], [b], bag!"
+    },
+    {
+      "id": "L1-25",
+      "level": 1,
+      "group": "starts-with",
+      "type": "pick",
+      "instruction": "Which one starts with [c]?",
+      "show": "c",
+      "speak_options": true,
+      "options": [
+        { "pic": "🧁", "say": "cupcake" },
+        { "pic": "🐶", "say": "dog" },
+        { "pic": "⚽", "say": "ball" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [c], [c], [c]…",
+      "explanation": "[c], [c], cupcake!"
+    },
+    {
+      "id": "L1-26",
+      "level": 1,
+      "group": "starts-with",
+      "type": "pick",
+      "instruction": "Which one starts with [d]?",
+      "show": "d",
+      "speak_options": true,
+      "options": [
+        { "draw": "desk", "color": "brown", "say": "desk" },
+        { "pic": "📦", "say": "box" },
+        { "pic": "🐱", "say": "cat" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [d], [d], [d]…",
+      "explanation": "[d], [d], desk!"
+    },
+    {
+      "id": "L1-27",
+      "level": 1,
+      "group": "picture-letter",
+      "type": "pick",
+      "instruction": "Apple. Which letter does apple start with?",
+      "show": { "pic": "🍎" },
+      "speak_options": true,
+      "options": ["a", "b", "d"],
+      "answer": 0,
+      "hint": "Listen again: [a], [a], apple!",
+      "explanation": "[a], [a], apple!"
+    },
+    {
+      "id": "L1-28",
+      "level": 1,
+      "group": "picture-letter",
+      "type": "pick",
+      "instruction": "Ball. Which letter does ball start with?",
+      "show": { "pic": "⚽" },
+      "speak_options": true,
+      "options": ["b", "d", "a"],
+      "answer": 0,
+      "hint": "Listen again: [b], [b], ball!",
+      "explanation": "[b], [b], ball!"
+    },
+    {
+      "id": "L1-29",
+      "level": 1,
+      "group": "picture-letter",
+      "type": "pick",
+      "instruction": "Doll. Which letter does doll start with?",
+      "show": { "pic": "🪆" },
+      "speak_options": true,
+      "options": ["d", "b", "c"],
+      "answer": 0,
+      "hint": "Listen again: [d], [d], doll!",
+      "explanation": "[d], [d], doll!"
+    },
+    {
+      "id": "L1-30",
+      "level": 1,
+      "group": "picture-letter",
+      "type": "pick",
+      "instruction": "Book. Which letter does book start with?",
+      "show": { "pic": "📖" },
+      "speak_options": true,
+      "options": ["b", "c", "d"],
+      "answer": 0,
+      "hint": "Listen again: [b], [b], book!",
+      "explanation": "[b], [b], book!"
+    },
+    {
+      "id": "L1-31",
+      "level": 1,
+      "group": "picture-letter",
+      "type": "pick",
+      "instruction": "Ant. Which letter does ant start with?",
+      "show": { "pic": "🐜" },
+      "speak_options": true,
+      "options": ["a", "c", "b"],
+      "answer": 0,
+      "hint": "Listen again: [a], [a], ant!",
+      "explanation": "[a], [a], ant!"
+    },
+    {
+      "id": "L1-32",
+      "level": 1,
+      "group": "picture-letter",
+      "type": "pick",
+      "instruction": "Desk. Which letter does desk start with?",
+      "show": { "draw": "desk", "color": "brown" },
+      "speak_options": true,
+      "options": ["d", "a", "b"],
+      "answer": 0,
+      "hint": "Listen again: [d], [d], desk!",
+      "explanation": "[d], [d], desk!"
+    },
+    {
+      "id": "L1-33",
+      "level": 1,
+      "group": "pairs",
+      "type": "match_pairs",
+      "instruction": "Listen and match the sound and the picture.",
+      "speak_options": true,
+      "pairs": [
+        [{ "sound": "a" }, { "pic": "🐜", "say": "ant" }],
+        [{ "sound": "b" }, { "pic": "📖", "say": "book" }],
+        [{ "sound": "c" }, { "pic": "🐱", "say": "cat" }],
+        [{ "sound": "d" }, { "pic": "🪆", "say": "doll" }]
+      ],
+      "hint": "Tap a sound and listen. Then find the picture. [b], [b], book!",
+      "explanation": "[a], ant. [b], book. [c], cat. [d], doll."
+    },
+    {
+      "id": "L1-34",
+      "level": 1,
+      "group": "pairs",
+      "type": "match_pairs",
+      "instruction": "Match the letter and the picture.",
+      "speak_options": true,
+      "pairs": [
+        ["a", { "pic": "😠", "say": "angry" }],
+        ["b", { "pic": "🎒", "say": "bag" }],
+        ["c", { "pic": "🚗", "say": "car" }],
+        ["d", { "draw": "desk", "color": "brown", "say": "desk" }]
+      ],
+      "hint": "Tap a letter and listen. Then find the picture. [d], [d], desk!",
+      "explanation": "[a], angry. [b], bag. [c], car. [d], desk."
+    },
+    {
+      "id": "L1-35",
+      "level": 1,
+      "group": "pairs",
+      "type": "match_pairs",
+      "instruction": "Listen and match the sound and the picture.",
+      "speak_options": true,
+      "pairs": [
+        [{ "sound": "a" }, { "pic": "🐜", "say": "ant" }],
+        [{ "sound": "b" }, { "pic": "👦", "say": "boy" }],
+        [{ "sound": "c" }, { "pic": "🧢", "say": "cap" }],
+        [{ "sound": "d" }, { "pic": "👨", "say": "dad" }]
+      ],
+      "hint": "Tap a sound and listen. Then find the picture. [b], [b], boy!",
+      "explanation": "[a], ant. [b], boy. [c], cap. [d], dad."
+    },
+    {
+      "id": "L1-36",
+      "level": 1,
+      "group": "pairs",
+      "type": "match_pairs",
+      "instruction": "Match the letter and the picture.",
+      "speak_options": true,
+      "pairs": [
+        ["a", { "pic": "🍎", "say": "apple" }],
+        ["b", { "pic": "📦", "say": "box" }],
+        ["c", { "pic": "🧁", "say": "cupcake" }],
+        ["d", { "pic": "🐶", "say": "dog" }]
+      ],
+      "hint": "Tap a letter and listen. Then find the picture. [d], [d], dog!",
+      "explanation": "[a], apple. [b], box. [c], cupcake. [d], dog."
+    },
     {
       "id": "L2-01",
       "level": 2,
+      "group": "listen-word",
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "I",
       "options": ["I", "my", "am"],
       "answer": 0,
-      "hint": "Look for one tall line.",
-      "explanation": "I – just one tall line!"
+      "hint": "Listen again: I.",
+      "explanation": "I!"
     },
     {
       "id": "L2-02",
       "level": 2,
+      "group": "listen-word",
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "you",
       "options": ["you", "your", "I'm"],
       "answer": 0,
-      "hint": "You is a short word. Your is longer.",
+      "hint": "Listen again: you.",
       "explanation": "You!"
     },
     {
       "id": "L2-03",
       "level": 2,
+      "group": "he-she",
       "type": "pick",
       "instruction": "A boy. Tap: he or she?",
       "show": { "pic": "👦" },
       "options": ["he", "she"],
       "answer": 0,
-      "hint": "A boy is he. He is the short word.",
+      "hint": "A boy – he! A girl – she!",
       "explanation": "A boy – he!"
     },
     {
       "id": "L2-04",
       "level": 2,
+      "group": "he-she",
       "type": "pick",
       "instruction": "A girl. Tap: he or she?",
       "show": { "pic": "👧" },
       "options": ["he", "she"],
       "answer": 1,
-      "hint": "A girl is she. She is the long word.",
+      "hint": "A girl – she! A boy – he!",
       "explanation": "A girl – she!"
     },
     {
       "id": "L2-05",
       "level": 2,
+      "group": "listen-word",
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "my",
       "options": ["my", "am", "I'm"],
       "answer": 0,
-      "hint": "My is a short word with a long tail at the end.",
+      "hint": "Listen again: my.",
       "explanation": "My!"
     },
     {
       "id": "L2-06",
       "level": 2,
+      "group": "same-word",
       "type": "match_pairs",
       "instruction": "Find the same word.",
       "speak_options": true,
@@ -236,83 +616,405 @@
         ["it's", "it's"],
         ["you're", "you're"]
       ],
-      "hint": "Tap a word and listen. Then find the same word on the other side. Some words have a little comma at the top.",
+      "hint": "Tap a word and listen. Then find the same word.",
       "explanation": "I. I'm. It's. You're."
     },
     {
       "id": "L2-07",
       "level": 2,
+      "group": "listen-word",
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "it's",
       "options": ["it's", "I'm", "you're"],
       "answer": 0,
-      "hint": "It's starts with a tall thin letter.",
+      "hint": "Listen again: it's.",
       "explanation": "It's!"
     },
     {
       "id": "L2-08",
       "level": 2,
+      "group": "gap-word",
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
       "say": "I'm a boy.",
       "show": { "pic": "👦" },
       "text": "___ a boy.",
-      "answers": [["I'm"]],
+      "answers": [
+        ["I'm"]
+      ],
       "bank": ["I'm", "You're", "It's"],
-      "hint": "Look for the big tall line at the start.",
+      "hint": "Listen again: I'm a boy..",
       "explanation": "I'm a boy!"
     },
     {
       "id": "L2-09",
       "level": 2,
+      "group": "listen-word",
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "your",
       "options": ["your", "you", "my"],
       "answer": 0,
-      "hint": "Your looks like you, with one more letter at the end.",
+      "hint": "Listen again: your.",
       "explanation": "Your!"
     },
     {
       "id": "L2-10",
       "level": 2,
+      "group": "listen-word",
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "she",
       "options": ["she", "he", "my"],
       "answer": 0,
-      "hint": "He and she both end the same. She is the longer word.",
+      "hint": "Listen again: she.",
       "explanation": "She!"
     },
     {
       "id": "L2-11",
       "level": 2,
+      "group": "gap-word",
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
       "say": "You're a girl.",
       "show": { "pic": "👧" },
       "text": "___ a girl.",
-      "answers": [["You're"]],
+      "answers": [
+        ["You're"]
+      ],
       "bank": ["You're", "I'm", "It's"],
-      "hint": "You're looks like you, with a little comma.",
+      "hint": "Listen again: You're a girl..",
       "explanation": "You're a girl!"
     },
     {
       "id": "L2-12",
       "level": 2,
+      "group": "listen-word",
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "am",
       "options": ["am", "my", "I"],
       "answer": 0,
-      "hint": "Am starts with [a], like apple!",
+      "hint": "Listen again: am. [a], [a], am!",
       "explanation": "[a], [a], am. I am!"
     },
-
+    {
+      "id": "L2-13",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "my",
+      "options": ["my", "I", "you"],
+      "answer": 0,
+      "hint": "Listen again: my.",
+      "explanation": "My!"
+    },
+    {
+      "id": "L2-14",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "my",
+      "options": ["my", "am", "he"],
+      "answer": 0,
+      "hint": "Listen again: my.",
+      "explanation": "My!"
+    },
+    {
+      "id": "L2-15",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "my",
+      "options": ["my", "your", "she"],
+      "answer": 0,
+      "hint": "Listen again: my.",
+      "explanation": "My!"
+    },
+    {
+      "id": "L2-16",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "I'm",
+      "options": ["I'm", "I", "am"],
+      "answer": 0,
+      "hint": "Listen again: I'm.",
+      "explanation": "I'm!"
+    },
+    {
+      "id": "L2-17",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "I'm",
+      "options": ["I'm", "it's", "my"],
+      "answer": 0,
+      "hint": "Listen again: I'm.",
+      "explanation": "I'm!"
+    },
+    {
+      "id": "L2-18",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "I'm",
+      "options": ["I'm", "you're", "he"],
+      "answer": 0,
+      "hint": "Listen again: I'm.",
+      "explanation": "I'm!"
+    },
+    {
+      "id": "L2-19",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "you're",
+      "options": ["you're", "I'm", "you"],
+      "answer": 0,
+      "hint": "Listen again: you're.",
+      "explanation": "You're!"
+    },
+    {
+      "id": "L2-20",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "you're",
+      "options": ["you're", "it's", "my"],
+      "answer": 0,
+      "hint": "Listen again: you're.",
+      "explanation": "You're!"
+    },
+    {
+      "id": "L2-21",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "you're",
+      "options": ["you're", "you", "she"],
+      "answer": 0,
+      "hint": "Listen again: you're.",
+      "explanation": "You're!"
+    },
+    {
+      "id": "L2-22",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "it's",
+      "options": ["it's", "I'm", "he"],
+      "answer": 0,
+      "hint": "Listen again: it's.",
+      "explanation": "It's!"
+    },
+    {
+      "id": "L2-23",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "he",
+      "options": ["he", "she", "I"],
+      "answer": 0,
+      "hint": "Listen again: he.",
+      "explanation": "He!"
+    },
+    {
+      "id": "L2-24",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "you",
+      "options": ["you", "my", "am"],
+      "answer": 0,
+      "hint": "Listen again: you.",
+      "explanation": "You!"
+    },
+    {
+      "id": "L2-25",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "your",
+      "options": ["your", "I'm", "am"],
+      "answer": 0,
+      "hint": "Listen again: your.",
+      "explanation": "Your!"
+    },
+    {
+      "id": "L2-26",
+      "level": 2,
+      "group": "listen-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "am",
+      "options": ["am", "I'm", "my"],
+      "answer": 0,
+      "hint": "Listen again: am. [a], [a], am!",
+      "explanation": "[a], [a], am. I am!"
+    },
+    {
+      "id": "L2-27",
+      "level": 2,
+      "group": "he-she",
+      "type": "pick",
+      "instruction": "Dad. Tap: he or she?",
+      "show": { "pic": "👨" },
+      "options": ["he", "she"],
+      "answer": 0,
+      "hint": "Dad – he! Mum – she!",
+      "explanation": "Dad – he!"
+    },
+    {
+      "id": "L2-28",
+      "level": 2,
+      "group": "he-she",
+      "type": "pick",
+      "instruction": "Mum. Tap: he or she?",
+      "show": { "pic": "👩" },
+      "options": ["he", "she"],
+      "answer": 1,
+      "hint": "Mum – she! Dad – he!",
+      "explanation": "Mum – she!"
+    },
+    {
+      "id": "L2-29",
+      "level": 2,
+      "group": "he-she",
+      "type": "pick",
+      "instruction": "Grandpa. Tap: he or she?",
+      "show": { "pic": "👴" },
+      "options": ["he", "she"],
+      "answer": 0,
+      "hint": "Grandpa – he! Grandma – she!",
+      "explanation": "Grandpa – he!"
+    },
+    {
+      "id": "L2-30",
+      "level": 2,
+      "group": "he-she",
+      "type": "pick",
+      "instruction": "Grandma. Tap: he or she?",
+      "show": { "pic": "👵" },
+      "options": ["he", "she"],
+      "answer": 1,
+      "hint": "Grandma – she! Grandpa – he!",
+      "explanation": "Grandma – she!"
+    },
+    {
+      "id": "L2-31",
+      "level": 2,
+      "group": "same-word",
+      "type": "match_pairs",
+      "instruction": "Find the same word.",
+      "speak_options": true,
+      "pairs": [
+        ["my", "my"],
+        ["am", "am"],
+        ["you", "you"],
+        ["your", "your"]
+      ],
+      "hint": "Tap a word and listen. Then find the same word.",
+      "explanation": "My. Am. You. Your."
+    },
+    {
+      "id": "L2-32",
+      "level": 2,
+      "group": "same-word",
+      "type": "match_pairs",
+      "instruction": "Find the same word.",
+      "speak_options": true,
+      "pairs": [
+        ["he", "he"],
+        ["she", "she"],
+        ["I'm", "I'm"],
+        ["you're", "you're"]
+      ],
+      "hint": "Tap a word and listen. Then find the same word.",
+      "explanation": "He. She. I'm. You're."
+    },
+    {
+      "id": "L2-33",
+      "level": 2,
+      "group": "gap-word",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's my ball.",
+      "show": { "pic": "⚽" },
+      "text": "It's ___ ball.",
+      "answers": [
+        ["my"]
+      ],
+      "bank": ["my", "am", "I"],
+      "hint": "Listen again: It's my ball..",
+      "explanation": "It's my ball!"
+    },
+    {
+      "id": "L2-34",
+      "level": 2,
+      "group": "gap-word",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "You're a boy.",
+      "show": { "pic": "👦" },
+      "text": "___ a boy.",
+      "answers": [
+        ["You're"]
+      ],
+      "bank": ["You're", "I'm", "It's"],
+      "hint": "Listen again: You're a boy..",
+      "explanation": "You're a boy!"
+    },
+    {
+      "id": "L2-35",
+      "level": 2,
+      "group": "gap-word",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "I'm a girl.",
+      "show": { "pic": "👧" },
+      "text": "___ a girl.",
+      "answers": [
+        ["I'm"]
+      ],
+      "bank": ["I'm", "You're", "It's"],
+      "hint": "Listen again: I'm a girl..",
+      "explanation": "I'm a girl!"
+    },
+    {
+      "id": "L2-36",
+      "level": 2,
+      "group": "gap-word",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's my cat.",
+      "show": { "pic": "🐱" },
+      "text": "It's ___ cat.",
+      "answers": [
+        ["my"]
+      ],
+      "bank": ["my", "am", "you"],
+      "hint": "Listen again: It's my cat..",
+      "explanation": "It's my cat!"
+    },
     {
       "id": "L3-01",
       "level": 3,
+      "group": "colour-listen",
       "type": "pick",
       "instruction": "Listen and tap the colour.",
       "say": "blue",
@@ -323,17 +1025,22 @@
         { "color": "yellow", "say": "yellow" }
       ],
       "answer": 0,
-      "hint": "Blue is like the sky.",
+      "hint": "Listen again: blue.",
       "explanation": "Blue!"
     },
     {
       "id": "L3-02",
       "level": 3,
+      "group": "colour-name",
       "type": "pick",
       "instruction": "What colour is it? Tap and listen.",
       "show": { "color": "red" },
       "speak_options": true,
-      "options": [{ "pic": "🔊", "say": "red" }, { "pic": "🔊", "say": "blue" }, { "pic": "🔊", "say": "green" }],
+      "options": [
+        { "pic": "🔊", "say": "red" },
+        { "pic": "🔊", "say": "blue" },
+        { "pic": "🔊", "say": "green" }
+      ],
       "answer": 0,
       "hint": "Tap a card and listen. Which one is red?",
       "explanation": "Red!"
@@ -341,6 +1048,7 @@
     {
       "id": "L3-03",
       "level": 3,
+      "group": "listen-thing",
       "type": "pick",
       "instruction": "Listen and tap the toy.",
       "say": "doll",
@@ -351,12 +1059,13 @@
         { "pic": "🚂", "say": "toy train" }
       ],
       "answer": 0,
-      "hint": "Doll starts with [d], like dog.",
+      "hint": "Listen again: doll. [d], [d], doll!",
       "explanation": "Doll!"
     },
     {
       "id": "L3-04",
       "level": 3,
+      "group": "listen-thing",
       "type": "pick",
       "instruction": "Listen and tap the picture.",
       "say": "toy train",
@@ -366,43 +1075,46 @@
         { "pic": "🧸", "say": "teddy" }
       ],
       "answer": 0,
-      "hint": "A train goes choo choo!",
+      "hint": "Listen again: toy train.",
       "explanation": "Toy train!"
     },
     {
       "id": "L3-05",
       "level": 3,
+      "group": "pairs",
       "type": "match_pairs",
-      "instruction": "Match the word and the toy.",
+      "instruction": "Listen and match the toy.",
       "speak_options": true,
       "pairs": [
-        ["car", { "pic": "🚗", "say": "car" }],
-        ["ball", { "pic": "⚽", "say": "ball" }],
-        ["doll", { "pic": "🪆", "say": "doll" }],
-        ["toy train", { "pic": "🚂", "say": "toy train" }]
+        [{ "pic": "🔊", "say": "car" }, { "pic": "🚗", "say": "car" }],
+        [{ "pic": "🔊", "say": "ball" }, { "pic": "⚽", "say": "ball" }],
+        [{ "pic": "🔊", "say": "doll" }, { "pic": "🪆", "say": "doll" }],
+        [{ "pic": "🔊", "say": "toy train" }, { "pic": "🚂", "say": "toy train" }]
       ],
-      "hint": "Tap a word and listen. Then find the toy. Car starts with [c]. Ball starts with [b].",
+      "hint": "Tap a card and listen. Then find the toy.",
       "explanation": "Car, ball, doll, toy train."
     },
     {
       "id": "L3-06",
       "level": 3,
+      "group": "listen-person",
       "type": "pick",
       "instruction": "Listen and tap.",
       "say": "grandma",
       "options": [
         { "pic": "👵", "say": "grandma" },
         { "pic": "👴", "say": "grandpa" },
-        { "pic": "👩", "say": "mom" },
+        { "pic": "👩", "say": "mum" },
         { "pic": "👨", "say": "dad" }
       ],
       "answer": 0,
-      "hint": "Grandma is a mom's mom or a dad's mom.",
+      "hint": "Listen again: grandma.",
       "explanation": "Grandma!"
     },
     {
       "id": "L3-07",
       "level": 3,
+      "group": "listen-person",
       "type": "pick",
       "instruction": "Listen and tap.",
       "say": "brother",
@@ -418,45 +1130,57 @@
     {
       "id": "L3-08",
       "level": 3,
+      "group": "pairs",
       "type": "match_pairs",
-      "instruction": "Match the word and the picture.",
+      "instruction": "Listen and match the picture.",
       "speak_options": true,
       "pairs": [
-        ["mom", { "pic": "👩", "say": "mom" }],
-        ["dad", { "pic": "👨", "say": "dad" }],
-        ["grandma", { "pic": "👵", "say": "grandma" }],
-        ["grandpa", { "pic": "👴", "say": "grandpa" }]
+        [{ "pic": "🔊", "say": "mum" }, { "pic": "👩", "say": "mum" }],
+        [{ "pic": "🔊", "say": "dad" }, { "pic": "👨", "say": "dad" }],
+        [{ "pic": "🔊", "say": "grandma" }, { "pic": "👵", "say": "grandma" }],
+        [{ "pic": "🔊", "say": "grandpa" }, { "pic": "👴", "say": "grandpa" }]
       ],
-      "hint": "Tap a word and listen. Then find the person. Dad starts with [d].",
-      "explanation": "Mom, dad, grandma, grandpa."
+      "hint": "Tap a card and listen. Then find the picture.",
+      "explanation": "Mum, dad, grandma, grandpa."
     },
     {
       "id": "L3-09",
       "level": 3,
+      "group": "name-it",
       "type": "pick",
-      "instruction": "Who is it? Tap the word.",
+      "instruction": "Who is it? Tap and listen.",
       "show": { "pic": "👨" },
       "speak_options": true,
-      "options": ["dad", "mom", "doll"],
+      "options": [
+        { "pic": "🔊", "say": "dad" },
+        { "pic": "🔊", "say": "mum" },
+        { "pic": "🔊", "say": "doll" }
+      ],
       "answer": 0,
-      "hint": "Tap a word and listen. It's dad! Dad starts with [d] and ends with [d].",
+      "hint": "Tap a card and listen. It's dad! [d], [d], dad!",
       "explanation": "[d], [d], dad!"
     },
     {
       "id": "L3-10",
       "level": 3,
+      "group": "name-it",
       "type": "pick",
-      "instruction": "What is it? Tap the word.",
+      "instruction": "What is it? Tap and listen.",
       "show": { "pic": "🪆" },
       "speak_options": true,
-      "options": ["doll", "ball", "car"],
+      "options": [
+        { "pic": "🔊", "say": "doll" },
+        { "pic": "🔊", "say": "ball" },
+        { "pic": "🔊", "say": "car" }
+      ],
       "answer": 0,
-      "hint": "Tap a word and listen. It's a doll. Doll starts with [d].",
+      "hint": "Tap a card and listen. It's a doll. Doll starts with [d].",
       "explanation": "[d], [d], doll!"
     },
     {
       "id": "L3-11",
       "level": 3,
+      "group": "listen-person",
       "type": "pick",
       "instruction": "Listen and tap.",
       "say": "family",
@@ -466,24 +1190,30 @@
         { "pic": "🧸", "say": "toys" }
       ],
       "answer": 0,
-      "hint": "A family is mom, dad, sister and brother.",
+      "hint": "Listen again: family. Mum, dad, sister and brother – a family!",
       "explanation": "Family!"
     },
     {
       "id": "L3-12",
       "level": 3,
+      "group": "name-it",
       "type": "pick",
-      "instruction": "What is it? Tap the word.",
+      "instruction": "What is it? Tap and listen.",
       "show": { "pic": "⚽" },
       "speak_options": true,
-      "options": ["ball", "doll", "dog"],
+      "options": [
+        { "pic": "🔊", "say": "ball" },
+        { "pic": "🔊", "say": "doll" },
+        { "pic": "🔊", "say": "dog" }
+      ],
       "answer": 0,
-      "hint": "Tap a word and listen. It's a ball. Ball starts with [b].",
+      "hint": "Tap a card and listen. It's a ball. Ball starts with [b].",
       "explanation": "[b], [b], ball!"
     },
     {
       "id": "L3-13",
       "level": 3,
+      "group": "listen-person",
       "type": "pick",
       "instruction": "Listen and tap.",
       "say": "sister",
@@ -496,10 +1226,461 @@
       "hint": "A sister is a girl.",
       "explanation": "Sister!"
     },
-
+    {
+      "id": "L3-14",
+      "level": 3,
+      "group": "colour-listen",
+      "type": "pick",
+      "instruction": "Listen and tap the colour.",
+      "say": "yellow",
+      "options": [
+        { "color": "yellow", "say": "yellow" },
+        { "color": "green", "say": "green" },
+        { "color": "red", "say": "red" },
+        { "color": "pink", "say": "pink" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: yellow.",
+      "explanation": "Yellow!"
+    },
+    {
+      "id": "L3-15",
+      "level": 3,
+      "group": "colour-listen",
+      "type": "pick",
+      "instruction": "Listen and tap the colour.",
+      "say": "pink",
+      "options": [
+        { "color": "pink", "say": "pink" },
+        { "color": "red", "say": "red" },
+        { "color": "blue", "say": "blue" },
+        { "color": "yellow", "say": "yellow" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: pink.",
+      "explanation": "Pink!"
+    },
+    {
+      "id": "L3-16",
+      "level": 3,
+      "group": "colour-name",
+      "type": "pick",
+      "instruction": "What colour is it? Tap and listen.",
+      "show": { "color": "green" },
+      "speak_options": true,
+      "options": [
+        { "pic": "🔊", "say": "green" },
+        { "pic": "🔊", "say": "yellow" },
+        { "pic": "🔊", "say": "pink" }
+      ],
+      "answer": 0,
+      "hint": "Tap a card and listen. Which one is green?",
+      "explanation": "Green!"
+    },
+    {
+      "id": "L3-17",
+      "level": 3,
+      "group": "colour-name",
+      "type": "pick",
+      "instruction": "What colour is it? Tap and listen.",
+      "show": { "color": "yellow" },
+      "speak_options": true,
+      "options": [
+        { "pic": "🔊", "say": "yellow" },
+        { "pic": "🔊", "say": "blue" },
+        { "pic": "🔊", "say": "green" }
+      ],
+      "answer": 0,
+      "hint": "Tap a card and listen. Which one is yellow?",
+      "explanation": "Yellow!"
+    },
+    {
+      "id": "L3-18",
+      "level": 3,
+      "group": "listen-thing",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "kite",
+      "options": [
+        { "pic": "🪁", "say": "kite" },
+        { "pic": "🎒", "say": "bag" },
+        { "pic": "📖", "say": "book" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: kite.",
+      "explanation": "Kite!"
+    },
+    {
+      "id": "L3-19",
+      "level": 3,
+      "group": "listen-thing",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "bag",
+      "options": [
+        { "pic": "🎒", "say": "bag" },
+        { "pic": "📖", "say": "book" },
+        { "pic": "⚽", "say": "ball" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: bag. [b], [b], bag!",
+      "explanation": "[b], [b], bag!"
+    },
+    {
+      "id": "L3-20",
+      "level": 3,
+      "group": "listen-thing",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "big",
+      "options": [
+        { "pic": "🧸", "say": "big teddy", "size": "big" },
+        { "pic": "🧸", "say": "small teddy", "size": "small" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: big. A big teddy and a small teddy.",
+      "explanation": "Big teddy!"
+    },
+    {
+      "id": "L3-21",
+      "level": 3,
+      "group": "listen-thing",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "old",
+      "options": [
+        { "pic": "🧸", "say": "old teddy", "look": "old" },
+        { "pic": "🧸", "say": "new teddy", "look": "new" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: old. An old teddy and a new teddy.",
+      "explanation": "Old teddy!"
+    },
+    {
+      "id": "L3-22",
+      "level": 3,
+      "group": "listen-person",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "grandpa",
+      "options": [
+        { "pic": "👴", "say": "grandpa" },
+        { "pic": "👵", "say": "grandma" },
+        { "pic": "👦", "say": "brother" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: grandpa.",
+      "explanation": "Grandpa!"
+    },
+    {
+      "id": "L3-23",
+      "level": 3,
+      "group": "listen-person",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "mum",
+      "options": [
+        { "pic": "👩", "say": "mum" },
+        { "pic": "👧", "say": "sister" },
+        { "pic": "👵", "say": "grandma" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: mum.",
+      "explanation": "Mum!"
+    },
+    {
+      "id": "L3-24",
+      "level": 3,
+      "group": "listen-person",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "dad",
+      "options": [
+        { "pic": "👨", "say": "dad" },
+        { "pic": "👴", "say": "grandpa" },
+        { "pic": "👦", "say": "brother" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: dad. [d], [d], dad!",
+      "explanation": "[d], [d], dad!"
+    },
+    {
+      "id": "L3-25",
+      "level": 3,
+      "group": "listen-person",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "happy",
+      "options": [
+        { "pic": "😊", "say": "happy" },
+        { "pic": "😠", "say": "angry" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: happy.",
+      "explanation": "Happy!"
+    },
+    {
+      "id": "L3-26",
+      "level": 3,
+      "group": "listen-person",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "angry",
+      "options": [
+        { "pic": "😠", "say": "angry" },
+        { "pic": "😊", "say": "happy" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: angry. [a], [a], angry!",
+      "explanation": "[a], [a], angry!"
+    },
+    {
+      "id": "L3-27",
+      "level": 3,
+      "group": "listen-person",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "grandma",
+      "options": [
+        { "pic": "👵", "say": "grandma" },
+        { "pic": "👩", "say": "mum" },
+        { "pic": "👧", "say": "sister" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: grandma.",
+      "explanation": "Grandma!"
+    },
+    {
+      "id": "L3-28",
+      "level": 3,
+      "group": "listen-person",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "brother",
+      "options": [
+        { "pic": "👦", "say": "brother" },
+        { "pic": "👨", "say": "dad" },
+        { "pic": "👩", "say": "mum" }
+      ],
+      "answer": 0,
+      "hint": "A brother is a boy.",
+      "explanation": "Brother!"
+    },
+    {
+      "id": "L3-29",
+      "level": 3,
+      "group": "listen-person",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "sister",
+      "options": [
+        { "pic": "👧", "say": "sister" },
+        { "pic": "👩", "say": "mum" },
+        { "pic": "👴", "say": "grandpa" }
+      ],
+      "answer": 0,
+      "hint": "A sister is a girl.",
+      "explanation": "Sister!"
+    },
+    {
+      "id": "L3-30",
+      "level": 3,
+      "group": "pairs",
+      "type": "match_pairs",
+      "instruction": "Listen and match the picture.",
+      "speak_options": true,
+      "pairs": [
+        [{ "pic": "🔊", "say": "book" }, { "pic": "📖", "say": "book" }],
+        [{ "pic": "🔊", "say": "bag" }, { "pic": "🎒", "say": "bag" }],
+        [{ "pic": "🔊", "say": "kite" }, { "pic": "🪁", "say": "kite" }],
+        [{ "pic": "🔊", "say": "desk" }, { "draw": "desk", "color": "brown", "say": "desk" }]
+      ],
+      "hint": "Tap a card and listen. Then find the picture.",
+      "explanation": "Book, bag, kite, desk."
+    },
+    {
+      "id": "L3-31",
+      "level": 3,
+      "group": "pairs",
+      "type": "match_pairs",
+      "instruction": "Listen and match the picture.",
+      "speak_options": true,
+      "pairs": [
+        [{ "pic": "🔊", "say": "big" }, { "pic": "🐶", "say": "big dog", "size": "big" }],
+        [{ "pic": "🔊", "say": "small" }, { "pic": "🐶", "say": "small dog", "size": "small" }],
+        [{ "pic": "🔊", "say": "happy" }, { "pic": "😊", "say": "happy" }],
+        [{ "pic": "🔊", "say": "angry" }, { "pic": "😠", "say": "angry" }]
+      ],
+      "hint": "Tap a card and listen. Then find the picture.",
+      "explanation": "Big, small, happy, angry."
+    },
+    {
+      "id": "L3-32",
+      "level": 3,
+      "group": "pairs",
+      "type": "match_pairs",
+      "instruction": "Listen and match the toy.",
+      "speak_options": true,
+      "pairs": [
+        [{ "pic": "🔊", "say": "old" }, { "pic": "🧸", "say": "old teddy", "look": "old" }],
+        [{ "pic": "🔊", "say": "new" }, { "pic": "🧸", "say": "new teddy", "look": "new" }],
+        [{ "pic": "🔊", "say": "ball" }, { "pic": "⚽", "say": "ball" }],
+        [{ "pic": "🔊", "say": "car" }, { "pic": "🚗", "say": "car" }]
+      ],
+      "hint": "Tap a card and listen. Then find the toy.",
+      "explanation": "Old, new, ball, car."
+    },
+    {
+      "id": "L3-33",
+      "level": 3,
+      "group": "pairs",
+      "type": "match_pairs",
+      "instruction": "Listen and match the picture.",
+      "speak_options": true,
+      "pairs": [
+        [{ "pic": "🔊", "say": "brother" }, { "pic": "👦", "say": "brother" }],
+        [{ "pic": "🔊", "say": "sister" }, { "pic": "👧", "say": "sister" }],
+        [{ "pic": "🔊", "say": "grandma" }, { "pic": "👵", "say": "grandma" }],
+        [{ "pic": "🔊", "say": "family" }, { "pic": "👨‍👩‍👧‍👦", "say": "family" }]
+      ],
+      "hint": "Tap a card and listen. Then find the picture. A brother is a boy. A sister is a girl.",
+      "explanation": "Brother, sister, grandma, family."
+    },
+    {
+      "id": "L3-34",
+      "level": 3,
+      "group": "name-it",
+      "type": "pick",
+      "instruction": "What is it? Tap and listen.",
+      "show": { "pic": "🪁" },
+      "speak_options": true,
+      "options": [
+        { "pic": "🔊", "say": "kite" },
+        { "pic": "🔊", "say": "book" },
+        { "pic": "🔊", "say": "cat" }
+      ],
+      "answer": 0,
+      "hint": "Tap a card and listen. It's a kite!",
+      "explanation": "Kite!"
+    },
+    {
+      "id": "L3-35",
+      "level": 3,
+      "group": "name-it",
+      "type": "pick",
+      "instruction": "What is it? Tap and listen.",
+      "show": { "pic": "🎒" },
+      "speak_options": true,
+      "options": [
+        { "pic": "🔊", "say": "bag" },
+        { "pic": "🔊", "say": "ball" },
+        { "pic": "🔊", "say": "doll" }
+      ],
+      "answer": 0,
+      "hint": "Tap a card and listen. It's a bag. Bag starts with [b].",
+      "explanation": "[b], [b], bag!"
+    },
+    {
+      "id": "L3-36",
+      "level": 3,
+      "group": "name-it",
+      "type": "pick",
+      "instruction": "What is it? Tap and listen.",
+      "show": { "pic": "📖" },
+      "speak_options": true,
+      "options": [
+        { "pic": "🔊", "say": "book" },
+        { "pic": "🔊", "say": "box" },
+        { "pic": "🔊", "say": "bag" }
+      ],
+      "answer": 0,
+      "hint": "Tap a card and listen. It's a book!",
+      "explanation": "[b], [b], book!"
+    },
+    {
+      "id": "L3-37",
+      "level": 3,
+      "group": "name-it",
+      "type": "pick",
+      "instruction": "What is it? Tap and listen.",
+      "show": { "draw": "desk", "color": "brown" },
+      "speak_options": true,
+      "options": [
+        { "pic": "🔊", "say": "desk" },
+        { "pic": "🔊", "say": "dog" },
+        { "pic": "🔊", "say": "doll" }
+      ],
+      "answer": 0,
+      "hint": "Tap a card and listen. It's a desk. Desk starts with [d].",
+      "explanation": "[d], [d], desk!"
+    },
+    {
+      "id": "L3-38",
+      "level": 3,
+      "group": "name-it",
+      "type": "pick",
+      "instruction": "Who is it? Tap and listen.",
+      "show": { "pic": "👩" },
+      "speak_options": true,
+      "options": [
+        { "pic": "🔊", "say": "mum" },
+        { "pic": "🔊", "say": "dad" },
+        { "pic": "🔊", "say": "grandma" }
+      ],
+      "answer": 0,
+      "hint": "Tap a card and listen. It's mum!",
+      "explanation": "Mum!"
+    },
+    {
+      "id": "L3-39",
+      "level": 3,
+      "group": "name-it",
+      "type": "pick",
+      "instruction": "Happy or angry? Tap and listen.",
+      "show": { "pic": "😠" },
+      "speak_options": true,
+      "options": [
+        { "pic": "🔊", "say": "angry" },
+        { "pic": "🔊", "say": "happy" }
+      ],
+      "answer": 0,
+      "hint": "Tap a card and listen. [a], [a], angry!",
+      "explanation": "[a], [a], angry!"
+    },
+    {
+      "id": "L3-40",
+      "level": 3,
+      "group": "listen-thing",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "small",
+      "options": [
+        { "pic": "🚗", "say": "small car", "size": "small" },
+        { "pic": "🚗", "say": "big car", "size": "big" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: small. A small car and a big car.",
+      "explanation": "Small car!"
+    },
+    {
+      "id": "L3-41",
+      "level": 3,
+      "group": "listen-thing",
+      "type": "pick",
+      "instruction": "Listen and tap.",
+      "say": "new",
+      "options": [
+        { "pic": "🚂", "say": "new train", "look": "new" },
+        { "pic": "🚂", "say": "old train", "look": "old" }
+      ],
+      "answer": 0,
+      "hint": "Listen again: new. A new train and an old train.",
+      "explanation": "New train!"
+    },
     {
       "id": "L4-01",
       "level": 4,
+      "group": "sentence",
       "type": "word_order",
       "instruction": "Listen and make the sentence.",
       "say": "It's a blue box.",
@@ -511,19 +1692,27 @@
     {
       "id": "L4-02",
       "level": 4,
+      "group": "gap",
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
       "say": "It's a navy box.",
       "show": { "draw": "box", "color": "navy" },
       "text": ["It's a ", "___", " ", { "draw": "box", "color": "white", "say": "box" }, "."],
-      "answers": [["navy"]],
-      "bank": [{ "color": "navy", "say": "navy" }, { "color": "blue", "say": "blue" }, { "color": "grey", "say": "grey" }],
-      "hint": "Look at the box. It's very dark blue – that's navy!",
+      "answers": [
+        ["navy"]
+      ],
+      "bank": [
+        { "color": "navy", "say": "navy" },
+        { "color": "blue", "say": "blue" },
+        { "color": "grey", "say": "grey" }
+      ],
+      "hint": "Listen again: It's a navy box..",
       "explanation": "It's a navy box!"
     },
     {
       "id": "L4-03",
       "level": 4,
+      "group": "sentence",
       "type": "word_order",
       "instruction": "Listen and make the sentence.",
       "say": "I'm a boy.",
@@ -535,18 +1724,22 @@
     {
       "id": "L4-04",
       "level": 4,
+      "group": "gap",
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
       "say": "It's a grey ball.",
       "text": ["___", " a ", { "draw": "ball", "color": "grey", "say": "grey ball" }, "."],
-      "answers": [["It's"]],
+      "answers": [
+        ["It's"]
+      ],
       "bank": ["It's", "I'm", "You're"],
-      "hint": "Listen again: It's a grey ball. It's ends with a curly snake.",
+      "hint": "Listen again: It's a grey ball..",
       "explanation": "It's a grey ball!"
     },
     {
       "id": "L4-05",
       "level": 4,
+      "group": "sentence",
       "type": "word_order",
       "instruction": "Listen and make the sentence.",
       "say": "It's my doll.",
@@ -558,41 +1751,49 @@
     {
       "id": "L4-06",
       "level": 4,
+      "group": "gap",
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
       "say": "I am a boy.",
       "text": ["I ", "___", " a ", { "pic": "👦", "say": "boy" }, "."],
-      "answers": [["am"]],
+      "answers": [
+        ["am"]
+      ],
       "bank": ["am", "my", "I'm"],
-      "hint": "Listen again: I am a boy. Am starts with [a], like apple!",
+      "hint": "Listen again: I am a boy..",
       "explanation": "I am a boy!"
     },
     {
       "id": "L4-07",
       "level": 4,
+      "group": "sentence",
       "type": "word_order",
       "instruction": "Listen and make the sentence.",
       "say": "It's a yellow ball.",
       "show": { "draw": "ball", "color": "yellow" },
       "words": ["It's", "a", { "color": "yellow", "say": "yellow" }, { "pic": "⚽", "say": "ball" }],
-      "hint": "Listen again: It's a yellow ball. Start with It's. The ball comes last.",
+      "hint": "Listen again: It's a yellow ball. Start with It's.",
       "explanation": "It's a yellow ball!"
     },
     {
       "id": "L4-08",
       "level": 4,
+      "group": "gap",
       "type": "gap_fill",
       "instruction": "Listen and finish the sentence.",
       "say": "It's my dog.",
       "text": ["It's ", "___", " ", { "pic": "🐶", "say": "dog" }, "."],
-      "answers": [["my"]],
+      "answers": [
+        ["my"]
+      ],
       "bank": ["my", "am", "I"],
-      "hint": "Listen again: It's my dog. My is a short word with a long tail at the end.",
+      "hint": "Listen again: It's my dog..",
       "explanation": "It's my dog!"
     },
     {
       "id": "L4-09",
       "level": 4,
+      "group": "boss-sound",
       "type": "pick",
       "instruction": "Which one starts with [b]?",
       "show": "b",
@@ -609,13 +1810,307 @@
     {
       "id": "L4-10",
       "level": 4,
+      "group": "boss-word",
       "type": "pick",
       "instruction": "Listen and tap the word.",
       "say": "you're",
       "options": ["you're", "you", "I'm"],
       "answer": 0,
-      "hint": "You're looks like you, with a little comma and more letters at the end.",
+      "hint": "Listen again: you're.",
       "explanation": "You're!"
+    },
+    {
+      "id": "L4-11",
+      "level": 4,
+      "group": "sentence",
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's a big ball.",
+      "show": { "pic": "⚽", "size": "big" },
+      "words": ["It's", "a", { "pic": "🔊", "say": "big" }, { "pic": "⚽", "say": "ball" }],
+      "speak_options": true,
+      "hint": "Listen again: It's a big ball. Start with It's.",
+      "explanation": "It's a big ball!"
+    },
+    {
+      "id": "L4-12",
+      "level": 4,
+      "group": "sentence",
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's a small car.",
+      "show": { "pic": "🚗", "size": "small" },
+      "words": ["It's", "a", { "pic": "🔊", "say": "small" }, { "pic": "🚗", "say": "car" }],
+      "speak_options": true,
+      "hint": "Listen again: It's a small car. Start with It's.",
+      "explanation": "It's a small car!"
+    },
+    {
+      "id": "L4-13",
+      "level": 4,
+      "group": "sentence",
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's my bag.",
+      "show": { "pic": "🎒" },
+      "words": ["It's", "my", { "pic": "🎒", "say": "bag" }],
+      "hint": "Listen again: It's my bag. Start with It's, then my.",
+      "explanation": "It's my bag!"
+    },
+    {
+      "id": "L4-14",
+      "level": 4,
+      "group": "sentence",
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "I'm a happy boy.",
+      "show": { "pic": "😊" },
+      "words": ["I'm", "a", { "pic": "😊", "say": "happy" }, { "pic": "👦", "say": "boy" }],
+      "hint": "Listen again: I'm a happy boy. Start with I'm.",
+      "explanation": "I'm a happy boy!"
+    },
+    {
+      "id": "L4-15",
+      "level": 4,
+      "group": "sentence",
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "You're a girl.",
+      "show": { "pic": "👧" },
+      "words": ["You're", "a", { "pic": "👧", "say": "girl" }],
+      "hint": "Listen again: You're a girl. Start with You're.",
+      "explanation": "You're a girl!"
+    },
+    {
+      "id": "L4-16",
+      "level": 4,
+      "group": "sentence",
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's in my bag.",
+      "show": { "pic": "📖", "in": "🎒" },
+      "words": ["It's", "in", "my", { "pic": "🎒", "say": "bag" }],
+      "hint": "Listen again: It's in my bag. Start with It's, then in, then my.",
+      "explanation": "It's in my bag!"
+    },
+    {
+      "id": "L4-17",
+      "level": 4,
+      "group": "sentence",
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's my old teddy.",
+      "show": { "pic": "🧸", "look": "old" },
+      "words": ["It's", "my", { "pic": "🔊", "say": "old" }, { "pic": "🧸", "say": "teddy" }],
+      "speak_options": true,
+      "hint": "Listen again: It's my old teddy. Start with It's, then my.",
+      "explanation": "It's my old teddy!"
+    },
+    {
+      "id": "L4-18",
+      "level": 4,
+      "group": "sentence",
+      "type": "word_order",
+      "instruction": "Listen and make the sentence.",
+      "say": "It's a pink box.",
+      "show": { "draw": "box", "color": "pink" },
+      "words": ["It's", "a", { "color": "pink", "say": "pink" }, { "pic": "📦", "say": "box" }],
+      "hint": "Listen again: It's a pink box. Start with It's.",
+      "explanation": "It's a pink box!"
+    },
+    {
+      "id": "L4-19",
+      "level": 4,
+      "group": "gap",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's a big dog.",
+      "show": { "pic": "🐶", "size": "big" },
+      "speak_options": true,
+      "text": ["It's a ", "___", " ", { "pic": "🐶", "say": "dog" }, "."],
+      "answers": [
+        ["big"]
+      ],
+      "bank": [
+        { "pic": "🔊", "say": "big" },
+        { "pic": "🔊", "say": "small" }
+      ],
+      "hint": "Listen again: It's a big dog. Tap the cards and listen.",
+      "explanation": "It's a big dog!"
+    },
+    {
+      "id": "L4-20",
+      "level": 4,
+      "group": "gap",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's a small ball.",
+      "show": { "pic": "⚽", "size": "small" },
+      "speak_options": true,
+      "text": ["It's a ", "___", " ", { "pic": "⚽", "say": "ball" }, "."],
+      "answers": [
+        ["small"]
+      ],
+      "bank": [
+        { "pic": "🔊", "say": "small" },
+        { "pic": "🔊", "say": "big" }
+      ],
+      "hint": "Listen again: It's a small ball. Tap the cards and listen.",
+      "explanation": "It's a small ball!"
+    },
+    {
+      "id": "L4-21",
+      "level": 4,
+      "group": "gap",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's my book.",
+      "text": ["It's ", "___", " ", { "pic": "📖", "say": "book" }, "."],
+      "answers": [
+        ["my"]
+      ],
+      "bank": ["my", "am", "I"],
+      "hint": "Listen again: It's my book..",
+      "explanation": "It's my book!"
+    },
+    {
+      "id": "L4-22",
+      "level": 4,
+      "group": "gap",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "I'm happy.",
+      "text": ["___", " ", { "pic": "😊", "say": "happy" }, "."],
+      "answers": [
+        ["I'm"]
+      ],
+      "bank": ["I'm", "You're", "It's"],
+      "hint": "Listen again: I'm happy..",
+      "explanation": "I'm happy!"
+    },
+    {
+      "id": "L4-23",
+      "level": 4,
+      "group": "gap",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "You're happy.",
+      "text": ["___", " ", { "pic": "😊", "say": "happy" }, "."],
+      "answers": [
+        ["You're"]
+      ],
+      "bank": ["You're", "I'm", "It's"],
+      "hint": "Listen again: You're happy..",
+      "explanation": "You're happy!"
+    },
+    {
+      "id": "L4-24",
+      "level": 4,
+      "group": "gap",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's in my bag.",
+      "show": { "pic": "📖", "in": "🎒" },
+      "text": ["It's ", "___", " my ", { "pic": "🎒", "say": "bag" }, "."],
+      "answers": [
+        ["in"]
+      ],
+      "bank": ["in", "I", "am"],
+      "hint": "Listen again: It's in my bag..",
+      "explanation": "It's in my bag!"
+    },
+    {
+      "id": "L4-25",
+      "level": 4,
+      "group": "gap",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's a new car.",
+      "show": { "pic": "🚗", "look": "new" },
+      "speak_options": true,
+      "text": ["It's a ", "___", " ", { "pic": "🚗", "say": "car" }, "."],
+      "answers": [
+        ["new"]
+      ],
+      "bank": [
+        { "pic": "🔊", "say": "new" },
+        { "pic": "🔊", "say": "old" }
+      ],
+      "hint": "Listen again: It's a new car. Tap the cards and listen.",
+      "explanation": "It's a new car!"
+    },
+    {
+      "id": "L4-26",
+      "level": 4,
+      "group": "gap",
+      "type": "gap_fill",
+      "instruction": "Listen and finish the sentence.",
+      "say": "It's my kite.",
+      "text": ["___", " my ", { "pic": "🪁", "say": "kite" }, "."],
+      "answers": [
+        ["It's"]
+      ],
+      "bank": ["It's", "I'm", "You're"],
+      "hint": "Listen again: It's my kite..",
+      "explanation": "It's my kite!"
+    },
+    {
+      "id": "L4-27",
+      "level": 4,
+      "group": "boss-sound",
+      "type": "pick",
+      "instruction": "Which one starts with [c]?",
+      "show": "c",
+      "speak_options": true,
+      "options": [
+        { "pic": "🚗", "say": "car" },
+        { "pic": "📖", "say": "book" },
+        { "pic": "🐶", "say": "dog" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [c], [c], [c]…",
+      "explanation": "[c], [c], car!"
+    },
+    {
+      "id": "L4-28",
+      "level": 4,
+      "group": "boss-sound",
+      "type": "pick",
+      "instruction": "Which one starts with [d]?",
+      "show": "d",
+      "speak_options": true,
+      "options": [
+        { "pic": "🪆", "say": "doll" },
+        { "pic": "🐜", "say": "ant" },
+        { "pic": "⚽", "say": "ball" }
+      ],
+      "answer": 0,
+      "hint": "Tap the pictures and listen. [d], [d], [d]…",
+      "explanation": "[d], [d], doll!"
+    },
+    {
+      "id": "L4-29",
+      "level": 4,
+      "group": "boss-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "I'm",
+      "options": ["I'm", "I", "my"],
+      "answer": 0,
+      "hint": "Listen again: I'm.",
+      "explanation": "I'm!"
+    },
+    {
+      "id": "L4-30",
+      "level": 4,
+      "group": "boss-word",
+      "type": "pick",
+      "instruction": "Listen and tap the word.",
+      "say": "my",
+      "options": ["my", "am", "you"],
+      "answer": 0,
+      "hint": "Listen again: my.",
+      "explanation": "My!"
     }
   ]
 }

@@ -10,6 +10,7 @@ import { el } from "./tasks/util.js";
 import { speech } from "./speech.js";
 import { loadProgress, saveProgress, resetProgress, unitProgress, worldStickers } from "./storage.js";
 import { unitBooks } from "./stickers.js";
+import { levelSlots, drawLevel } from "./pool.js";
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -20,7 +21,8 @@ const sfx = new Sfx();
 const progress = loadProgress();
 let units = [];
 let world = worldById(params.get("world") ?? progress.world);
-let unit = null; // { id, title, tasks, books } – the books hold the stickers of the current world
+let unit = null; // { id, title, data, books } – the books hold the stickers of the current world
+let levelTasks = []; // the tasks drawn for the doors of the current level, in order
 let levelStickers = []; // stickers won on the current level
 let currentLevel = null;
 let toastTimer = null;
@@ -66,7 +68,7 @@ async function fetchJson(url) {
 async function selectUnit(id) {
   const meta = units.find((u) => u.id === id);
   const data = await fetchJson(`data/${meta.file}`);
-  unit = { id, title: meta.title, tasks: data.tasks, books: unitBooks(data.tasks, world.stickers) };
+  unit = { id, title: meta.title, data, books: unitBooks(data, world.stickers) };
   progress.lastUnit = id;
   saveProgress(progress);
   renderLevels();
@@ -88,7 +90,7 @@ function renderWorlds() {
       saveProgress(progress);
       renderWorlds();
       applyWorld();
-      unit.books = unitBooks(unit.tasks, world.stickers);
+      unit.books = unitBooks(unit.data, world.stickers);
       renderLevels();
     });
     box.append(card);
@@ -130,7 +132,7 @@ function renderLevels() {
   const up = unitProgress(progress, unit.id);
   for (const { n } of LEVELS) {
     const def = levelDef(world, n);
-    const count = unit.tasks.filter((t) => t.level === def.n).length;
+    const count = levelSlots(unit.data, def.n).length;
     const locked = !UNLOCK_ALL && def.n > up.unlocked;
     const best = up.best[def.n];
     const card = el("button", { class: `card${locked ? " locked" : ""}`, type: "button" },
@@ -155,7 +157,7 @@ function renderAlbum() {
     const books = unit.books.filter((b) => b.level === def.n);
     if (!books.length) continue;
     const row = el("div", { class: "album-row" }, el("span", { class: "album-level", text: `Level ${def.n}` }));
-    for (const b of books) row.append(stickerButton(b.sticker, owned.has(b.taskId)));
+    for (const b of books) row.append(stickerButton(b.sticker, owned.has(b.slot)));
     box.append(row);
   }
   $("album-count").textContent = `${owned.size}/${unit.books.length}`;
@@ -167,11 +169,11 @@ function stickerButton(sticker, owned) {
   return b;
 }
 
-const bookOf = (taskId) => unit.books.find((b) => b.taskId === taskId);
-const hasSticker = (taskId) => worldStickers(progress, unit.id, world.id).includes(taskId);
+const bookOf = (slot) => unit.books.find((b) => b.slot === slot);
+const hasSticker = (slot) => worldStickers(progress, unit.id, world.id).includes(slot);
 
 function callBook(trigger) {
-  const msg = hasSticker(trigger.taskIds[0]) ? world.text.bonusNear : world.text.bonusNearSticker;
+  const msg = hasSticker(trigger.slots[0]) ? world.text.bonusNear : world.text.bonusNearSticker;
   toast(msg);
   speech.say(msg);
 }
@@ -210,13 +212,15 @@ function wireButtons() {
 
 function startLevel(n) {
   const def = levelDef(world, n);
-  const tasks = unit.tasks.filter((t) => t.level === n);
+  // New tasks every game: one drawn for each door (see pool.js).
+  levelTasks = drawLevel(unit.data, n, unitProgress(progress, unit.id).bags);
+  saveProgress(progress);
   currentLevel = n;
-  const map = buildLevel(def, tasks);
+  const map = buildLevel(def, levelTasks);
   // A book still holding its sticker shows it above the book.
-  for (const tr of map.triggers) if (tr.kind === "book" && !hasSticker(tr.taskIds[0])) tr.sticker = bookOf(tr.taskIds[0])?.sticker.pic;
+  for (const tr of map.triggers) if (tr.kind === "book" && !hasSticker(tr.slots[0])) tr.sticker = bookOf(tr.slots[0])?.sticker.pic;
   levelStickers = [];
-  game.load(def, map, heroOf(), tasks.length, world);
+  game.load(def, map, heroOf(), levelTasks.length, world);
   for (const id of ["menu", "summary", "pause", "task"]) $(id).hidden = true;
   $("hud").hidden = false;
   $("hud-level").textContent = `Level ${n} · ${def.title}`;
@@ -246,13 +250,12 @@ function backToMenu() {
 }
 
 async function runTasks(trigger, onProgress) {
-  const tasks = trigger.taskIds.map((id) => unit.tasks.find((t) => t.id === id));
-  const allTasks = unit.tasks.filter((t) => t.level === currentLevel);
+  const tasks = trigger.taskIds.map((id) => levelTasks.find((t) => t.id === id));
   const label = (i) => {
     if (trigger.kind === "sphinx") return `${world.text.boss} · Question ${i + 1} of ${tasks.length}`;
-    const pos = allTasks.indexOf(tasks[i]) + 1;
-    if (trigger.kind === "book") return `${world.text.bonus} · Task ${pos} of ${allTasks.length}`;
-    return `${world.text.door} · Task ${pos} of ${allTasks.length}`;
+    const pos = levelTasks.indexOf(tasks[i]) + 1;
+    if (trigger.kind === "book") return `${world.text.bonus} · Task ${pos} of ${levelTasks.length}`;
+    return `${world.text.door} · Task ${pos} of ${levelTasks.length}`;
   };
   if (trigger.kind === "sphinx") {
     toast(world.text.bossToast);
@@ -267,11 +270,11 @@ async function runTasks(trigger, onProgress) {
 // After a magic book: a sticker for a right answer (first or second try) and the super wizard
 // (or the world's own super hero).
 function rewardBook(trigger, results) {
-  const taskId = trigger.taskIds[0];
-  const book = bookOf(taskId);
-  const won = book && results.length && results.every((r) => r.stars > 0) && !hasSticker(taskId);
+  const slot = trigger.slots[0];
+  const book = bookOf(slot);
+  const won = book && results.length && results.every((r) => r.stars > 0) && !hasSticker(slot);
   if (won) {
-    worldStickers(progress, unit.id, world.id).push(taskId);
+    worldStickers(progress, unit.id, world.id).push(slot);
     saveProgress(progress);
     levelStickers.push(book.sticker);
   }
@@ -303,7 +306,7 @@ function showSummary(stats) {
   up.best[currentLevel] = Math.max(up.best[currentLevel] ?? 0, stats.stars);
   saveProgress(progress);
 
-  const total = unit.tasks.filter((t) => t.level === currentLevel).length;
+  const total = levelTasks.length;
   const firstTry = stats.results.filter((r) => r.firstTry).length;
   const mm = Math.floor(stats.seconds / 60);
   const ss = String(stats.seconds % 60).padStart(2, "0");
@@ -319,7 +322,7 @@ function showSummary(stats) {
   );
   const books = unit.books.filter((b) => b.level === currentLevel);
   if (books.length) {
-    const owned = books.filter((b) => hasSticker(b.taskId)).length;
+    const owned = books.filter((b) => hasSticker(b.slot)).length;
     $("summary-stats").append(stat(`${owned}/${books.length}`, "stickers"));
   }
   $("summary-stickers").hidden = !levelStickers.length;

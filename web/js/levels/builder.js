@@ -100,6 +100,11 @@ function rng(seed) {
   };
 }
 
+// The tasks of a trigger and their slots (the doors they were drawn for – see pool.js).
+const ids = (tasks) => ({ taskIds: tasks.map((t) => t.id), slots: tasks.map((t) => t.slot ?? t.id) });
+
+// tasks: one per door, in order. The map depends only on how many there are, so every game of a
+// level is played on the same map, whichever tasks were drawn.
 export function buildLevel(def, tasks) {
   const rand = rng(def.n * 7919 + tasks.length * 31);
   const pick = (arr) => arr[Math.floor(rand() * arr.length)];
@@ -138,23 +143,23 @@ export function buildLevel(def, tasks) {
   }
 
   // A wall with a magic door – blocks the way until the task is solved.
-  function addDoor(taskIds) {
+  function addDoor(tasks) {
     addFlat(3);
     const col = groundColumn();
     for (let r = 0; r < GROUND_ROW - 2; r++) col[r] = "=";
-    triggers.push({ kind: "door", col: columns.length, row: GROUND_ROW - 2, taskIds });
+    triggers.push({ kind: "door", col: columns.length, row: GROUND_ROW - 2, ...ids(tasks) });
     columns.push(col);
     addFlat(3);
   }
 
   // A floating spell book – a bonus task.
-  function addBook(taskIds) {
+  function addBook(tasks) {
     addFlat(3);
-    triggers.push({ kind: "book", col: columns.length, row: GROUND_ROW - 4, taskIds });
+    triggers.push({ kind: "book", col: columns.length, row: GROUND_ROW - 4, ...ids(tasks) });
     addFlat(4);
   }
 
-  function addSphinx(taskIds) {
+  function addSphinx(tasks) {
     addFlat(4);
     const at = columns.length;
     for (let i = 0; i < 2; i++) {
@@ -162,7 +167,7 @@ export function buildLevel(def, tasks) {
       for (let r = 0; r < GROUND_ROW - 3; r++) col[r] = "=";
       columns.push(col);
     }
-    triggers.push({ kind: "sphinx", col: at, row: GROUND_ROW - 3, taskIds });
+    triggers.push({ kind: "sphinx", col: at, row: GROUND_ROW - 3, ...ids(tasks) });
     addFlat(3);
   }
 
@@ -178,14 +183,14 @@ export function buildLevel(def, tasks) {
     const [min, max] = def.chunksPerTask;
     const n = min + Math.floor(rand() * (max - min + 1));
     for (let k = 0; k < n; k++) addChunk(pick(def.pool));
-    const isBook = i % 3 === 1 && task.type !== "free_writing";
-    if (isBook) addBook([task.id]);
-    else addDoor([task.id]);
+    const isBook = i % 3 === 1;
+    if (isBook) addBook([task]);
+    else addDoor([task]);
   });
 
   if (boss.length) {
     addChunk(pick(def.pool));
-    addSphinx(boss.map((t) => t.id));
+    addSphinx(boss);
   }
 
   addFlat(4);

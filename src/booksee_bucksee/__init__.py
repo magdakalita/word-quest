@@ -1,4 +1,4 @@
-"""Command line tools for the game: validate and review unit tasks, make the letter sounds."""
+"""Command line tools for the game: validate and review unit tasks, make the letter sounds, serve the game."""
 
 import argparse
 import json
@@ -49,6 +49,27 @@ def cmd_sounds(args) -> int:
     return 0
 
 
+def cmd_serve(args) -> int:
+    from functools import partial
+    from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+
+    # no-cache: the browser checks every file on every load (a cheap 304 when nothing changed).
+    # Without it the browser guesses how long a file stays fresh and may mix an old module with
+    # new ones – e.g. old tasks/util.js with new data, so big and small pictures look the same.
+    class Handler(SimpleHTTPRequestHandler):
+        def end_headers(self):
+            self.send_header("Cache-Control", "no-cache")
+            super().end_headers()
+
+    server = ThreadingHTTPServer(("", args.port), partial(Handler, directory=str(ROOT / "web")))
+    print(f"The game: http://localhost:{args.port} (Ctrl+C to stop)")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    return 0
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(prog="booksee-bucksee", description="Tasks for The Word Quest game.")
     sub = parser.add_subparsers(required=True)
@@ -65,6 +86,10 @@ def main() -> None:
     p = sub.add_parser("sounds", help="make the letter sounds in web/audio/ with the macOS voice")
     p.add_argument("letters", nargs="*", help="only these letters, e.g. a c (default: all)")
     p.set_defaults(func=cmd_sounds)
+
+    p = sub.add_parser("serve", help="play the game locally (web/ without browser caching)")
+    p.add_argument("--port", type=int, default=8000)
+    p.set_defaults(func=cmd_serve)
 
     args = parser.parse_args()
     sys.exit(args.func(args))

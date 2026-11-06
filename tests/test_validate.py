@@ -51,3 +51,53 @@ def test_broken_fields_give_messages_not_exceptions(kind):
 
 def test_a_task_that_is_not_an_object_is_reported():
     assert validate_unit({"tasks": [42]}) == ["tasks at positions [0] are not objects"]
+
+
+def test_every_door_has_three_times_as_many_tasks_to_draw_from():
+    for level, groups in UNIT["plan"].items():
+        tasks = [t for t in UNIT["tasks"] if t["level"] == int(level)]
+        assert len(tasks) >= 3 * len(groups), f"level {level}"
+
+
+def test_a_unit_without_a_plan_is_reported():
+    unit = {k: v for k, v in UNIT.items() if k != "plan"}
+    assert any("plan must say" in e for e in validate_unit(unit))
+
+
+def test_a_group_too_small_for_its_doors_is_reported():
+    unit = copy.deepcopy(UNIT)
+    unit["plan"]["2"] = unit["plan"]["2"] + ["he-she"] * 2  # 4 doors, 6 tasks
+    assert any("group 'he-she' has 6 tasks for 4 door(s)" in e for e in validate_unit(unit))
+
+
+def test_a_task_outside_the_plan_is_reported():
+    unit = copy.deepcopy(UNIT)
+    unit["tasks"][0]["group"] = "nowhere"
+    assert any("group 'nowhere' is not in the plan for level 1" in e for e in validate_unit(unit))
+
+
+def test_a_group_with_two_kinds_of_tasks_is_reported():
+    unit = copy.deepcopy(UNIT)
+    pairs = next(t for t in unit["tasks"] if t["level"] == 1 and t["type"] == "match_pairs")
+    pairs["group"] = "starts-with"
+    assert any("group 'starts-with' mixes task types" in e for e in validate_unit(unit))
+
+
+@pytest.mark.parametrize("change,message", [({"size": "huge"}, "size must be"), ({"look": "shiny"}, "look must be"), ({"in": ""}, "in needs")])
+def test_a_wrong_picture_detail_is_reported(change, message):
+    t = task("pick")
+    t["options"] = [{"pic": "⚽", "say": "ball", **change}] + t["options"][1:]
+    assert any(message in e for e in validate_task(t))
+
+
+def test_a_word_outside_the_vocabulary_is_reported():
+    unit = copy.deepcopy(UNIT)
+    t = next(t for t in unit["tasks"] if t["id"] == "L1-20")
+    t["options"][2] = {"pic": "🦆", "say": "duck"}
+    t["hint"] = "Tap the pictures and listen. Like an elephant!"
+    assert any("L1-20: words outside the vocabulary ['duck', 'elephant', 'like']" in e for e in validate_unit(unit))
+
+
+def test_a_unit_without_a_vocabulary_is_reported():
+    unit = {k: v for k, v in UNIT.items() if k != "vocabulary"}
+    assert any("vocabulary must list" in e for e in validate_unit(unit))

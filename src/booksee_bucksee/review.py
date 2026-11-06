@@ -14,7 +14,7 @@ LEVEL_NAMES = {
     1: "Level 1 – The Castle Garden (Letters a, b, c, d)",
     2: "Level 2 – The Library (Little words)",
     3: "Level 3 – The Potion Cellar (Colours, toys & family)",
-    4: "Level 4 – The Astronomy Tower (Sentences, last 2 tasks: the Sphinx)",
+    4: "Level 4 – The Astronomy Tower (Sentences, last 2 doors: the Sphinx)",
 }
 
 TYPE_NAMES = {
@@ -35,7 +35,7 @@ def _item_md(item) -> str:
 
 
 def _task_md(t: dict) -> list[str]:
-    out = [f"### {t['id']} · {TYPE_NAMES.get(t['type'], t['type'])}", "", f"**{t['instruction']}**", ""]
+    out = [f"#### {t['id']}", "", f"**{t['instruction']}**", ""]
     if t.get("say"):
         out += [f"🔊 „{t['say']}”", ""]
     if t.get("show"):
@@ -65,9 +65,16 @@ def _task_md(t: dict) -> list[str]:
 
 def render_review(data: dict) -> str:
     lines = [f"# Unit {data.get('unit', '?')} – {data.get('title', '')}", "", "Zadania do przejrzenia przed udostępnieniem gry. 🔊 = to, co mówi głos, /a/ = głoska (plik web/audio/a.m4a).", ""]
+    lines += ["Każda gra losuje dla każdych drzwi jedno zadanie z ich grupy – drzwi z tą samą grupą losują z jednej puli, bez powtórek.", ""]
     for level, name in LEVEL_NAMES.items():
         tasks = [t for t in data["tasks"] if t.get("level") == level]
-        lines += [f"## {name} ({len(tasks)} zadań)", ""]
-        for t in tasks:
-            lines += _task_md(t)
+        plan = data.get("plan", {}).get(str(level), [])
+        lines += [f"## {name} ({len(plan)} drzwi, {len(tasks)} zadań)", ""]
+        for group in dict.fromkeys(plan):
+            doors = [i + 1 for i, g in enumerate(plan) if g == group]
+            variants = [t for t in tasks if t.get("group") == group]
+            kind = TYPE_NAMES.get(variants[0]["type"], variants[0]["type"]) if variants else "?"
+            lines += [f"### Drzwi {', '.join(map(str, doors))} · {kind} ({group}, {len(variants)} wariantów)", ""]
+            for t in variants:
+                lines += _task_md(t)
     return "\n".join(lines)

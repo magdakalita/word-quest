@@ -63,6 +63,8 @@ export function wordCount(text) {
 // An item is a card shown in a task: a word or letter ("she"), a picture ({ pic: "🐶", say: "dog" }),
 // a drawing in a colour ({ draw: "box", color: "blue" }), a letter sound ({ sound: "a" } – a 🔊 card
 // that plays web/audio/a.m4a) or a mix ({ text: "doll", pic: "🪆" }).
+// A picture can also be big or small ({ pic: "⚽", size: "big" }), old or new ({ pic: "🧸", look: "old" })
+// or inside something ({ pic: "📖", in: "🎒" } – a book in a bag).
 export const asItem = (x) => (typeof x === "string" ? { text: x } : x);
 
 // What the item is called – for solutions and the review list.
@@ -87,10 +89,14 @@ export const speaksWhenTapped = (task, x) => !!(task.speak_options || asItem(x).
 export function renderItem(x) {
   const i = asItem(x);
   const node = el("span", { class: "item" });
+  if (i.size) node.classList.add(`size-${i.size}`);
+  if (i.look) node.classList.add(`look-${i.look}`, "look");
   if (i.draw || i.color) node.append(drawPic(i.draw ?? "blob", i.color));
   // A sound card shows its (small) letter too – the sound and the letter always go together.
   if (i.sound) node.append(el("span", { class: "sound-letter" }, el("span", { class: "pic sound", text: "🔊", "aria-label": "sound" }), el("span", { class: "word", text: i.sound })));
-  if (i.pic) node.append(el("span", { class: "pic", text: i.pic }));
+  if (i.pic && i.in) node.append(el("span", { class: "pic nest" }, el("span", { class: "inner", text: i.pic }), el("span", { class: "outer", text: i.in })));
+  else if (i.pic) node.append(el("span", { class: "pic", text: i.pic }));
+  if (i.look) node.append(el("span", { class: "look-mark", text: i.look === "old" ? "🩹" : "✨" }));
   if (i.text) node.append(el("span", { class: "word", text: display(i.text) }));
   return node;
 }

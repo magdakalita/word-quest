@@ -2,3 +2,9 @@
 [build]
   publish = "web"
   command = ""
+
+# The browser checks every file on every load, so it never mixes old and new modules after a publish.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "no-cache"
