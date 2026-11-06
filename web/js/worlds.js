@@ -15,9 +15,9 @@ const castle = {
   subtitle: "Adventures in Castle Wordstone · English for little wizards",
   chooseHero: "Choose your wizard",
   characters: [
-    { id: "mila",  name: "Mila",  house: "House Firehawk",    robe: "#7a1520", robeDark: "#4e0b12", accent: "#e8b923", hair: "#5a3214", skin: "#f1c9a5" },
+    { id: "milo",  name: "Milo",  house: "House Firehawk",    robe: "#7a1520", robeDark: "#4e0b12", accent: "#e8b923", hair: "#5a3214", skin: "#f1c9a5" },
     { id: "jonas", name: "Jonas", house: "House Forest Stag", robe: "#1f5a2c", robeDark: "#123a1b", accent: "#c9d1c8", hair: "#e3c26a", skin: "#f6d3b3" },
-    { id: "aylin", name: "Aylin", house: "House Star Raven",  robe: "#1d3a7a", robeDark: "#11234d", accent: "#b9874a", hair: "#1b1410", skin: "#d8a47f" },
+    { id: "oscar", name: "Oscar", house: "House Star Raven",  robe: "#1d3a7a", robeDark: "#11234d", accent: "#b9874a", hair: "#1b1410", skin: "#d8a47f" },
     { id: "theo",  name: "Theo",  house: "House Amber Fox",   robe: "#b8860b", robeDark: "#7a5806", accent: "#2b2b2b", hair: "#b5481d", skin: "#f3cfb0" },
   ],
   levels: {

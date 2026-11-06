@@ -11,7 +11,7 @@ Zagraj: <https://magdakalita.github.io/word-quest/>
 - 4 typy zadań: posłuchaj i stuknij (`pick`), dopasuj pary, uzupełnij lukę z banku słów, ułóż zdanie
 - pule zadań: każda gra losuje dla każdych drzwi inny wariant zadania tego samego rodzaju – dziecko nie przejdzie poziomu z pamięci
 - zła odpowiedź = podpowiedź i druga próba, potem rozwiązanie (bez „game over” za błędy językowe)
-- 4 światy do wyboru: magiczny zamek (czarodzieje), kosmos (astronautka, rycerz gwiazd, mroczny lord, mały zielony mistrz), dolina ninja na Dalekim Wschodzie (ninja ognia, zielony ninja, ninja ziemi, stary sensei) i miasto z klocków (porucznik policji, strażak, budowlaniec, portier hotelowy) – te same zadania w innej scenerii
+- 4 światy do wyboru: magiczny zamek (czarodzieje), kosmos (astronauta, rycerz gwiazd, mroczny lord, mały zielony mistrz), dolina ninja na Dalekim Wschodzie (ninja ognia, zielony ninja, ninja ziemi, stary sensei) i miasto z klocków (porucznik policji, strażak, budowlaniec, portier hotelowy) – te same zadania w innej scenerii
 - postęp zapisuje się w przeglądarce; przycisk „Reset progress” na dole menu (po potwierdzeniu) kasuje odblokowane poziomy, gwiazdki i naklejki – imię i wybrane postacie zostają
 
 Gra to statyczna strona (`web/`) – bez serwera i bez kosztów. Python (`src/booksee_bucksee/`) służy tylko do sprawdzania zadań.
@@ -32,7 +32,7 @@ W menu dziecko wybiera świat, a potem postać z tego świata. Świat zmienia ty
 
 | | Zamek | Kosmos | Ninja | Miasto |
 |---|---|---|---|---|
-| postacie | Mila, Jonas, Aylin, Theo | Nova, Kai, Lord Zark, Master Moko | Akira, Leo, Bruno, Sensei Bo | Lieutenant Dex, Fred, Hank, Max |
+| postacie | Milo, Jonas, Oscar, Theo | Neil, Kai, Lord Zark, Master Moko | Akira, Leo, Bruno, Sensei Bo | Lieutenant Dex, Fred, Hank, Max |
 | poziomy | ogród, biblioteka, piwnica z eliksirami, wieża astronomiczna | wyrzutnia rakiet, stacja kosmiczna, planeta kosmitów, Dark Star | las bambusowy, dojo, góry we mgle, świątynia smoka | park, ratusz, komisariat, rynek wieczorem |
 | przeszkody | zaczarowane drzwi, duszki | śluzy, kosmici | bramy świątyni, węże | drzwi kamienic, złodziejaszki |
 | bonus z naklejką | latająca księga | kryształ gwiazd | złoty zwój | złota odznaka |

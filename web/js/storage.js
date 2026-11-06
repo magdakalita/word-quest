@@ -13,7 +13,7 @@ export function loadProgress() {
   }
   if (!p || typeof p !== "object") p = {};
   p = { name: "", world: "castle", units: {}, ...p };
-  p.heroes ??= { castle: p.character ?? "mila" }; // saved before there were worlds
+  p.heroes ??= { castle: p.character ?? "milo" }; // saved before there were worlds
   delete p.character;
   return p;
 }

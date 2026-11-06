@@ -6,7 +6,7 @@ import { TILE, paint, cached, rand, drawMoon, drawHills } from "./sprites.js";
 // ---------- Heroes ----------
 // 12×14 grids on top of the shared legs (see LEGS in sprites.js); the legs are drawn in "b".
 
-const NOVA = [
+const NEIL = [
   "...WWWWWW...",
   "..WWWWWWWW..",
   "..WvvvvvvW..",
@@ -76,7 +76,7 @@ const MOKO = [
 
 export const SPACE_HEROES = [
   {
-    id: "nova", name: "Nova", house: "Space explorer", body: NOVA,
+    id: "neil", name: "Neil", house: "Space explorer", body: NEIL,
     palette: { W: "#eef1f6", G: "#9aa3b2", v: "#2a5a8a", s: "#f1c9a5", e: "#1a1a1a", o: "#e8762b", c: "#3fa9f5", b: "#6b7080" },
   },
   {
