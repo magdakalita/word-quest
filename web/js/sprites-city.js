@@ -1,4 +1,4 @@
-// The city world: a police lieutenant and his friends, little crooks, roadblocks, golden
+// The city world: a police lieutenant and his friends, little crooks, townhouse doors, golden
 // badges, the Mayor in his corn costume, the town hall, the police station and the streets of Brick City. Drawn in code like sprites.js.
 
 import { TILE, paint, cached, drawHills } from "./sprites.js";
@@ -404,39 +404,63 @@ function drawDecoration(ctx, d, x, y, t, themeName) {
   }
 }
 
-// ---------- Roadblock, the Mayor, the police station ----------
+// ---------- Townhouse door, the Mayor, the police station ----------
 
-function drawRoadblock(ctx, x, y, open, t) {
-  // 1 tile wide, 2 tiles tall
-  ctx.fillStyle = "#3a3a44";
+function drawTownhouseDoor(ctx, x, y, open, t) {
+  // 1 tile wide, 2 tiles tall – the front door of a brick townhouse
+  ctx.fillStyle = "#9a4a32"; // brick frame
   ctx.fillRect(x - 3, y - 3, TILE + 6, TILE * 2 + 3);
+  ctx.fillStyle = "#6e3022";
+  for (let by = y + 4; by < y + TILE * 2; by += 7) {
+    ctx.fillRect(x - 3, by, 3, 1);
+    ctx.fillRect(x + TILE, by, 3, 1);
+  }
   if (open) {
-    ctx.fillStyle = "#14141a";
+    // the door swung in: a warm, lit hallway and the edge of the door on its hinges
+    ctx.fillStyle = "#4a3220";
     ctx.fillRect(x, y, TILE, TILE * 2);
-    ctx.fillStyle = "rgba(140,190,255,0.18)";
-    ctx.fillRect(x + 4, y + 4, TILE - 8, TILE * 2 - 4);
-    return;
+    ctx.fillStyle = "rgba(255,206,110,0.6)";
+    ctx.fillRect(x + 4, y + 4, TILE - 6, TILE * 2 - 4);
+    glow(ctx, x + TILE / 2, y + TILE, 30, "255,214,120", 0.45);
+    ctx.fillStyle = "#24553a";
+    ctx.fillRect(x, y, 6, TILE * 2);
+    ctx.fillStyle = "#f0c830";
+    ctx.fillRect(x + 2, y + 38, 3, 3);
+  } else {
+    ctx.fillStyle = "#2f6b45"; // the green door
+    ctx.fillRect(x, y, TILE, TILE * 2);
+    ctx.fillStyle = "#e8dcc0"; // the little window
+    ctx.fillRect(x + 7, y + 5, 18, 16);
+    ctx.fillStyle = "#bfe0f0";
+    ctx.fillRect(x + 9, y + 7, 14, 12);
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.fillRect(x + 11, y + 9, 3, 6);
+    for (const py of [y + 26, y + 44]) {
+      ctx.fillStyle = "#22553a"; // panels
+      ctx.fillRect(x + 5, py, 22, 14);
+      ctx.fillStyle = "#357a50";
+      ctx.fillRect(x + 7, py + 2, 18, 10);
+    }
+    ctx.fillStyle = "#f0c830"; // the golden knob
+    ctx.fillRect(x + 24, y + 39, 4, 4);
+    ctx.fillStyle = "#fff6a0";
+    ctx.fillRect(x + 24, y + 39, 2, 2);
   }
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(x, y, TILE, TILE * 2);
-  ctx.clip();
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(x, y, TILE, TILE * 2);
-  ctx.fillStyle = "#d0312d";
-  for (let i = -TILE; i < TILE * 2; i += 16) {
-    ctx.beginPath(); // red diagonal stripes
-    ctx.moveTo(x, y + i);
-    ctx.lineTo(x + TILE, y + i - TILE / 2);
-    ctx.lineTo(x + TILE, y + i - TILE / 2 + 8);
-    ctx.lineTo(x, y + i + 8);
-    ctx.fill();
+  ctx.fillStyle = "#c8c0b0"; // the step
+  ctx.fillRect(x - 3, y + TILE * 2 - 3, TILE + 6, 3);
+  for (let i = 0; i < 6; i++) {
+    ctx.fillStyle = i % 2 ? "#2f6b45" : "#f3ead0"; // the striped awning
+    ctx.fillRect(x - 6 + i * 7, y - 9, 7, 6);
   }
-  ctx.restore();
-  const blue = Math.floor(t * 4) % 2 === 0;
-  glow(ctx, x + TILE / 2, y - 2, 26, blue ? "60,120,255" : "255,60,60", 0.55);
-  ctx.fillStyle = blue ? "#4a8aff" : "#ff4a4a";
-  ctx.fillRect(x + TILE / 2 - 5, y - 6, 10, 6);
+  ctx.fillStyle = "#1e4a30";
+  ctx.fillRect(x - 6, y - 3, TILE + 12, 1);
+  // a warm lamp on top of the awning, glowing softly
+  const pulse = 0.5 + Math.sin(t * 2) * 0.5;
+  glow(ctx, x + TILE / 2, y - 12, 22, "255,210,120", 0.35 + pulse * 0.15);
+  ctx.fillStyle = "#2a2a2a";
+  ctx.fillRect(x + TILE / 2 - 4, y - 16, 8, 2);
+  ctx.fillStyle = "#ffd77a";
+  ctx.fillRect(x + TILE / 2 - 3, y - 14, 6, 5);
 }
 
 function drawMayor(ctx, x, y, solvedCount, total, t) {
@@ -603,6 +627,60 @@ function drawTrees(ctx, offset, baseY) {
   }
 }
 
+// The street in front of the sunset: little houses with lit windows, trees and street lamps.
+// Like in drawSkyline, which windows are lit depends only on the house, the floor and the column.
+function drawEveningStreet(ctx, offset, baseY) {
+  const width = 960;
+  const start = -((offset % width) + width) % width;
+  for (let k = start; k < 960 + width; k += width) {
+    [[0, 90, 110, "#9a5a72", true], [100, 70, 80, "#b8705e", false], [200, 110, 130, "#6e5a8e", false], [330, 80, 95, "#a8647a", true], [520, 100, 120, "#7a6a9a", false], [630, 70, 85, "#b8705e", true], [800, 120, 105, "#8e5a7e", false]].forEach(([x, w, h, color, gable], b) => {
+      const hx = k + x;
+      ctx.fillStyle = "#4e3450"; // the roof
+      if (gable) {
+        ctx.beginPath();
+        ctx.moveTo(hx - 4, baseY - h);
+        ctx.lineTo(hx + w / 2, baseY - h - 28);
+        ctx.lineTo(hx + w + 4, baseY - h);
+        ctx.fill();
+      } else {
+        ctx.fillRect(hx - 3, baseY - h - 6, w + 6, 6);
+      }
+      ctx.fillStyle = color;
+      ctx.fillRect(hx, baseY - h, w, h);
+      let floor = 0;
+      for (let wy = baseY - h + 14; wy < baseY - 34; wy += 26, floor++) {
+        let col = 0;
+        for (let wx = hx + 10; wx < hx + w - 16; wx += 22, col++) {
+          ctx.fillStyle = (b * 5 + floor * 3 + col * 7) % 4 === 0 ? "#4a3a58" : "#ffd890";
+          ctx.fillRect(wx, wy, 10, 12);
+        }
+      }
+      ctx.fillStyle = "#3e2a3a"; // the front door
+      ctx.fillRect(hx + w / 2 - 7, baseY - 22, 14, 22);
+    });
+    for (const [cx, r] of [[445, 22], [492, 18], [728, 20]]) {
+      ctx.fillStyle = "#3a2a2a";
+      ctx.fillRect(k + cx - 4, baseY - 30, 8, 30);
+      ctx.fillStyle = "#3e5e4e";
+      ctx.beginPath();
+      ctx.arc(k + cx, baseY - 30 - r * 0.7, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#56765a";
+      ctx.beginPath();
+      ctx.arc(k + cx - r * 0.3, baseY - 36 - r * 0.9, r * 0.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    for (const cx of [185, 318, 775, 940]) {
+      ctx.fillStyle = "#2a2a3a";
+      ctx.fillRect(k + cx - 2, baseY - 70, 4, 70);
+      ctx.fillRect(k + cx - 6, baseY - 76, 12, 5);
+      glow(ctx, k + cx, baseY - 68, 34, "255,220,140", 0.45);
+      ctx.fillStyle = "#fff0b0";
+      ctx.fillRect(k + cx - 4, baseY - 71, 8, 5);
+    }
+  }
+}
+
 // Cream stone walls with white columns.
 function drawTownHallWall(ctx, offset) {
   const bw = 64;
@@ -698,7 +776,7 @@ function drawBackground(ctx, themeName, camX, t) {
   } else if (themeName === "square") {
     drawSunset(ctx, 480 - camX * 0.02, 380, 60);
     drawSkyline(ctx, camX * 0.12, 430, "#8a5a8a", "rgba(255,226,160,0.4)");
-    drawSkyline(ctx, camX * 0.3, 480, "#b87a82", null);
+    drawEveningStreet(ctx, camX * 0.3, 480);
   }
 }
 
@@ -710,7 +788,7 @@ export const cityArt = {
   enemyBurst: ["#4a8aff", "#ff4a4a"],
   bonusSprite: badgeSprite,
   bonusGlow: "rgba(255,214,90,0.32)",
-  drawDoor: drawRoadblock,
+  drawDoor: drawTownhouseDoor,
   drawBoss: drawMayor,
   drawPortal: drawPoliceStation,
 };

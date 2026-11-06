@@ -208,7 +208,7 @@ const city = {
     { pic: "🚂", say: "a train" },
   ],
   text: {
-    door: "Roadblock",
+    door: "Door",
     bonus: "Golden badge (bonus)",
     bonusNear: "A golden badge! Jump up and get it!",
     bonusNearSticker: "A golden badge! Jump up and win a sticker!",
@@ -220,7 +220,7 @@ const city = {
     powerSay: "You are a super city hero!",
     unitDone: "🏆",
     unitDoneSay: "You are a real city hero!",
-    respawn: "Oh no! Back to the last roadblock …",
+    respawn: "Oh no! Back to the last door …",
   },
   art: cityArt,
 };
