@@ -5,43 +5,41 @@ const COLORS = ["#8e1b1b", "#1d4a7a", "#2c6a2c", "#7a5a0b", "#5a2a7a", "#0b6a6a"
 
 // { pairs: [["b", { pic: "⚽", say: "ball" }], …], speak_options?: true }
 // Each side is an item (see util.js). With speak_options, tapping a card says its name (🔊 cards always do).
+// A pair can start on either side: tap a card, then a card in the other column. Another card in the
+// same column only changes which card is chosen.
 export function render(task, body) {
   if (task.context) body.append(el("p", { class: "context", text: task.context }));
   const lefts = shuffle(task.pairs.map((p, i) => ({ i, item: p[0] })));
   const rights = shuffle(task.pairs.map((p, i) => ({ i, item: p[1] })), true);
   const links = new Map(); // left index -> right index
-  let active = null;
+  let active = null; // the chosen card: { side: "left" | "right", i }
 
   const leftCol = el("div", { class: "col" });
   const rightCol = el("div", { class: "col" });
   body.append(el("div", { class: "pairs" }, leftCol, rightCol));
 
+  function tap(side, i, item) {
+    if (speaksWhenTapped(task, item)) speech.say(itemSay(item));
+    if (active?.side === side && active.i === i) active = null; // the same card again: not chosen any more
+    else if (!active || active.side === side) active = { side, i }; // the old pair stays until the other side is chosen
+    else {
+      const [li, ri] = side === "left" ? [i, active.i] : [active.i, i];
+      for (const [l, r] of links) if (r === ri) links.delete(l);
+      links.set(li, ri);
+      active = null; // nothing is chosen until the child taps the next card
+    }
+    paint();
+  }
+
   const leftBtns = new Map();
   const rightBtns = new Map();
-  for (const l of lefts) {
-    const b = el("button", { class: "pair-item", type: "button" }, el("span", { class: "tag" }), renderItem(l.item));
-    b.addEventListener("click", () => {
-      if (speaksWhenTapped(task, l.item)) speech.say(itemSay(l.item));
-      active = l.i; // the old pair stays until a new right card is chosen
-      paint();
-    });
-    leftBtns.set(l.i, b);
-    leftCol.append(b);
-  }
-  for (const r of rights) {
-    const b = el("button", { class: "pair-item", type: "button" }, el("span", { class: "tag" }), renderItem(r.item));
-    b.addEventListener("click", () => {
-      if (speaksWhenTapped(task, r.item)) speech.say(itemSay(r.item));
-      // Without a chosen left card a tap only plays the card – the pairs stay.
-      if (active !== null) {
-        for (const [li, ri] of links) if (ri === r.i) links.delete(li);
-        links.set(active, r.i);
-        active = null; // nothing is chosen until the child taps the next left card
-      }
-      paint();
-    });
-    rightBtns.set(r.i, b);
-    rightCol.append(b);
+  for (const [side, cards, btns, col] of [["left", lefts, leftBtns, leftCol], ["right", rights, rightBtns, rightCol]]) {
+    for (const c of cards) {
+      const b = el("button", { class: "pair-item", type: "button" }, el("span", { class: "tag" }), renderItem(c.item));
+      b.addEventListener("click", () => tap(side, c.i, c.item));
+      btns.set(c.i, b);
+      col.append(b);
+    }
   }
 
   function paint() {
@@ -49,7 +47,7 @@ export function render(task, body) {
     for (const [i, b] of leftBtns) {
       const linked = links.has(i);
       const n = order.indexOf(i);
-      b.classList.toggle("active", active === i);
+      b.classList.toggle("active", active?.side === "left" && active.i === i);
       b.classList.toggle("linked", linked);
       b.classList.remove("right", "wrong");
       const tag = b.querySelector(".tag");
@@ -61,6 +59,7 @@ export function render(task, body) {
       const li = [...links].find(([, ri]) => ri === i)?.[0];
       const n = order.indexOf(li);
       const tag = b.querySelector(".tag");
+      b.classList.toggle("active", active?.side === "right" && active.i === i);
       b.classList.toggle("linked", li !== undefined);
       b.classList.remove("right", "wrong");
       tag.textContent = li !== undefined ? n + 1 : "";
